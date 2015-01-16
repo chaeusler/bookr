@@ -1,3 +1,24 @@
 apply plugin: 'ear'
 apply plugin: 'idea'
 apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'jdepend'
+apply plugin: "jacoco"
+
+version='0.1-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //runtime 'org.slf4j:slf4j-api:1.7'
+    compile 'org.eclipse.persistence:javax.persistence:2.1.0'
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'javax.ejb:javax.ejb-api:3.2'
+}
+
+
