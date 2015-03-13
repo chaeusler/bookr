@@ -1,21 +1,34 @@
 package ch.haeuslers.bookr.entity;
 
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @BookingCheck
-public class Booking {
+@Entity
+@Table(name = "BOOKR_BOOKING")
+@NamedQueries({
+@NamedQuery(name = "Booking.findOverlapping",
+query = "SELECT b " +
+"FROM Booking b " +
+"WHERE b.start >= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end >= :endDate" +
+"   OR b.start <= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end <= :endDate"),
+@NamedQuery(name = "Booking.findAllForUser", query = "SELECT b FROM Booking b WHERE b.person = :user"),
+@NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
+@NamedQuery(name = "Booking.findAllFromDate", query = "SELECT b FROM Booking b WHERE b.start <= :fromDate"),
+@NamedQuery(name = "Booking.findAllFromDateToDate", query = "SELECT b FROM Booking b WHERE b.start BETWEEN :fromDate AND :toDate")
+})
+
+public class Booking extends BaseEntity {
 
     @Id
-    private String id;
+    public String id;
 
     @OneToOne(optional = false)
     private Project project;
 
     @OneToOne(optional = false)
-    private User user;
+    private Person person;
 
     @NotNull
     private String description;
@@ -26,6 +39,14 @@ public class Booking {
     @NotNull
     private Date end;
 
+    public String getId() {
+        return id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public Project getProject() {
         return project;
     }
@@ -34,12 +55,12 @@ public class Booking {
         this.project = project;
     }
 
-    public User getUser() {
-        return user;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Date getStart() {
@@ -64,12 +85,5 @@ public class Booking {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    private boolean datesAreValid() {
-        if (start == null || end == null) {
-            return false;
-        }
-        return start.before(end);
     }
 }

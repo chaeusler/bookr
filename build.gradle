@@ -1,24 +1,87 @@
-apply plugin: 'ear'
+apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'checkstyle'
-apply plugin: 'findbugs'
-apply plugin: 'jdepend'
-apply plugin: "jacoco"
+apply plugin: 'groovy'
+//apply plugin: 'checkstyle'
+//apply plugin: 'findbugs'
+//apply plugin: 'jdepend'
+//apply plugin: "jacoco"
 
-version='0.1-SNAPSHOT'
+version = '0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+
+    maven {
+        // for arquliian
+        url "https://repository.jboss.org/nexus/content/repositories/public"
+    }
 }
 
 dependencies {
     //runtime 'org.slf4j:slf4j-api:1.7'
-    compile 'org.eclipse.persistence:javax.persistence:2.1.0'
-    compile 'javax.validation:validation-api:1.1.0.Final'
-    compile 'javax.ejb:javax.ejb-api:3.2'
+    //compile 'org.eclipse.persistence:javax.persistence:2.1.0'
+    //compile 'javax.validation:validation-api:1.1.0.Final'
+    //compile 'javax.ejb:javax.ejb-api:3.2'
+
+    //dependencies for using spock framework
+    testCompile "org.codehaus.groovy:groovy-all:2.4.1"
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    testCompile  "org.jboss.arquillian.container:arquillian-container-test-api:1.1.7.Final"
+    testCompile "org.jboss.arquillian.spock:arquillian-spock-container:1.0.0.Beta3"
+    testCompile "org.wildfly:wildfly-arquillian-container-remote:8.2.0.Final"
+
+    compile 'javax:javaee-api:7.0'
+
 }
 
+task deploy(dependsOn: war, type: Copy) {
 
+    def wildfly_home = 'c:\\servers\\wildfly-8.2.0.Final'
+    println "configure task deploy"
+
+    from('build/libs/') {
+        include '*.war'
+    }
+
+    into "$wildfly_home/standalone/deployments/"
+
+    def target = "${project.name}.war"
+    //def ok = new File("${System.env.JBOSS_HOME}/standalone/deployments/${target}.deployed");
+    def ok = new File("$wildfly_home/standalone/deployments/${target}.deployed");
+    def nok = new File("$wildfly_home/standalone/deployments/${target}.failed");
+
+    doFirst {
+        println "deploy doFirst"
+        if (ok.exists()) {
+            ok.delete()
+        }
+        if (nok.exists()) {
+            nok.delete()
+        }
+    }
+
+    doLast {
+        println "executing wildfly deploy..."
+        def deployed = false
+
+        for (def i = 0; i < 80; i++) {
+            if (ok.exists()) {
+                deployed = true
+                break
+            }
+            if (nok.exists()) {
+                break
+            }
+            sleep(500);
+        }
+
+        if (deployed) {
+            println("deploy ok.")
+        } else {
+            throw new RuntimeException("Deployment failed, see Wildfly logs!")
+        }
+    }
+}

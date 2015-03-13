@@ -2,42 +2,74 @@ package ch.haeuslers.bookr.control;
 
 import ch.haeuslers.bookr.entity.Booking;
 import ch.haeuslers.bookr.entity.Role;
+import ch.haeuslers.bookr.entity.Person;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import java.util.List;
 
 @Stateless
-@NamedQuery(name="findOverlappingBookings",
-        query="SELECT b " +
-                "FROM Booking b " +
-                "WHERE b.start >= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end >= :endDate" +
-                "   OR b.start <= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end <= :endDate")
+@Path("/hello")
 public class BookingService {
 
-    @PersistenceContext(unitName="bookr")
+    @PersistenceContext(unitName = "bookr")
     EntityManager em;
 
     @Resource
-    private SessionContext context;
+    SessionContext context;
 
+    @EJB
+    UserService userService;
 
-    public void book(Booking booking) throws IllegalAccessException {
+    @PUT
+    public void create(Booking booking) throws IllegalAccessException {
         ensureEditRights(booking);
 
-        // check validity:
-        // - the user only can book one booking in a timerange
+        if (hasOverlappingBookings(booking)) {
+            return; // Todo throw Business Exceptios
+        }
 
         em.persist(booking);
+    }
+
+    @POST
+    public void update(Booking booking) throws IllegalAccessException {
+        ensureEditRights(booking);
+
+        if (hasOverlappingBookings(booking)) {
+            return; // Todo throw Business Exceptios
+        }
+
+        em.merge(booking);
+    }
+
+    @GET
+    public List<Booking> listMine() {
+        String principalName = context.getCallerPrincipal().getName();
+        Person person = userService.getByPrincipalName(principalName);
+        return em.createNamedQuery("Booking.findAllForUser", Booking.class).setParameter("user", person).getResultList();
+    }
+
+    private boolean hasOverlappingBookings(Booking booking) {
+        return !em.createNamedQuery("Booking.findOverlapping")
+                .setParameter("startDate", booking.getStart())
+                .setParameter("endDate", booking.getEnd())
+                .getResultList()
+                .isEmpty();
     }
 
     private void ensureEditRights(Booking booking) throws IllegalAccessException {
         if (hasOnlyUserRole()) {
             String principalName = context.getCallerPrincipal().getName();
-            if (!principalName.equals(booking.getUser().getPrincipalName())) {
+            if (!principalName.equals(booking.getPerson().getPrincipalName())) {
                 // abort because principal with the the only role user can't edit foreign bookings
                 throw new IllegalAccessException("not allowed to edit foreign bookings");
             }
