@@ -22,9 +22,7 @@ repositories {
 
 dependencies {
     //runtime 'org.slf4j:slf4j-api:1.7'
-    //compile 'org.eclipse.persistence:javax.persistence:2.1.0'
-    //compile 'javax.validation:validation-api:1.1.0.Final'
-    //compile 'javax.ejb:javax.ejb-api:3.2'
+    compile 'javax:javaee-api:7.0'
 
     //dependencies for using spock framework
     testCompile "org.codehaus.groovy:groovy-all:2.4.1"
@@ -32,9 +30,6 @@ dependencies {
     testCompile  "org.jboss.arquillian.container:arquillian-container-test-api:1.1.7.Final"
     testCompile "org.jboss.arquillian.spock:arquillian-spock-container:1.0.0.Beta3"
     testCompile "org.wildfly:wildfly-arquillian-container-remote:8.2.0.Final"
-
-    compile 'javax:javaee-api:7.0'
-
 }
 
 task deploy(dependsOn: war, type: Copy) {

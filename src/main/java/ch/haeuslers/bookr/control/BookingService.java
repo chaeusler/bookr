@@ -27,7 +27,7 @@ public class BookingService {
     SessionContext context;
 
     @EJB
-    UserService userService;
+    PersonService personService;
 
     @PUT
     public void create(Booking booking) throws IllegalAccessException {
@@ -54,7 +54,7 @@ public class BookingService {
     @GET
     public List<Booking> listMine() {
         String principalName = context.getCallerPrincipal().getName();
-        Person person = userService.getByPrincipalName(principalName);
+        Person person = personService.getByPrincipalName(principalName);
         return em.createNamedQuery("Booking.findAllForUser", Booking.class).setParameter("user", person).getResultList();
     }
 

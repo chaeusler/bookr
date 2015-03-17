@@ -5,12 +5,14 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Table(name = "BOOKR_USER")
+@Table(name = "BOOKR_PERSON")
 @NamedQueries({
-        @NamedQuery(name = "User.findByPrincipalName", query = "SELECT u FROM Person u WHERE u.principalName = :principalName")
+        @NamedQuery(name = Person.QUERY_FIND_BY_PRINCIPAL_NAME, query = "SELECT u FROM Person u WHERE u.principalName = :principalName")
 })
 public class Person extends BaseEntity {
 
+    public static final String QUERY_FIND_BY_PRINCIPAL_NAME = "Person.findByPrincipalName";
+    
     @Id
     public String id;
 

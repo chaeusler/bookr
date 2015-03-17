@@ -8,18 +8,24 @@ import java.util.Date;
 @Entity
 @Table(name = "BOOKR_BOOKING")
 @NamedQueries({
-@NamedQuery(name = "Booking.findOverlapping",
+@NamedQuery(name = Booking.QUERY_FIND_OVERLAPPING,
 query = "SELECT b " +
 "FROM Booking b " +
 "WHERE b.start >= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end >= :endDate" +
 "   OR b.start <= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end <= :endDate"),
-@NamedQuery(name = "Booking.findAllForUser", query = "SELECT b FROM Booking b WHERE b.person = :user"),
-@NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
-@NamedQuery(name = "Booking.findAllFromDate", query = "SELECT b FROM Booking b WHERE b.start <= :fromDate"),
-@NamedQuery(name = "Booking.findAllFromDateToDate", query = "SELECT b FROM Booking b WHERE b.start BETWEEN :fromDate AND :toDate")
+@NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USER, query = "SELECT b FROM Booking b WHERE b.person = :user"),
+@NamedQuery(name = Booking.QUERY_FIND_ALL, query = "SELECT b FROM Booking b"),
+@NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE, query = "SELECT b FROM Booking b WHERE b.start <= :fromDate"),
+@NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE_TO_DATE, query = "SELECT b FROM Booking b WHERE b.start BETWEEN :fromDate AND :toDate")
 })
 
 public class Booking extends BaseEntity {
+
+    public static final String QUERY_FIND_OVERLAPPING = "Booking.findOverlapping";
+    public static final String QUERY_FIND_ALL_FOR_USER = "Booking.findAllForUser";
+    public static final String QUERY_FIND_ALL = "Booking.findAll";
+    public static final String QUERY_FIND_ALL_FROM_DATE = "Booking.findAllFromDate";
+    public static final String QUERY_FIND_ALL_FROM_DATE_TO_DATE = "Booking.findAllFromDateToDate";
 
     @Id
     public String id;
@@ -42,7 +48,7 @@ public class Booking extends BaseEntity {
     public String getId() {
         return id;
     }
-    
+
     public void setId(String id) {
         this.id = id;
     }

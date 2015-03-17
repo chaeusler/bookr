@@ -18,12 +18,12 @@ class UserServiceSpec extends Specification {
     @Deployment
     def static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
-            .addClasses(UserService.class, BaseEntity.class, Person.class, Role.class)
+            .addClasses(PersonService.class, BaseEntity.class, Person.class, Role.class)
             .addAsResource("META-INF/persistence.xml");
     }
 
     @Inject
-    UserService service
+    PersonService service
 
     def setup() {
         assert service != null
