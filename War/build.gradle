@@ -6,17 +6,20 @@ apply plugin: 'war'
 //apply plugin: "jacoco"
 
 sourceCompatibility = 1.8
-version = '1.0'
 
 repositories {
     mavenCentral()
 
     maven {
-        // for arquliian
+        // for arquillian
         url "https://repository.jboss.org/nexus/content/repositories/public"
     }
 }
 
+war {
+    it.dependsOn ':AngularClient:gulp'
+    from '../AngularClient/dist'
+}
 
 dependencies {
     //runtime 'org.slf4j:slf4j-api:1.7'

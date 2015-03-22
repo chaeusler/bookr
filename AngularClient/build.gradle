@@ -1,12 +1,15 @@
-apply plugin: 'java'
+import org.apache.tools.ant.taskdefs.condition.Os
 
-sourceCompatibility = 1.5
-version = '1.0'
-
-repositories {
-    mavenCentral()
+def gulpCommand() {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        ['cmd', '/c', 'gulp.cmd']
+    } else {
+        ['gulp']
+    }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+task gulp(type: Exec) {
+    commandLine gulpCommand()
 }
+
+
