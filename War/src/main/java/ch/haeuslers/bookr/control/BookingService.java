@@ -10,14 +10,13 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import java.util.List;
 
 @Stateless
-@Path("/hello")
+@Path("/bookings")
+@Consumes("application/json")
+@Produces("application/json")
 public class BookingService {
 
     @PersistenceContext(unitName = "bookr")

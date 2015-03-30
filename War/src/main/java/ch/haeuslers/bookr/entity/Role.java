@@ -38,8 +38,44 @@ public class Role extends BaseEntity {
         ADMINISTRATOR
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Role role = (Role) o;
+
+        return person.equals(role.person) && type == role.type;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = person.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
     static class RoleId implements Serializable {
         Person person;
         Type type;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RoleId roleId = (RoleId) o;
+
+            return person.equals(roleId.person) && type == roleId.type;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = person.hashCode();
+            result = 31 * result + type.hashCode();
+            return result;
+        }
     }
 }

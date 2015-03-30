@@ -16,11 +16,6 @@ repositories {
     }
 }
 
-war {
-    it.dependsOn ':AngularClient:gulp'
-    from '../AngularClient/dist'
-}
-
 dependencies {
     //runtime 'org.slf4j:slf4j-api:1.7'
     compile 'javax:javaee-api:7.0'
@@ -31,6 +26,11 @@ dependencies {
     testCompile "org.jboss.arquillian.container:arquillian-container-test-api:1.1.7.Final"
     testCompile "org.jboss.arquillian.spock:arquillian-spock-container:1.0.0.Beta3"
     testCompile "org.wildfly:wildfly-arquillian-container-remote:8.2.0.Final"
+}
+
+war {
+    it.dependsOn ':AngularClient:gulp'
+    from '../AngularClient/dist'
 }
 
 task deploy(dependsOn: war, type: Copy) {
@@ -46,8 +46,8 @@ task deploy(dependsOn: war, type: Copy) {
 
     def target = "${project.name}.war"
     //def ok = new File("${System.env.JBOSS_HOME}/standalone/deployments/${target}.deployed");
-    def ok = new File("$wildfly_home/standalone/deployments/${target}.deployed");
-    def nok = new File("$wildfly_home/standalone/deployments/${target}.failed");
+    def ok = file("$wildfly_home/standalone/deployments/${target}.deployed");
+    def nok = file("$wildfly_home/standalone/deployments/${target}.failed");
 
     doFirst {
         println "deploy doFirst"
