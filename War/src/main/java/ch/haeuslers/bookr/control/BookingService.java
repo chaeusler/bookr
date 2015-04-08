@@ -10,13 +10,9 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.*;
 import java.util.List;
 
 @Stateless
-@Path("/bookings")
-@Consumes("application/json")
-@Produces("application/json")
 public class BookingService {
 
     @PersistenceContext(unitName = "bookr")
@@ -28,41 +24,41 @@ public class BookingService {
     @EJB
     PersonService personService;
 
-    @PUT
-    public void create(Booking booking) throws IllegalAccessException {
+    public Booking persist(Booking booking) throws IllegalAccessException {
         ensureEditRights(booking);
 
         if (hasOverlappingBookings(booking)) {
-            return; // Todo throw Business Exceptios
+            throw new IllegalStateException("there are overlapping bookings");
+            //return; // Todo throw Business Exceptios
         }
-
         em.persist(booking);
+        return booking;
     }
 
-    @POST
-    public void update(Booking booking) throws IllegalAccessException {
+    public Booking merge(Booking booking) throws IllegalAccessException {
         ensureEditRights(booking);
 
         if (hasOverlappingBookings(booking)) {
-            return; // Todo throw Business Exceptios
+            //return; // Todo throw Business Exceptios
         }
-
-        em.merge(booking);
+        return em.merge(booking);
     }
 
-    @GET
     public List<Booking> listMine() {
         String principalName = context.getCallerPrincipal().getName();
         Person person = personService.getByPrincipalName(principalName);
-        return em.createNamedQuery("Booking.findAllForUser", Booking.class).setParameter("user", person).getResultList();
+        return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USER, Booking.class).
+            setParameter("user", person).
+            getResultList();
     }
 
     private boolean hasOverlappingBookings(Booking booking) {
-        return !em.createNamedQuery("Booking.findOverlapping")
-                .setParameter("startDate", booking.getStart())
-                .setParameter("endDate", booking.getEnd())
-                .getResultList()
-                .isEmpty();
+        return !em.createNamedQuery(Booking.QUERY_FIND_OVERLAPPING)
+            .setParameter("startDate", booking.getStart())
+            .setParameter("endDate", booking.getEnd())
+            .getResultList()
+            .isEmpty();
+        // TODO use count in DB
     }
 
     private void ensureEditRights(Booking booking) throws IllegalAccessException {

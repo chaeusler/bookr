@@ -5,26 +5,23 @@ import ch.haeuslers.bookr.entity.Person;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.*;
 import java.util.List;
+import java.util.UUID;
 
 @Stateless
-@Path("/persons")
-@Consumes("application/json")
-@Produces("application/json")
 public class PersonService {
 
     @PersistenceContext(unitName = "bookr")
     EntityManager em;
 
-
-    @PUT
-    public void create(Person  person) {
+    public Person persist(Person person) {
+        if (person.getId() == null || person.getId().isEmpty()) {
+            person.setId(UUID.randomUUID().toString());
+        }
         em.persist(person);
-        // TODO return URL to the resource
+        return person;
     }
 
-    @GET
     public List<Person> getAll() {
         return em.createNamedQuery(Person.QUERY_ALL, Person.class).getResultList();
     }

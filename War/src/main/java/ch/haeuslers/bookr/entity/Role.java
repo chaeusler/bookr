@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "BOOKR_ROLE")
@@ -44,16 +45,13 @@ public class Role extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
 
         Role role = (Role) o;
-
         return person.equals(role.person) && type == role.type;
 
     }
 
     @Override
     public int hashCode() {
-        int result = person.hashCode();
-        result = 31 * result + type.hashCode();
-        return result;
+        return Objects.hash(person, type);
     }
 
     static class RoleId implements Serializable {
