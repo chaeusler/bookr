@@ -22,6 +22,10 @@ public class PersonService {
         return person;
     }
 
+    public Person find(String id) {
+        return em.find(Person.class, id);
+    }
+
     public List<Person> getAll() {
         return em.createNamedQuery(Person.QUERY_ALL, Person.class).getResultList();
     }
@@ -29,4 +33,6 @@ public class PersonService {
     public Person getByPrincipalName(String principalName) {
         return em.createNamedQuery(Person.QUERY_FIND_BY_PRINCIPAL_NAME, Person.class).setParameter("principalName", principalName).getSingleResult();
     }
+
+    // TODO when deleting a person the roles need to be deleted too
 }

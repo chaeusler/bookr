@@ -6,7 +6,8 @@ import ch.haeuslers.bookr.entity.Role;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Stateless
 public class RoleService {
@@ -24,12 +25,14 @@ public class RoleService {
         Role role = new Role();
         role.setPerson(person);
         role.setType(roleType);
-        if (person.getRoles() == null) {
-            person.setRoles(new HashSet<>());
-        }
-        person.getRoles().add(role);
         em.persist(role);
         return role;
+    }
+
+    public List<Role> findRolesForPerson(String personId) {
+        return em.createNamedQuery(Role.FIND_ALL_FOR_PERSON_ID, Role.class)
+            .setParameter("personId", personId)
+            .getResultList();
     }
 
 }

@@ -1,12 +1,12 @@
 apply plugin: 'war'
 apply plugin: 'groovy'
-
 //apply plugin: 'checkstyle'
 //apply plugin: 'findbugs'
 //apply plugin: 'jdepend'
 //apply plugin: "jacoco"
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -23,7 +23,7 @@ dependencies {
 
     //dependencies for using spock framework
     testCompile "org.codehaus.groovy:groovy-all:2.4.1"
-    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"//1.0-groovy-2.4"
     //testCompile "junit:junit:4.8.1"
     testCompile "org.jboss.arquillian.container:arquillian-container-test-api:1.1.7.Final"
     testCompile "org.jboss.arquillian.spock:arquillian-spock-container:1.0.0.Beta3"
@@ -31,10 +31,11 @@ dependencies {
     testCompile "org.wildfly:wildfly-arquillian-container-remote:8.2.0.Final"
 }
 
+/*
 war {
-    it.dependsOn ':AngularClient:gulp_build'
+    it.dependsOn 'test'//':AngularClient:gulp_build'
     from '../AngularClient/dist'
-}
+}*/
 
 task deploy(dependsOn: war, type: Copy) {
 

@@ -1,19 +1,20 @@
 package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @MappedSuperclass
 public abstract class BaseEntity {
 
-    public long timestamp;
+    public Timestamp timestamp;
 
     @PrePersist
     @PreUpdate
     public void updateTimestamp() {
-        timestamp = System.currentTimeMillis();
+        timestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public long getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 }

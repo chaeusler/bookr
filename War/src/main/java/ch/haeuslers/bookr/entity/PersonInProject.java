@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class PersonInProject extends BaseEntity {
 
     @Id
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Person person;
 
     @Id
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Project project;
 
     public Person getPerson() {

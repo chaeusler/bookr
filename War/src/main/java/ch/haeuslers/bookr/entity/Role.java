@@ -1,13 +1,19 @@
 package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "BOOKR_ROLE")
 @IdClass(Role.RoleId.class)
-public class Role extends BaseEntity {
+@NamedQueries(
+    @NamedQuery(name = Role.FIND_ALL_FOR_PERSON_ID, query = "SELECT r FROM Role r WHERE r.person.id = :personId")
+)
+public class Role {
+
+    public static final String FIND_ALL_FOR_PERSON_ID = "Role.findAllForPerson";
 
     @Id
     @ManyToOne(optional = false)
@@ -15,6 +21,7 @@ public class Role extends BaseEntity {
 
     @Id
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Type type;
 
     public Person getPerson() {

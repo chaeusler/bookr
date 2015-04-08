@@ -10,7 +10,7 @@ import java.util.Set;
         @NamedQuery(name = Person.QUERY_FIND_BY_PRINCIPAL_NAME, query = "SELECT u FROM Person u WHERE u.principalName = :principalName"),
         @NamedQuery(name = Person.QUERY_ALL, query = "FROM Person p")
 })
-public class Person extends BaseEntity {
+public class Person {
 
     public static final String QUERY_FIND_BY_PRINCIPAL_NAME = "Person.findByPrincipalName";
     public static final String QUERY_ALL = "Person.findAll";
@@ -20,9 +20,6 @@ public class Person extends BaseEntity {
 
     @NotNull
     private String principalName;
-
-    @OneToMany(mappedBy = "person")
-    private Set<Role> roles;
 
     public String getId() {
         return id;
@@ -38,14 +35,6 @@ public class Person extends BaseEntity {
 
     public void setPrincipalName(String principalName) {
         this.principalName = principalName;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     @Override
