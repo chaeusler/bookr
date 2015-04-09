@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 
 @BookingCheck
@@ -19,6 +20,8 @@ query = "SELECT b " +
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE_TO_DATE, query = "SELECT b FROM Booking b WHERE b.start BETWEEN :fromDate AND :toDate")
 })
 
+@XmlRootElement(name = "booking")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Booking extends BaseEntity {
 
     public static final String QUERY_FIND_OVERLAPPING = "Booking.findOverlapping";
@@ -28,12 +31,15 @@ public class Booking extends BaseEntity {
     public static final String QUERY_FIND_ALL_FROM_DATE_TO_DATE = "Booking.findAllFromDateToDate";
 
     @Id
-    public String id;
+    @XmlAttribute
+    private String id;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
+    @XmlElementRef
     private Project project;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
+    @XmlElementRef
     private Person person;
 
     @NotNull

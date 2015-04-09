@@ -35,4 +35,7 @@ public class RoleService {
             .getResultList();
     }
 
+    public List<Role> getAll() {
+        return em.createNamedQuery(Role.QUERY_ALL, Role.class).getResultList();
+    }
 }

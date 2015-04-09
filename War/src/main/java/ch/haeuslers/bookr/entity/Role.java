@@ -2,21 +2,32 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.Link;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "BOOKR_ROLE")
 @IdClass(Role.RoleId.class)
-@NamedQueries(
-    @NamedQuery(name = Role.FIND_ALL_FOR_PERSON_ID, query = "SELECT r FROM Role r WHERE r.person.id = :personId")
-)
+@NamedQueries({
+    @NamedQuery(name = Role.FIND_ALL_FOR_PERSON_ID, query = "SELECT r FROM Role r WHERE r.person.id = :personId"),
+    @NamedQuery(name = Role.QUERY_ALL, query = "FROM Role")
+})
+@XmlRootElement(name = "role")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Role {
 
     public static final String FIND_ALL_FOR_PERSON_ID = "Role.findAllForPerson";
 
+    public static final String QUERY_ALL = "Role.queryAll";
+
     @Id
     @ManyToOne(optional = false)
+    @XmlElementRef
     private Person person;
 
     @Id
@@ -78,9 +89,7 @@ public class Role {
 
         @Override
         public int hashCode() {
-            int result = person.hashCode();
-            result = 31 * result + type.hashCode();
-            return result;
+            return Objects.hash(person, type);
         }
     }
 }

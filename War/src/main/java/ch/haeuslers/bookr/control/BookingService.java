@@ -10,7 +10,9 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 public class BookingService {
@@ -27,6 +29,8 @@ public class BookingService {
     public Booking persist(Booking booking) throws IllegalAccessException {
         ensureEditRights(booking);
 
+        // TODO validate person needs to be in project
+
         if (hasOverlappingBookings(booking)) {
             throw new IllegalStateException("there are overlapping bookings");
             //return; // Todo throw Business Exceptios
@@ -38,6 +42,8 @@ public class BookingService {
     public Booking merge(Booking booking) throws IllegalAccessException {
         ensureEditRights(booking);
 
+        // TODO validate person needs to be in project
+
         if (hasOverlappingBookings(booking)) {
             //return; // Todo throw Business Exceptios
         }
@@ -46,10 +52,14 @@ public class BookingService {
 
     public List<Booking> listMine() {
         String principalName = context.getCallerPrincipal().getName();
-        Person person = personService.getByPrincipalName(principalName);
-        return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USER, Booking.class).
-            setParameter("user", person).
-            getResultList();
+        System.out.println(principalName);
+        Optional<Person> person = personService.getByPrincipalName(principalName);
+        if (person.isPresent()) {
+            return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USER, Booking.class).
+                setParameter("user", person.get()).
+                getResultList();
+        }
+        return Collections.emptyList();
     }
 
     private boolean hasOverlappingBookings(Booking booking) {

@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Stateless
@@ -30,8 +31,13 @@ public class PersonService {
         return em.createNamedQuery(Person.QUERY_ALL, Person.class).getResultList();
     }
 
-    public Person getByPrincipalName(String principalName) {
-        return em.createNamedQuery(Person.QUERY_FIND_BY_PRINCIPAL_NAME, Person.class).setParameter("principalName", principalName).getSingleResult();
+    public Optional<Person> getByPrincipalName(String principalName) {
+        return em.createNamedQuery(Person.QUERY_FIND_BY_PRINCIPAL_NAME, Person.class)
+            // TODO .setParameter("principalName", principalName)
+            .setParameter("principalName", "the user")
+            .getResultList()
+            .stream()
+            .findFirst();
     }
 
     // TODO when deleting a person the roles need to be deleted too

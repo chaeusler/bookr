@@ -1,6 +1,6 @@
 package ch.haeuslers.bookr.control
 
-import ch.haeuslers.bookr.entity.Person
+import ch.haeuslers.bookr.entity.Booking
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -10,38 +10,20 @@ import spock.lang.Specification
 
 import javax.inject.Inject
 
-
 @RunWith(ArquillianSputnik.class)
-class NewSpockSpec extends Specification {
+class BookingServiceSpec extends Specification {
 
     @Deployment
     def static WebArchive "create deployment"() {
         return ShrinkWrap.create(WebArchive.class, 'test.war')
+            .addClass(BookingService.class)
             .addClass(PersonService.class)
-            .addClass(this.class)
-            .addPackage(Person.class.getPackage())
+            .addPackage(Booking.class.getPackage())
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
     }
 
     @Inject
-    PersonService service
+    BookingService bookingService
 
-    def setup() {
-        assert service != null
-    }
-
-    def "persist and get"() {
-        setup:
-        Person person = new Person()
-        person.principalName = "theName"
-
-        when:
-        def persisted = service.persist(person)
-
-        then:
-        service.getAll().contains(person)
-        service.getAll().size() == 1
-        service.getAll().get(0).equals(persisted)
-    }
 
 }

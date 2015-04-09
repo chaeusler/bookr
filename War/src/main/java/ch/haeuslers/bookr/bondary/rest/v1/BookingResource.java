@@ -8,8 +8,8 @@ import javax.ws.rs.*;
 import java.util.List;
 
 @Path("v1/bookings")
-@Consumes("application/json")
-@Produces("application/json")
+@Consumes({"application/json", "application/xml"})
+@Produces({"application/json", "application/xml"})
 public class BookingResource {
 
     @Inject

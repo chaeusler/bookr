@@ -2,21 +2,25 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "BOOKR_PERSON")
 @NamedQueries({
         @NamedQuery(name = Person.QUERY_FIND_BY_PRINCIPAL_NAME, query = "SELECT u FROM Person u WHERE u.principalName = :principalName"),
-        @NamedQuery(name = Person.QUERY_ALL, query = "FROM Person p")
+        @NamedQuery(name = Person.QUERY_ALL, query = "FROM Person")
 })
+@XmlRootElement(name = "person")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Person {
 
     public static final String QUERY_FIND_BY_PRINCIPAL_NAME = "Person.findByPrincipalName";
     public static final String QUERY_ALL = "Person.findAll";
 
     @Id
-    public String id;
+    @XmlAttribute
+    private String id;
 
     @NotNull
     private String principalName;

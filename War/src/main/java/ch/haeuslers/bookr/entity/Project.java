@@ -4,12 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "BOOKR_PROJECT")
+@XmlRootElement(name = "project")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Project extends BaseEntity {
 
     @Id
+    @XmlAttribute
     private String id;
 
     @NotNull
