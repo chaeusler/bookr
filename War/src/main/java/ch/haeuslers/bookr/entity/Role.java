@@ -27,7 +27,8 @@ public class Role {
 
     @Id
     @ManyToOne(optional = false)
-    @XmlElementRef
+    @XmlElementRef(name = "person-id")
+    @XmlJavaTypeAdapter(PersonReferenceXmlAdapter.class)
     private Person person;
 
     @Id

@@ -88,4 +88,10 @@ public class BookingService {
     private boolean hasRole(Role.Type role) {
         return context.isCallerInRole(role.toString());
     }
+
+    public List<Booking> listAllForUser(String user) {
+        return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USERNAME, Booking.class)
+            .setParameter("username", user)
+            .getResultList();
+    }
 }

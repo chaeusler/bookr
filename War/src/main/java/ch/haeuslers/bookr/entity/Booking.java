@@ -3,6 +3,7 @@ package ch.haeuslers.bookr.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 @BookingCheck
@@ -15,6 +16,7 @@ query = "SELECT b " +
 "WHERE b.start >= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end >= :endDate" +
 "   OR b.start <= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end <= :endDate"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USER, query = "SELECT b FROM Booking b WHERE b.person = :user"),
+@NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USERNAME, query = "SELECT b FROM Booking b WHERE b.person.principalName = :username"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL, query = "SELECT b FROM Booking b"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE, query = "SELECT b FROM Booking b WHERE b.start <= :fromDate"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE_TO_DATE, query = "SELECT b FROM Booking b WHERE b.start BETWEEN :fromDate AND :toDate")
@@ -26,6 +28,7 @@ public class Booking {
 
     public static final String QUERY_FIND_OVERLAPPING = "Booking.findOverlapping";
     public static final String QUERY_FIND_ALL_FOR_USER = "Booking.findAllForUser";
+    public static final String QUERY_FIND_ALL_FOR_USERNAME = "Booking.findAllForUsername";
     public static final String QUERY_FIND_ALL = "Booking.findAll";
     public static final String QUERY_FIND_ALL_FROM_DATE = "Booking.findAllFromDate";
     public static final String QUERY_FIND_ALL_FROM_DATE_TO_DATE = "Booking.findAllFromDateToDate";
@@ -35,11 +38,13 @@ public class Booking {
     private String id;
 
     @ManyToOne(optional = false)
-    @XmlElementRef
+    @XmlElementRef(name = "project-id")
+    @XmlJavaTypeAdapter(ProjectReferenceXmlAdapter.class)
     private Project project;
 
     @ManyToOne(optional = false)
-    @XmlElementRef
+    @XmlElementRef(name = "person-id")
+    @XmlJavaTypeAdapter(PersonReferenceXmlAdapter.class)
     private Person person;
 
     @NotNull

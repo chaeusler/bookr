@@ -1,4 +1,4 @@
-package ch.haeuslers.bookr.bondary.rest.v1;
+package ch.haeuslers.bookr.boundary;
 
 import ch.haeuslers.bookr.control.RoleService;
 import ch.haeuslers.bookr.entity.Role;

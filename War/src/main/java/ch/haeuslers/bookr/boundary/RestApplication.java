@@ -1,4 +1,4 @@
-package ch.haeuslers.bookr.bondary.rest;
+package ch.haeuslers.bookr.boundary;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

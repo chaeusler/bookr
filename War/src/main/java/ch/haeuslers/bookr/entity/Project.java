@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "BOOKR_PROJECT")
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Project extends BaseEntity {
+public class Project {
 
     @Id
     @XmlAttribute
