@@ -3,6 +3,8 @@ package ch.haeuslers.bookr.bondary.rest.v1;
 import ch.haeuslers.bookr.control.BookingService;
 import ch.haeuslers.bookr.entity.Booking;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 @Path("v1/bookings")
 @Consumes({"application/json", "application/xml"})
 @Produces({"application/json", "application/xml"})
+@RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
+@DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
 public class BookingResource {
 
     @Inject

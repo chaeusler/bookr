@@ -2,18 +2,19 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "BOOKR_PERSON_IN_PROJECT")
 @IdClass(PersonInProject.PersonInProjectId.class)
-public class PersonInProject extends BaseEntity {
+public class PersonInProject {
 
     @Id
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Person person;
 
     @Id
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Project project;
 
     public Person getPerson() {
@@ -38,18 +39,12 @@ public class PersonInProject extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
 
         PersonInProject that = (PersonInProject) o;
-
-        if (!person.equals(that.person)) return false;
-        if (!project.equals(that.project)) return false;
-
-        return true;
+        return Objects.equals(person, that.person) && Objects.equals(project, that.project);
     }
 
     @Override
     public int hashCode() {
-        int result = person.hashCode();
-        result = 31 * result + project.hashCode();
-        return result;
+        return Objects.hash(person, project);
     }
 
     public static class PersonInProjectId implements Serializable {
@@ -62,16 +57,12 @@ public class PersonInProject extends BaseEntity {
             if (o == null || getClass() != o.getClass()) return false;
 
             PersonInProjectId that = (PersonInProjectId) o;
-
-            return person.equals(that.person) && project.equals(that.project);
-
+            return Objects.equals(person, that.person) && Objects.equals(project, that.project);
         }
 
         @Override
         public int hashCode() {
-            int result = person.hashCode();
-            result = 31 * result + project.hashCode();
-            return result;
+            return Objects.hash(person, project);
         }
     }
 }

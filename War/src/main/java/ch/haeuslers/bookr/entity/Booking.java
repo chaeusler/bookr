@@ -22,7 +22,7 @@ query = "SELECT b " +
 
 @XmlRootElement(name = "booking")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Booking extends BaseEntity {
+public class Booking {
 
     public static final String QUERY_FIND_OVERLAPPING = "Booking.findOverlapping";
     public static final String QUERY_FIND_ALL_FOR_USER = "Booking.findAllForUser";

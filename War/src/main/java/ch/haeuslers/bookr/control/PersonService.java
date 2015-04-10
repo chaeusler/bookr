@@ -33,8 +33,7 @@ public class PersonService {
 
     public Optional<Person> getByPrincipalName(String principalName) {
         return em.createNamedQuery(Person.QUERY_FIND_BY_PRINCIPAL_NAME, Person.class)
-            // TODO .setParameter("principalName", principalName)
-            .setParameter("principalName", "the user")
+            .setParameter("principalName", principalName)
             .getResultList()
             .stream()
             .findFirst();
