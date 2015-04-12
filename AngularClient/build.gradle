@@ -1,10 +1,52 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+/*
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'be.filipblondeel.gradle:gradle-gulp-plugin:0.1'
+    }
+}
+
+apply plugin: 'gulp'
+*/
+
+
+// makes sure on each build that gulp is installed
+//gulp_build.dependsOn 'bowerInstall'
+
+// runs "gulp build" as part of your gradle build
+//build.dependsOn bowerInstall
+
+task bowerInstall(type:Exec){
+    dependsOn 'npmInstall'
+    dependsOn 'installGulp'
+    commandLine bower('install')
+}
+/*
+node {
+    // Version of node to use.
+    version = '0.12.1'
+
+    // Enabled the automatic download. False is the default (for now).
+    download = true
+}*/
+
 def gulpCommand() {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         ['cmd', '/c', 'gulp.cmd']
     } else {
         ['gulp']
+    }
+}
+
+def bower(command) {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        ['cmd', '/c', 'node_modules\\.bin\\bower.cmd', command]
+    } else {
+        ['./node_modules/.bin/bower', command]
     }
 }
 

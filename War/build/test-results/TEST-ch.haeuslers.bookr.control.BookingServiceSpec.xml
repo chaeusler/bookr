@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ch.haeuslers.bookr.control.BookingServiceSpec" tests="0" skipped="0" failures="0" errors="0" timestamp="1970-01-01T00:00:00" hostname="PD-WG000617" time="0.0">
+  <properties/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Apr 09, 2015 6:21:43 PM org.xnio.Xnio <clinit>
+INFO: XNIO version 3.3.0.Final
+Apr 09, 2015 6:21:43 PM org.xnio.nio.NioXnio <clinit>
+INFO: XNIO NIO Implementation Version 3.3.0.Final
+Apr 09, 2015 6:21:43 PM org.jboss.remoting3.EndpointImpl <clinit>
+INFO: JBoss Remoting version 4.0.6.Final
+]]></system-err>
+</testsuite>
