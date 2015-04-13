@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bookr')
-    .controller('PersonsCtrl', function ($scope) {
+    .controller('PersonsCtrl', ['$scope', 'PersonsService', function ($scope, personsService) {
+        $scope.message = personsService.hello();
         $scope.awesomeThings = [
             {
                 'title': 'AngularJS',
@@ -69,4 +70,4 @@ angular.module('bookr')
         });
 
 
-    });
+    }]);
