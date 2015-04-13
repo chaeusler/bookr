@@ -38,20 +38,17 @@ war {
 }*/
 
 task deploy(dependsOn: war, type: Copy) {
-
-    def wildfly_home = 'c:\\servers\\wildfly-8.2.0.Final'
     println "configure task deploy"
 
     from('build/libs/') {
         include '*.war'
     }
 
-    into "$wildfly_home/standalone/deployments/"
+    into "${System.env.JBOSS_HOME}/standalone/deployments/"
 
     def target = "${project.name}.war"
-    //def ok = new File("${System.env.JBOSS_HOME}/standalone/deployments/${target}.deployed");
-    def ok = file("$wildfly_home/standalone/deployments/${target}.deployed");
-    def nok = file("$wildfly_home/standalone/deployments/${target}.failed");
+    def ok = new File("${System.env.JBOSS_HOME}/standalone/deployments/${target}.deployed");
+    def nok = new File("${System.env.JBOSS_HOME}/standalone/deployments/${target}.failed");
 
     doFirst {
         println "deploy doFirst"
