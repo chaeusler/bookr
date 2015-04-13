@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ch.haeuslers.bookr.control.RoleServiceSpec" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-04-09T16:22:00" hostname="PD-WG000617" time="0.475">
-  <properties/>
-  <testcase name="create person and add role to it" classname="ch.haeuslers.bookr.control.RoleServiceSpec" time="0.475"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
