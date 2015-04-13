@@ -1,6 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-/*
+
 buildscript {
     repositories {
         jcenter()
@@ -11,35 +11,46 @@ buildscript {
 }
 
 apply plugin: 'gulp'
-*/
+
+// altough this plugin should do the trick it's needed that you install node manually!
+// https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories
+// for debian base distributions:
+// curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+// sudo apt-get install -y nodejs
 
 
 // makes sure on each build that gulp is installed
-//gulp_build.dependsOn 'bowerInstall'
+gulp_build.dependsOn 'installGulp'
+
+// processes your package.json before running gulp build
+gulp_build.dependsOn 'npmInstall'
 
 // runs "gulp build" as part of your gradle build
-//build.dependsOn bowerInstall
+//build.dependsOn gulp_build
 
-task bowerInstall(type:Exec){
-    dependsOn 'npmInstall'
-    dependsOn 'installGulp'
-    commandLine bower('install')
-}
-/*
 node {
     // Version of node to use.
     version = '0.12.1'
+}
 
-    // Enabled the automatic download. False is the default (for now).
-    download = true
-}*/
-
+/*
 def gulpCommand() {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         ['cmd', '/c', 'gulp.cmd']
     } else {
         ['gulp']
     }
+}
+task gulp(type: Exec) {
+    commandLine gulpCommand()
+}
+
+*/
+
+task bowerInstall(type:Exec){
+    dependsOn 'npmInstall'
+    dependsOn 'installGulp'
+    commandLine bower('install')
 }
 
 def bower(command) {
@@ -50,8 +61,6 @@ def bower(command) {
     }
 }
 
-task gulp(type: Exec) {
-    commandLine gulpCommand()
-}
+
 
 

@@ -12,7 +12,7 @@ angular.module('bookr', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngR
                 controller: 'PersonsCtrl'
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/main'
             });
     })
 ;
