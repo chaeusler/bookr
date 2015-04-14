@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bookr', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ngRoute', 'ui.bootstrap'])
+angular.module('bookr', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ngRoute', 'ui.bootstrap', 'xeditable'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/main', {
@@ -14,5 +14,5 @@ angular.module('bookr', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngR
             .otherwise({
                 redirectTo: '/main'
             });
-    })
-;
+    });
+
