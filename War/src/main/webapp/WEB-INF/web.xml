@@ -9,11 +9,10 @@
         </session-timeout>
     </session-config>
     <!-- TODO no standard way to achieve this? -->
-    <!-- FIXME enable security -->
-    <!--context-param>
+    <context-param>
         <param-name>resteasy.role.based.security</param-name>
         <param-value>true</param-value>
-    </context-param-->
+    </context-param>
 
     <login-config>
         <auth-method>BASIC</auth-method>
