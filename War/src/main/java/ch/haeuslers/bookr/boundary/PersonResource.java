@@ -20,6 +20,13 @@ public class PersonResource {
     PersonService personService;
 
     @PUT
+    @Path("{id}")
+    public Person update(@PathParam("id") String personId, Person person) {
+        return personService.update(person);
+    }
+
+    @POST
+    //@RolesAllowed("ADMINISTRATOR")
     public Person create(Person person) {
         return personService.persist(person);
     }

@@ -23,6 +23,10 @@ public class PersonService {
         return person;
     }
 
+    public Person update(Person person) {
+        return em.merge(person);
+    }
+
     public Person find(String id) {
         return em.find(Person.class, id);
     }
