@@ -1,7 +1,17 @@
 'use strict';
 
-angular.module('bookr')
-  .controller('MainCtrl', function ($scope) {
+angular.module('bookr.home', ['bookr.base'])
+  .config(function ($stateProvider) {
+    $stateProvider.state(
+      'app.home',
+      {
+        url: '/',
+        templateUrl: 'app/main/main.html',
+        controller: 'MainController'
+      }
+    );
+  })
+  .controller('MainController', function ($scope) {
     $scope.awesomeThings = [
       {
         'title': 'AngularJS',
@@ -64,7 +74,7 @@ angular.module('bookr')
         'logo': 'node-sass.png'
       }
     ];
-    angular.forEach($scope.awesomeThings, function(awesomeThing) {
+    angular.forEach($scope.awesomeThings, function (awesomeThing) {
       awesomeThing.rank = Math.random();
     });
   });

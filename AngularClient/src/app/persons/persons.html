@@ -1,0 +1,4 @@
+<h1>Persons: {{message}}</h1>
+<ul>
+    <li ng-repeat="p in persons" editable-text="p.principalName" onaftersave="update(p)">{{p.principalName}}</li>
+</ul>
