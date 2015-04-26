@@ -32,7 +32,7 @@ class RoleServiceSpec extends Specification {
         setup:
         Person person = new Person()
         person.principalName = "name"
-        person = personService.persist(person)
+        person = personService.create(person)
 
         when:
         Role role = roleService.addRoleToPerson(person.getId(), Role.Type.USER)

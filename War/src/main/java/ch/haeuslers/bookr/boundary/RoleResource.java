@@ -16,7 +16,6 @@ import java.util.List;
 @Consumes({"application/json", "application/xml"})
 @Produces({"application/json", "application/xml"})
 @RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
-@DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
 public class RoleResource {
 
     @Inject
@@ -26,4 +25,6 @@ public class RoleResource {
     public List<Role> getAll() {
         return roleService.getAll();
     }
+
+
 }

@@ -25,6 +25,11 @@ public class Person {
     @NotNull
     private String principalName;
 
+    @NotNull
+    // TODO mopve into separate Entity
+    @XmlTransient
+    private String password;
+
     public String getId() {
         return id;
     }

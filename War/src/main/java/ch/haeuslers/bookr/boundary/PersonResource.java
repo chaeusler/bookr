@@ -12,8 +12,6 @@ import java.util.List;
 @Path("v1/persons")
 @Consumes({"application/json", "application/xml"})
 @Produces({"application/json", "application/xml"})
-@RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
-@DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
 public class PersonResource {
 
     @Inject
@@ -21,17 +19,19 @@ public class PersonResource {
 
     @PUT
     @Path("{id}")
+    @RolesAllowed({"USER", "ADMINISTRATOR"})
     public Person update(@PathParam("id") String personId, Person person) {
         return personService.update(person);
     }
 
     @POST
-    //@RolesAllowed("ADMINISTRATOR")
+    @RolesAllowed("ADMINISTRATOR")
     public Person create(Person person) {
-        return personService.persist(person);
+        return personService.create(person);
     }
 
     @GET
+    @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
     public List<Person> getAll() {
         return personService.getAll();
     }

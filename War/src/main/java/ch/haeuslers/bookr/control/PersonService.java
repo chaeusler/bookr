@@ -2,6 +2,9 @@ package ch.haeuslers.bookr.control;
 
 import ch.haeuslers.bookr.entity.Person;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +18,8 @@ public class PersonService {
     @PersistenceContext(unitName = "bookr")
     EntityManager em;
 
-    public Person persist(Person person) {
+    @RolesAllowed("ADMINISTRATOR")
+    public Person create(Person person) {
         if (person.getId() == null || person.getId().isEmpty()) {
             person.setId(UUID.randomUUID().toString());
         }
@@ -23,14 +27,19 @@ public class PersonService {
         return person;
     }
 
+    @PermitAll
     public Person update(Person person) {
+        // TODO ok if the principal is the person
+        // TODO ok if the principal is in role Admin
         return em.merge(person);
     }
+
 
     public Person find(String id) {
         return em.find(Person.class, id);
     }
 
+    @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
     public List<Person> getAll() {
         return em.createNamedQuery(Person.QUERY_ALL, Person.class).getResultList();
     }

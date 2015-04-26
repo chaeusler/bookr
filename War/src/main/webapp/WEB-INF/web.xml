@@ -3,20 +3,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-    <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
-    </session-config>
-    <!-- TODO no standard way to achieve this? -->
-    <context-param>
-        <param-name>resteasy.role.based.security</param-name>
-        <param-value>true</param-value>
-    </context-param>
+  <session-config>
+    <session-timeout>
+      30
+    </session-timeout>
+  </session-config>
+  <!-- TODO no standard way to achieve this? -->
+  <context-param>
+    <param-name>resteasy.role.based.security</param-name>
+    <param-value>true</param-value>
+  </context-param>
 
-    <login-config>
-        <auth-method>BASIC</auth-method>
-        <realm-name>file</realm-name>
-    </login-config>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <!--realm-name>file</realm-name-->
+  </login-config>
 
+  <security-role>
+    <role-name>ADMINISTRATOR</role-name>
+  </security-role>
+  <security-role>
+    <role-name>MANAGER</role-name>
+  </security-role>
+  <security-role>
+    <role-name>USER</role-name>
+  </security-role>
 </web-app>

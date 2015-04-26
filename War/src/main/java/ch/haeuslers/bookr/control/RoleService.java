@@ -3,6 +3,8 @@ package ch.haeuslers.bookr.control;
 import ch.haeuslers.bookr.entity.Person;
 import ch.haeuslers.bookr.entity.Role;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +17,7 @@ public class RoleService {
     @PersistenceContext(unitName = "bookr")
     EntityManager em;
 
+    @RolesAllowed("ADMINISTRATOR")
     public Role addRoleToPerson(String personId, Role.Type roleType) {
         Person person = em.find(Person.class, personId);
         if (person == null) {
@@ -29,12 +32,14 @@ public class RoleService {
         return role;
     }
 
+    @PermitAll
     public List<Role> findRolesForPerson(String personId) {
         return em.createNamedQuery(Role.FIND_ALL_FOR_PERSON_ID, Role.class)
             .setParameter("personId", personId)
             .getResultList();
     }
 
+    @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
     public List<Role> getAll() {
         return em.createNamedQuery(Role.QUERY_ALL, Role.class).getResultList();
     }

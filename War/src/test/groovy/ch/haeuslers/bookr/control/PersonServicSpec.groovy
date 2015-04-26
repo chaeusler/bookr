@@ -35,7 +35,7 @@ class PersonServicSpec extends Specification {
         person.principalName = "theName"
 
         when:
-        def persisted = service.persist(person)
+        def persisted = service.create(person)
 
         then:
         service.getAll().contains(person)
