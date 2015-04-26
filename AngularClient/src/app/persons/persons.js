@@ -13,7 +13,15 @@ angular.module('bookr.persons', ['bookr.base'])
   })
   .controller('PersonsController', ['$scope', 'Person', function ($scope, Person) {
     $scope.persons = Person.query();
+
+    $scope.newPerson = {};
+
     $scope.update = function (person) {
       Person.update(person);
+    };
+
+    $scope.createPerson = function() {
+      newPerson.userId = newPerson.principalName; // TODO generate
+      Person.create(newPerson);
     };
   }]);

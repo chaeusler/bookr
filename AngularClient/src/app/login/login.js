@@ -3,7 +3,7 @@
 angular.module('bookr.login', ['bookr.base'])
   .config(function ($stateProvider) {
     $stateProvider.state(
-      'app.logim',
+      'app.login',
       {
         url: '/login',
         templateUrl: 'app/login/login.html',
@@ -11,8 +11,7 @@ angular.module('bookr.login', ['bookr.base'])
       }
     )
   })
-  .controller('LoginController', ['$scope', function ($scope) {
-    // Expose $state and $stateParams to the <body> tag
+  .controller('LoginController', ['$scope', function ($scope, $state, $stateParams, loginService) {
     $scope.$state = $state;
     $scope.$stateParams = $stateParams;
 

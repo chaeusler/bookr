@@ -4,6 +4,7 @@ angular.module('bookr',
   [
     'loginService',
     'bookr.error',
+    'bookr.login',
     'bookr.home',
     'bookr.persons',
     'ngAnimate',
