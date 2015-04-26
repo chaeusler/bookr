@@ -17,6 +17,15 @@ repositories {
     }
 }
 
+sourceSets {
+    // defines where the sources and resource files of the integration tests are located
+    integrationTest {
+        groovy {
+            srcDir 'src/testIntegration/groovy'
+        }
+    }
+}
+
 dependencies {
     //runtime 'org.slf4j:slf4j-api:1.7'
     compile 'javax:javaee-api:7.0'
@@ -29,8 +38,41 @@ dependencies {
     testCompile "org.jboss.arquillian.spock:arquillian-spock-container:1.0.0.Beta3"
     //testCompile "org.jboss.arquillian.junit:arquillian-junit-container:1.1.7.Final"
     testCompile "org.wildfly:wildfly-arquillian-container-remote:8.2.0.Final"
-    testCompile "org.jboss.resteasy:resteasy-client:3.0.2.Final"
-    testCompile "org.jboss.resteasy:resteasy-jackson-provider:3.0.2.Final"
+    testCompile "org.jboss.resteasy:resteasy-client:3.0.10.Final"
+    testCompile "org.jboss.resteasy:resteasy-jackson-provider:3.0.10.Final"
+    testCompile "org.jboss.resteasy:resteasy-json-p-provider:3.0.10.Final"
+
+    // Configures the dependency reusing those of the 'test' task.
+    // This will allow reusage of JUnit and other mock libraries for instance
+    integrationTestCompile configurations.testCompile
+    integrationTestRuntime configurations.testRuntime
+}
+
+test {
+    // Enable the System.out if you want
+    testLogging.showStandardStreams = true
+
+    // Before each test, log the execution detail for clarity
+    beforeTest {
+        descriptor -> logger.lifecycle("Running test : " + descriptor)
+    }
+}
+
+task integrationTest(type: Test) {
+    // more infos https://gist.github.com/notsocomplex/57ad51550842954be811
+
+    // Enable the System.out if you want
+    testLogging.showStandardStreams = true
+
+    // Adds the integration tests classes to the test suite along with
+    // the runtime classpath
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath += sourceSets.integrationTest.runtimeClasspath
+
+    // Before each test, log the execution detail for clarity
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
 }
 
 /*
