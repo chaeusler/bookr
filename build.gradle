@@ -3,3 +3,7 @@ apply plugin: 'idea'
 allprojects {
     version = "0.1-SNAPSHOT"
 }
+
+wrapper {
+    gradleVersion = '2.3'
+}
