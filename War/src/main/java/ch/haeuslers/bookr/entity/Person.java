@@ -19,6 +19,7 @@ public class Person {
     public static final String QUERY_ALL = "Person.findAll";
 
     @Id
+    @UUID
     @XmlAttribute
     private String id;
 
@@ -26,7 +27,6 @@ public class Person {
     private String principalName;
 
     @NotNull
-    // TODO mopve into separate Entity
     @XmlTransient
     private String password;
 
@@ -44,6 +44,14 @@ public class Person {
 
     public void setPrincipalName(String principalName) {
         this.principalName = principalName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

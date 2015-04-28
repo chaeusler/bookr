@@ -34,6 +34,7 @@ public class Booking {
     public static final String QUERY_FIND_ALL_FROM_DATE_TO_DATE = "Booking.findAllFromDateToDate";
 
     @Id
+    @UUID
     @XmlAttribute
     private String id;
 

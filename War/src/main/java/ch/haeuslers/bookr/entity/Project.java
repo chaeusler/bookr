@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Project {
 
     @Id
+    @UUID
     @XmlAttribute
     private String id;
 
