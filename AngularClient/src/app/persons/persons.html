@@ -1,10 +1,43 @@
-<h1>Persons: {{message}}</h1>
+<table class="table table-bordered table-hover table-condensed">
+  <tr style="font-weight: bold">
+    <td style="width:35%">Name</td>
+    <td style="width:25%"></td>
+  </tr>
+  <tr ng-repeat="person in persons">
+    <td>
+      <!-- editable username (text with validation) -->
+        <span editable-text="person.principalName" e-name="principalName" e-form="rowform" e-required>
+          {{ person.principalName || 'empty' }}
+        </span>
+    </td>
+    <td style="white-space: nowrap">
+      <!-- form -->
+      <form editable-form name="rowform" onbeforesave="savePerson($data, person.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == person">
+        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+          save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+          cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+        <button class="btn btn-danger" ng-click="removePerson($index)">del</button>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<button class="btn btn-default" ng-click="addPerson()">Add row</button>
+
+<!--
 <ul>
     <li ng-repeat="p in persons" editable-text="p.principalName" onaftersave="update(p)">{{p.principalName}}</li>
 </ul>
 
-<form name="createPerson" ng-submit="createPerson()">
-  <input type="text" ng-model="newPerson.principalName">
-  <input type="text" ng-model="newPerson.password">
+<form name="theForm" ng-submit="createPerson()">
+  <input type="text" ng-model="personToAdd.principalName">
+  <input type="text" ng-model="personToAdd.password">
   <button type="submit" class="btn btn-default hidden-devices">add</button>
 </form>
+-->

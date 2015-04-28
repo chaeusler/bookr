@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bookr.persons', ['bookr.base'])
+angular.module('bookr.persons', ['uuid', 'bookr.base'])
   .config(function ($stateProvider) {
     $stateProvider.state(
       'app.persons',
@@ -11,17 +11,36 @@ angular.module('bookr.persons', ['bookr.base'])
       }
     )
   })
-  .controller('PersonsController', ['$scope', 'Person', function ($scope, Person) {
+  .controller('PersonsController', ['rfc4122', '$scope', 'Person', function (uuid, $scope, Person) {
     $scope.persons = Person.query();
-
-    $scope.newPerson = {};
+    $scope.personToAdd = {};
 
     $scope.update = function (person) {
       Person.update(person);
     };
 
-    $scope.createPerson = function() {
-      newPerson.userId = newPerson.principalName; // TODO generate
-      Person.create(newPerson);
+    $scope.createPerson = function () {
+      $scope.personToAdd.id = $scope.personToAdd.principalName; // TODO generate
+      var newPerson = new Person($scope.personToAdd);
+      newPerson.$create();
+      // TODO reload
     };
+
+    $scope.savePerson = function (data, id) {
+      angular.extend(data, {id: id});
+      Person.update(data);
+    };
+
+    $scope.removePerson = function(index) {
+      $scope.persons.splice(index, 1);
+      // TODO call Resource
+    };
+
+    $scope.addPerson = function() {
+      $scope.inserted = {
+        id: uuid.v4(),
+        principalName: ''
+      };
+    };
+
   }]);

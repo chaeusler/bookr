@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bookr.base', ['ui.router'])
-    .config(function ($stateProvider) {
+angular.module('bookr.base', ['ui.router', 'ngResource'])
+    .config(['$stateProvider', function ($stateProvider) {
         $stateProvider.state('app', {
             abstract: true,
             template: '<ui-view></ui-view>',
@@ -25,4 +25,11 @@ angular.module('bookr.base', ['ui.router'])
                 }
             }
         })
-    });
+    }])
+  .config(['$httpProvider', function($httpProvider){
+    $httpProvider.defaults.headers.common.Authorization = 'Basic ' + btoa('administrator' + ':' + 'administrator');
+  }])
+  .config(['$resourceProvider', function($resourceProvider){
+    $resourceProvider.defaults.actions['update'] = {method: 'PUT'};
+  }]);
+
