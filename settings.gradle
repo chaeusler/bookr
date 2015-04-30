@@ -1,4 +1,4 @@
-include 'AngularClient'
+include 'bookr-client'
 
-include 'War'
+include 'bookr-war'
 
