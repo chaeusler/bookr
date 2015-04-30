@@ -8,12 +8,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "BOOKR_PROJECT")
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Project {
+public class Project implements Serializable {
 
     @Id
     @UUID
@@ -42,16 +44,13 @@ public class Project {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Project)) return false;
         Project project = (Project) o;
-
-        return id.equals(project.id);
-
+        return Objects.equals(id, project.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(id);
     }
 }

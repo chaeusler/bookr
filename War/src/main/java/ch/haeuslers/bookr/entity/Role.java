@@ -19,7 +19,7 @@ import java.util.Objects;
 })
 @XmlRootElement(name = "role")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Role {
+public class Role implements Serializable {
 
     public static final String FIND_ALL_FOR_PERSON_ID = "Role.findAllForPerson";
 
@@ -62,10 +62,9 @@ public class Role {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Role role = (Role) o;
-        return person.equals(role.person) && type == role.type;
-
+        return Objects.equals(person, role.person) &&
+            Objects.equals(type, role.type);
     }
 
     @Override
@@ -80,12 +79,10 @@ public class Role {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
+            if (!(o instanceof RoleId)) return false;
             RoleId roleId = (RoleId) o;
-
-            return person.equals(roleId.person) && type == roleId.type;
-
+            return Objects.equals(person, roleId.person) &&
+                Objects.equals(type, roleId.type);
         }
 
         @Override

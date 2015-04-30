@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @BookingCheck
 @Entity
@@ -24,7 +26,7 @@ query = "SELECT b " +
 
 @XmlRootElement(name = "booking")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Booking {
+public class Booking implements Serializable {
 
     public static final String QUERY_FIND_OVERLAPPING = "Booking.findOverlapping";
     public static final String QUERY_FIND_ALL_FOR_USER = "Booking.findAllForUser";
@@ -108,17 +110,13 @@ public class Booking {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Booking)) return false;
         Booking booking = (Booking) o;
-
-        if (!id.equals(booking.id)) return false;
-
-        return true;
+        return Objects.equals(id, booking.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hash(id);
     }
 }
