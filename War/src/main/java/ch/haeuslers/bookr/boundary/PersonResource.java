@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.boundary;
 
+import ch.haeuslers.bookr.control.PasswordService;
 import ch.haeuslers.bookr.control.PersonService;
 import ch.haeuslers.bookr.entity.Person;
 
@@ -7,16 +8,22 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.security.auth.message.AuthException;
 import javax.validation.constraints.NotNull;
+import javax.validation.executable.ExecutableType;
+import javax.validation.executable.ValidateOnExecution;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 
 @Path("v1/persons")
+@ValidateOnExecution(type = ExecutableType.NON_GETTER_METHODS)
 public class PersonResource {
 
     @Inject
     PersonService personService;
+
+    @Inject
+    PasswordService passwordService;
 
     @POST
     @Path("{id}")
@@ -49,9 +56,7 @@ public class PersonResource {
         Person person = personService.find(personId);
 
         if (securityContext.isUserInRole("ADMINISTRATOR") || securityContext.getUserPrincipal().getName().equals(person.getPrincipalName())) {
-            // TODO check if it was the same
-            person.setPassword(password);
-            personService.update(person);
+            passwordService.updatePassword(person, password);
         } else {
             throw new AuthException();
         }

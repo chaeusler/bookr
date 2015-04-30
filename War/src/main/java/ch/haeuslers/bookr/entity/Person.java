@@ -3,6 +3,7 @@ package ch.haeuslers.bookr.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -13,7 +14,7 @@ import java.util.Set;
 })
 @XmlRootElement(name = "person")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Person {
+public class Person implements Serializable {
 
     public static final String QUERY_FIND_BY_PRINCIPAL_NAME = "Person.findByPrincipalName";
     public static final String QUERY_ALL = "Person.findAll";
@@ -25,10 +26,6 @@ public class Person {
 
     @NotNull
     private String principalName;
-
-    @NotNull
-    @XmlTransient
-    private String password;
 
     public String getId() {
         return id;
@@ -44,14 +41,6 @@ public class Person {
 
     public void setPrincipalName(String principalName) {
         this.principalName = principalName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

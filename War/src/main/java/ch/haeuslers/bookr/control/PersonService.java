@@ -34,7 +34,7 @@ public class PersonService {
         return em.merge(person);
     }
 
-
+    @PermitAll
     public Person find(String id) {
         return em.find(Person.class, id);
     }
