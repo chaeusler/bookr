@@ -1,6 +1,8 @@
 package ch.haeuslers.bookr.boundary
 
+import ch.haeuslers.bookr.control.PasswordService
 import ch.haeuslers.bookr.control.PersonService
+import ch.haeuslers.bookr.entity.Password
 import ch.haeuslers.bookr.entity.Person
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
@@ -26,7 +28,9 @@ class PersonResourceSpec extends Specification {
         return ShrinkWrap.create(WebArchive.class)
             .addClass(RestApplication.class)
             .addClass(PersonResource.class)
+            .addClass(PasswordService.class)
             .addClass(PersonService.class)
+            .addClass(Password.class)
             .addClass(Person.class)
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
     }

@@ -52,13 +52,7 @@ public class PersonResource {
 
     @POST
     @Path("{id}/setPassword")
-    public void setPassword(@PathParam("id") String personId, @FormParam("password") @NotNull String password, @Context SecurityContext securityContext) throws AuthException{
-        Person person = personService.find(personId);
-
-        if (securityContext.isUserInRole("ADMINISTRATOR") || securityContext.getUserPrincipal().getName().equals(person.getPrincipalName())) {
-            passwordService.updatePassword(person, password);
-        } else {
-            throw new AuthException();
-        }
+    public void setPassword(@PathParam("id") String personId, @FormParam("password") @NotNull String password) throws AuthException{
+       personService.setPassword(personId, password);
     }
 }

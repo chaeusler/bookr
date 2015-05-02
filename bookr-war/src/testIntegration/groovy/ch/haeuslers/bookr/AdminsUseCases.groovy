@@ -13,7 +13,7 @@ class AdminsUseCases extends Specification {
 
     def setup() {
         Client client = ClientBuilder.newClient();
-        target = client.target('http://localhost:9090/bookr/rest/v1/persons');
+        target = client.target('http://localhost:8080/bookr/rest/v1/persons');
     }
 
     def "no users"() {
