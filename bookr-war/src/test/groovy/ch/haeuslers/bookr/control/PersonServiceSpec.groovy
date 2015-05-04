@@ -20,7 +20,7 @@ import java.security.PrivilegedAction
 @RunAs("ADMINISTRATOR")
 @RunWith(ArquillianSputnik.class)
 // Can't name it PersonServiceSpec. Intellij wouldn't recognize as Spec. Weird!
-class PersonServicSpec extends Specification {
+class PersonServiceSpec extends Specification {
 
     @Deployment
     def static WebArchive "create deployment"() {

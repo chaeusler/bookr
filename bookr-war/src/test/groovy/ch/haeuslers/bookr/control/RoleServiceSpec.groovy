@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.control
 
+import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Role
 import org.jboss.arquillian.container.test.api.Deployment
@@ -10,6 +11,9 @@ import org.junit.runner.RunWith
 import spock.lang.Specification
 
 import javax.inject.Inject
+import javax.security.auth.Subject
+import javax.security.auth.login.LoginContext
+import java.security.PrivilegedAction
 
 @RunWith(ArquillianSputnik.class)
 class RoleServiceSpec extends Specification {
@@ -19,8 +23,12 @@ class RoleServiceSpec extends Specification {
             .addClass(RoleService.class)
             .addClass(PersonService.class)
             .addClass(PasswordService.class)
+            .addClass(JBossLoginContextFactory.class)
             .addPackage(Role.class.getPackage())
+            .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+            .addAsResource("users.properties")
+            .addAsResource("roles.properties")
     }
 
     @Inject
@@ -31,19 +39,27 @@ class RoleServiceSpec extends Specification {
 
     def "create person and add role to it"() {
         setup:
-        Person person = new Person()
-        person.principalName = "name"
-        person = personService.create(person)
+        LoginContext loginContext = JBossLoginContextFactory.createLoginContext('administrator', 'administrator')
+        loginContext.login()
+
+        Person person = new Person(principalName: 'name')
 
         when:
-        Role role = roleService.addRoleToPerson(person.getId(), Role.Type.USER)
-        List<Role> roles = roleService.findRolesForPerson(person.getId())
+        List<Role> roles = Subject.doAs(loginContext.getSubject(), new PrivilegedAction<List<Role>>() {
+            @Override
+            List<Role> run() {
+                personService.create(person)
+                roleService.addRoleToPerson(person.getId(), Role.Type.USER)
+                roleService.findRolesForPerson(person.getId())
+            }
+        })
 
         then:
-        role.person.equals(person)
+        roles.size() == 1
+        Role role = roles.findAll { it.person.equals(person) }.first()
         role.type.equals(Role.Type.USER)
 
-        roles.contains(role)
-        roles.size() == 1
+        cleanup:
+        loginContext.logout()
     }
 }

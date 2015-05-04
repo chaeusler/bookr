@@ -17,6 +17,9 @@ class ProjectServiceSpec extends Specification {
         return ShrinkWrap.create(WebArchive.class, 'test.war')
             .addClass(ProjectService.class)
             .addPackage(Project.class.getPackage())
+            .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+            .addAsResource("users.properties")
+            .addAsResource("roles.properties")
     }
 }
