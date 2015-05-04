@@ -18,7 +18,7 @@ class RoleServiceSpec extends Specification {
         return ShrinkWrap.create(WebArchive.class, 'test.war')
             .addClass(RoleService.class)
             .addClass(PersonService.class)
-        .addClass(PasswordService.class)
+            .addClass(PasswordService.class)
             .addPackage(Role.class.getPackage())
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
     }

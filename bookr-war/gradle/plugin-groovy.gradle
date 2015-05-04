@@ -1,0 +1,14 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+logger.info("Groovy $project.groovyVersion Plugin activated")
+
+sourceCompatibility = project.javaVersion
+targetCompatibility = project.javaVersion
+
+compileJava.options.encoding = project.encoding
+compileTestJava.options.encoding = project.encoding
+
+dependencies {
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: project.groovyVersion
+}
