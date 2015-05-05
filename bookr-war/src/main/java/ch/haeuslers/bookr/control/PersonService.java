@@ -1,14 +1,13 @@
 package ch.haeuslers.bookr.control;
 
 import ch.haeuslers.bookr.entity.Person;
-import ch.haeuslers.bookr.entity.Role;
 
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,7 +15,6 @@ import javax.persistence.PersistenceContext;
 import javax.security.auth.message.AuthException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Stateless
 @DeclareRoles({"ADMINISTRATOR", "USER", "MANAGER"})
@@ -32,24 +30,23 @@ public class PersonService {
     SessionContext context;
 
     @RolesAllowed("ADMINISTRATOR")
-    public Person create(Person person) {
-        if (person.getId() == null || person.getId().isEmpty()) {
-            person.setId(UUID.randomUUID().toString());
-        }
+    public void create(Person person) {
         em.persist(person);
-        return person;
     }
 
     @PermitAll
     public Person update(Person person) {
-        // TODO ok if the principal is the person
-        // TODO ok if the principal is in role Admin
-        return em.merge(person);
+        if (context.isCallerInRole("ADMINISTRATOR")
+            || context.getCallerPrincipal().getName().equalsIgnoreCase(person.getPrincipalName())) {
+            return em.merge(person);
+        } else {
+            throw new EJBAccessException("only for administrators or the user itself");
+        }
     }
 
     @PermitAll
-    public Person find(String id) {
-        return em.find(Person.class, id);
+    public Optional<Person> find(String id) {
+        return Optional.ofNullable(em.find(Person.class, id));
     }
 
     @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
@@ -68,13 +65,24 @@ public class PersonService {
 
     @PermitAll // secured inside
     public void setPassword(String personId, String password) throws AuthException {
-        Person person = find(personId);
+        Optional<Person> person = find(personId);
 
-        if (context.isCallerInRole("ADMINISTRATOR") || context.getCallerPrincipal().getName().equals(person.getPrincipalName())) {
-            passwordService.updatePassword(person, password);
+        if (!person.isPresent()) {
+            return;// TODO what do?
+        }
+        if (context.isCallerInRole("ADMINISTRATOR")
+            || context.getCallerPrincipal().getName().equals(person.get().getPrincipalName())) {
+            passwordService.updatePassword(person.get(), password);
         } else {
-            throw new AuthException();
+            throw new EJBAccessException("only for administrators or the user itself");
         }
     }
+
+    @RolesAllowed("ADMINISTRATOR")
+    public void delete(Person person) {
+        person = em.merge(person);
+        em.remove(person);
+    }
+
     // TODO when deleting a person the roles need to be deleted too
 }

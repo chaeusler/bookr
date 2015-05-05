@@ -26,6 +26,7 @@ public class Person implements Serializable {
     private String id;
 
     @NotNull
+    @Column(unique = true)
     private String principalName;
 
     public String getId() {

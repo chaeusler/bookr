@@ -12,23 +12,23 @@ import spock.lang.Specification
 import javax.annotation.security.RunAs
 import javax.ejb.EJBAccessException
 import javax.inject.Inject
-import javax.security.auth.Subject
 import javax.security.auth.login.FailedLoginException
 import javax.security.auth.login.LoginContext
-import java.security.PrivilegedAction
+
+import static ch.haeuslers.bookr.control.SecurityUtils.*;
 
 @RunAs("ADMINISTRATOR")
 @RunWith(ArquillianSputnik.class)
-// Can't name it PersonServiceSpec. Intellij wouldn't recognize as Spec. Weird!
 class PersonServiceSpec extends Specification {
 
     @Deployment
     def static WebArchive "create deployment"() {
-        ShrinkWrap.create(WebArchive.class, 'test.war')
+        ShrinkWrap.create(WebArchive.class, 'PersonServiceSpec.war')
             .addClass(PersonService.class)
             .addClass(PasswordService.class)
-            .addClass(JBossLoginContextFactory.class)
             .addPackage(Person.class.getPackage())
+            .addClass(JBossLoginContextFactory.class)
+            .addClass(SecurityUtils.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
@@ -53,42 +53,30 @@ class PersonServiceSpec extends Specification {
         thrown FailedLoginException
     }
 
-    def "persist person and get it back as administrator"() {
+    def "create and get it back as administrator"() {
         setup:
-        Person person = new Person(principalName: 'theName')
-        LoginContext loginContext = JBossLoginContextFactory.createLoginContext('administrator', 'administrator')
-        loginContext.login()
+        Person person = new Person(principalName: '1', id: UUID.randomUUID().toString())
+        LoginContext loginContext = loginAsAdministrator()
 
         when:
-        Person persisted = Subject.doAs(loginContext.getSubject(), new PrivilegedAction<Person>() {
-            @Override
-            Person run() {
-                service.create(person)
-            }
-        })
+        doWith(loginContext) { service.create(person) }
 
         then:
         service.getAll().contains(person)
         service.getAll().size() == 1
-        service.getAll().get(0).equals(persisted)
+        service.getAll().get(0).getPrincipalName().equals('1')
 
         cleanup:
         loginContext.logout()
     }
 
-    def "persist person and get it back - without admin role"() {
+    def "create and get it back - without admin role - throws exception"() {
         setup:
-        Person person = new Person(principalName: 'theName')
-        LoginContext loginContext = JBossLoginContextFactory.createLoginContext('user', 'user')
-        loginContext.login()
+        Person person = new Person(principalName: '2', id: UUID.randomUUID().toString())
+        LoginContext loginContext = loginAsUser()
 
         when:
-        Subject.doAs(loginContext.getSubject(), new PrivilegedAction<Person>() {
-            @Override
-            Person run() {
-                service.create(person)
-            }
-        })
+        doWith(loginContext) { service.create(person) }
 
         then:
         thrown EJBAccessException
@@ -97,4 +85,53 @@ class PersonServiceSpec extends Specification {
         loginContext.logout()
     }
 
+    def "create and delete it afterwards"() {
+        setup:
+        Person person = new Person(principalName: '3', id: UUID.randomUUID().toString())
+        LoginContext loginContext = loginAsAdministrator()
+
+        when:
+        doWith(loginContext) { service.create(person) }
+
+        then:
+        service.getAll().contains(person)
+
+        when:
+        doWith(loginContext) { service.delete(person) }
+
+        then:
+        !service.getAll().contains(person)
+
+        cleanup:
+        loginContext.logout()
+    }
+
+    def "create, find and update as administrator"() {
+        setup:
+        String id = UUID.randomUUID().toString()
+        Person person = new Person(principalName: '4', id: id)
+        LoginContext loginContext = loginAsAdministrator()
+
+        when:
+        doWith(loginContext) { service.create(person) }
+
+        then:
+        service.getAll().contains(person)
+
+        when:
+        Optional<Person> foundPerson = service.find(id)
+
+        then:
+        foundPerson.get().equals(person)
+
+        when:
+        foundPerson.get().principalName = 'new Name'
+        def updated = doWith(loginContext) { service.update(foundPerson.get()) }
+
+        then:
+        updated.principalName.equals('new Name')
+
+        cleanup:
+        loginContext.logout()
+    }
 }

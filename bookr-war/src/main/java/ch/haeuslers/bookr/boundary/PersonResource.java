@@ -12,7 +12,9 @@ import javax.validation.executable.ExecutableType;
 import javax.validation.executable.ValidateOnExecution;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.net.URI;
 import java.util.List;
 
 @Path("v1/persons")
@@ -26,26 +28,23 @@ public class PersonResource {
     PasswordService passwordService;
 
     @POST
-    @Path("{id}")
     @Consumes({"application/json", "application/xml"})
-    @RolesAllowed("ADMINISTRATOR")
-    public void create(@PathParam("id") String personId, Person person) {
-        // TODO verify id
+    public Response create(Person person) {
         personService.create(person);
+        return Response.created(URI.create("blablablab"+person)).build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({"application/json", "application/xml"})
-    @RolesAllowed({"USER", "ADMINISTRATOR"})
-    public void update(@PathParam("id") String personId, Person person) {
+    public Response update(@PathParam("id") String personId, Person person) {
         // TODO verify id
         personService.update(person);
+        return Response.noContent().build();
     }
 
     @GET
     @Produces({"application/json", "application/xml"})
-    @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
     public List<Person> getAll() {
         return personService.getAll();
     }

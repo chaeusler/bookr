@@ -11,9 +11,9 @@ import org.junit.runner.RunWith
 import spock.lang.Specification
 
 import javax.inject.Inject
-import javax.security.auth.Subject
 import javax.security.auth.login.LoginContext
-import java.security.PrivilegedAction
+
+import static ch.haeuslers.bookr.control.SecurityUtils.getDoWith;
 
 @RunWith(ArquillianSputnik.class)
 class RoleServiceSpec extends Specification {
@@ -23,8 +23,9 @@ class RoleServiceSpec extends Specification {
             .addClass(RoleService.class)
             .addClass(PersonService.class)
             .addClass(PasswordService.class)
-            .addClass(JBossLoginContextFactory.class)
             .addPackage(Role.class.getPackage())
+            .addClass(JBossLoginContextFactory.class)
+            .addClass(SecurityUtils.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
@@ -42,21 +43,19 @@ class RoleServiceSpec extends Specification {
         LoginContext loginContext = JBossLoginContextFactory.createLoginContext('administrator', 'administrator')
         loginContext.login()
 
-        Person person = new Person(principalName: 'name')
+        Person person = new Person(principalName: 'RoleServiceUser1', id: UUID.randomUUID().toString())
 
         when:
-        List<Role> roles = Subject.doAs(loginContext.getSubject(), new PrivilegedAction<List<Role>>() {
-            @Override
-            List<Role> run() {
-                personService.create(person)
-                roleService.addRoleToPerson(person.getId(), Role.Type.USER)
-                roleService.findRolesForPerson(person.getId())
-            }
-        })
+        def roles = doWith(loginContext) {
+            personService.create(person)
+            roleService.addRoleToPerson(person.getId(), Role.Type.USER)
+            roleService.findRolesForPerson(person.getId())
+        }
+
 
         then:
         roles.size() == 1
-        Role role = roles.findAll { it.person.equals(person) }.first()
+        def role = roles.findAll { it.person.equals(person) }.first()
         role.type.equals(Role.Type.USER)
 
         cleanup:

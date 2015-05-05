@@ -1,6 +1,6 @@
 package ch.haeuslers.bookr.control
 
-import ch.haeuslers.bookr.entity.Person
+import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Project
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
@@ -17,6 +17,7 @@ class ProjectServiceSpec extends Specification {
         return ShrinkWrap.create(WebArchive.class, 'test.war')
             .addClass(ProjectService.class)
             .addPackage(Project.class.getPackage())
+            .addClass(JBossLoginContextFactory.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
