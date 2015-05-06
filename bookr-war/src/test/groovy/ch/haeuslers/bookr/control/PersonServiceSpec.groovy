@@ -38,10 +38,6 @@ class PersonServiceSpec extends Specification {
     @Inject
     PersonService service
 
-    def setup() {
-        assert service != null
-    }
-
     def "invalid login"() {
         setup:
         LoginContext loginContext = JBossLoginContextFactory.createLoginContext('adminasdfistrator', 'admasdfinistrator')
@@ -112,23 +108,23 @@ class PersonServiceSpec extends Specification {
         Person person = new Person(principalName: '4', id: id)
         LoginContext loginContext = loginAsAdministrator()
 
-        when:
+        when: 'create person'
         doWith(loginContext) { service.create(person) }
 
-        then:
+        then: 'verify that the person was added'
         service.getAll().contains(person)
 
-        when:
+        when: 'find person by id'
         Optional<Person> foundPerson = service.find(id)
 
-        then:
+        then: 'check equality of the found person'
         foundPerson.get().equals(person)
 
-        when:
+        when: 'update the principalName'
         foundPerson.get().principalName = 'new Name'
         def updated = doWith(loginContext) { service.update(foundPerson.get()) }
 
-        then:
+        then: 'verify the updated entity'
         updated.principalName.equals('new Name')
 
         cleanup:

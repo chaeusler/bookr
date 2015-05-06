@@ -43,4 +43,12 @@ public class RoleService {
     public List<Role> getAll() {
         return em.createNamedQuery(Role.QUERY_ALL, Role.class).getResultList();
     }
+
+    @RolesAllowed("ADMINISTRATOR")
+    public void removeRoleFromPerson(String personId, Role.Type roleType) {
+        em.createNamedQuery(Role.DELETE_ROLE_FOR_PERSON)
+            .setParameter("personId", personId)
+            .setParameter("roleType", roleType)
+            .executeUpdate();
+    }
 }

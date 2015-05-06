@@ -2,12 +2,9 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.Link;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +12,8 @@ import java.util.Objects;
 @IdClass(Role.RoleId.class)
 @NamedQueries({
     @NamedQuery(name = Role.FIND_ALL_FOR_PERSON_ID, query = "SELECT r FROM Role r WHERE r.person.id = :personId"),
-    @NamedQuery(name = Role.QUERY_ALL, query = "FROM Role")
+    @NamedQuery(name = Role.QUERY_ALL, query = "FROM Role"),
+    @NamedQuery(name = Role.DELETE_ROLE_FOR_PERSON, query = "DELETE FROM Role r WHERE r.person.id = :personId AND r.type = :roleType")
 })
 @XmlRootElement(name = "role")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -24,6 +22,8 @@ public class Role implements Serializable {
     public static final String FIND_ALL_FOR_PERSON_ID = "Role.findAllForPerson";
 
     public static final String QUERY_ALL = "Role.queryAll";
+
+    public static final String DELETE_ROLE_FOR_PERSON = "Role.deleteRoleForPerson";
 
     @Id
     @ManyToOne(optional = false)

@@ -13,6 +13,7 @@ import spock.lang.Specification
 import javax.inject.Inject
 import javax.security.auth.login.LoginContext
 
+import static ch.haeuslers.bookr.control.SecurityUtils.doWith
 import static ch.haeuslers.bookr.control.SecurityUtils.getDoWith;
 
 @RunWith(ArquillianSputnik.class)
@@ -38,25 +39,35 @@ class RoleServiceSpec extends Specification {
     @Inject
     PersonService personService
 
-    def "create person and add role to it"() {
+    def "create person and add role to it - then remove a role"() {
         setup:
         LoginContext loginContext = JBossLoginContextFactory.createLoginContext('administrator', 'administrator')
         loginContext.login()
 
         Person person = new Person(principalName: 'RoleServiceUser1', id: UUID.randomUUID().toString())
 
-        when:
+        when: 'create person, add role and find roles for it'
         def roles = doWith(loginContext) {
             personService.create(person)
             roleService.addRoleToPerson(person.getId(), Role.Type.USER)
+            roleService.addRoleToPerson(person.getId(), Role.Type.MANAGER)
             roleService.findRolesForPerson(person.getId())
         }
 
+        then: 'validate if the user has both roles'
+        roles.size() == 2
+        roles[0].type == Role.Type.MANAGER
+        roles[1].type == Role.Type.USER
 
-        then:
-        roles.size() == 1
-        def role = roles.findAll { it.person.equals(person) }.first()
-        role.type.equals(Role.Type.USER)
+        when: 'remove administrator role'
+        doWith(loginContext) {
+            roleService.removeRoleFromPerson(person.getId(), Role.Type.MANAGER)
+        }
+        def updatedRoles = roleService.findRolesForPerson(person.getId())
+
+        then: 'the person only should have th USER Role'
+        updatedRoles.size() == 1
+        updatedRoles[0].type == Role.Type.USER
 
         cleanup:
         loginContext.logout()
