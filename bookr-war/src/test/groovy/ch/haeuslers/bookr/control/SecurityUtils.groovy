@@ -16,6 +16,10 @@ class SecurityUtils {
         loginAs('user', 'user')
     }
 
+    static LoginContext loginAsManager() {
+        loginAs('manager', 'manager')
+    }
+
     static LoginContext loginAs(String username, String password) {
         LoginContext loginContext = JBossLoginContextFactory.createLoginContext(username, password)
         loginContext.login()

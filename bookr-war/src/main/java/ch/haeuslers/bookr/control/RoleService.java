@@ -32,6 +32,14 @@ public class RoleService {
         return role;
     }
 
+    @RolesAllowed("ADMINISTRATOR")
+    public void removeRoleFromPerson(String personId, Role.Type roleType) {
+        em.createNamedQuery(Role.DELETE_ROLE_FOR_PERSON)
+            .setParameter("personId", personId)
+            .setParameter("roleType", roleType)
+            .executeUpdate();
+    }
+
     @PermitAll
     public List<Role> findRolesForPerson(String personId) {
         return em.createNamedQuery(Role.FIND_ALL_FOR_PERSON_ID, Role.class)
@@ -42,13 +50,5 @@ public class RoleService {
     @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
     public List<Role> getAll() {
         return em.createNamedQuery(Role.QUERY_ALL, Role.class).getResultList();
-    }
-
-    @RolesAllowed("ADMINISTRATOR")
-    public void removeRoleFromPerson(String personId, Role.Type roleType) {
-        em.createNamedQuery(Role.DELETE_ROLE_FOR_PERSON)
-            .setParameter("personId", personId)
-            .setParameter("roleType", roleType)
-            .executeUpdate();
     }
 }
