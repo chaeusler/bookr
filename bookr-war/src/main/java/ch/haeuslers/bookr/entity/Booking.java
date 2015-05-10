@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @BookingCheck
 @Entity
@@ -36,9 +37,8 @@ public class Booking implements Serializable {
     public static final String QUERY_FIND_ALL_FROM_DATE_TO_DATE = "Booking.findAllFromDateToDate";
 
     @Id
-    @UUID
     @XmlAttribute
-    private String id;
+    private UUID id;
 
     @ManyToOne(optional = false)
     @XmlElementRef(name = "project-id")
@@ -59,11 +59,11 @@ public class Booking implements Serializable {
     @NotNull
     private Date end;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

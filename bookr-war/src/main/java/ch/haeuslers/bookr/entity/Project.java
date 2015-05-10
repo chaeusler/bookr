@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.entity;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,6 +11,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "BOOKR_PROJECT")
@@ -18,18 +20,17 @@ import java.util.Objects;
 public class Project implements Serializable {
 
     @Id
-    @UUID
     @XmlAttribute
-    private String id;
+    private UUID id;
 
     @NotNull
     private String name;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

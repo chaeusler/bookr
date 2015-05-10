@@ -5,16 +5,17 @@ import ch.haeuslers.bookr.entity.PersonAuthorization;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Optional;
+import java.util.UUID;
 
 @Stateless
 @DeclareRoles("ADMINISTRATOR")
 @RolesAllowed("ADMINISTRATOR")
 public class PersonAuthorizationService {
 
-    @PersistenceContext(unitName = "bookr")
+    @Inject
     EntityManager em;
 
     public void create(PersonAuthorization personAuthorization) {
@@ -22,7 +23,7 @@ public class PersonAuthorizationService {
     }
 
     public Optional<PersonAuthorization> read(String personId) {
-        return Optional.ofNullable(em.find(PersonAuthorization.class, personId));
+        return Optional.ofNullable(em.find(PersonAuthorization.class, UUID.fromString(personId)));
     }
 
     public void update(PersonAuthorization personAuthorization) {

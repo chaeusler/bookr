@@ -4,6 +4,7 @@ import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.PersonAuthorization
 import ch.haeuslers.bookr.entity.RoleType
+import ch.haeuslers.bookr.entity.UUIDToStringConverter
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -13,7 +14,6 @@ import spock.lang.Specification
 
 import javax.ejb.EJBAccessException
 import javax.inject.Inject
-import javax.security.auth.login.FailedLoginException
 import javax.security.auth.login.LoginContext
 
 import static ch.haeuslers.bookr.control.SecurityUtils.*;
@@ -26,9 +26,11 @@ class PersonAuthorizationServiceSpec extends Specification {
             .addClass(PersonService.class)
             .addClass(PersonAuthorizationService.class)
             .addClass(PasswordService.class)
+            .addClass(UUIDToStringConverter.class)
             .addPackage(Person.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(SecurityUtils.class)
+            .addClass(EntityManagerProducer.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
@@ -45,7 +47,7 @@ class PersonAuthorizationServiceSpec extends Specification {
         setup:
         LoginContext loginContext = loginAsAdministrator()
 
-        String personsId = UUID.randomUUID().toString()
+        UUID personsId = UUID.randomUUID()
         Person person = new Person(principalName: "nameForAuthorizationTest", id: personsId)
         PersonAuthorization authorization = new PersonAuthorization(person: person)
 
@@ -57,7 +59,7 @@ class PersonAuthorizationServiceSpec extends Specification {
 
         then: "the authorization can be found with the users id"
         PersonAuthorization foundAuthorization = doWith(loginContext) {
-            authorizationService.read(personsId).get()
+            authorizationService.read(personsId.toString()).get()
         }
         foundAuthorization.equals(authorization)
         foundAuthorization.roles.isEmpty()
@@ -66,7 +68,7 @@ class PersonAuthorizationServiceSpec extends Specification {
         foundAuthorization.roles.add(RoleType.USER)
         foundAuthorization = doWith(loginContext) {
             authorizationService.update(foundAuthorization)
-            authorizationService.read(personsId).get()
+            authorizationService.read(personsId.toString()).get()
         }
 
         then: "the reread object has been updated"
@@ -80,7 +82,7 @@ class PersonAuthorizationServiceSpec extends Specification {
 
         then: "it can't be found anymore"
         Optional<PersonAuthorization> optional = doWith(loginContext) {
-            authorizationService.read(personsId)
+            authorizationService.read(personsId.toString())
         }
         !optional.present
 

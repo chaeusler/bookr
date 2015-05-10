@@ -10,17 +10,18 @@ import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.security.auth.message.AuthException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Stateless
 @DeclareRoles({"ADMINISTRATOR", "USER", "MANAGER"})
 public class PersonService {
 
-    @PersistenceContext(unitName = "bookr")
+    @Inject
     EntityManager em;
 
     @EJB
@@ -46,7 +47,7 @@ public class PersonService {
 
     @PermitAll
     public Optional<Person> find(String id) {
-        return Optional.ofNullable(em.find(Person.class, id));
+        return Optional.ofNullable(em.find(Person.class, UUID.fromString(id)));
     }
 
     @RolesAllowed({"ADMINISTRATOR", "MANAGER"})

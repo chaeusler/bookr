@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "BOOKR_PERSON")
@@ -21,19 +21,18 @@ public class Person implements Serializable {
     public static final String QUERY_ALL = "Person.findAll";
 
     @Id
-    @UUID
     @XmlAttribute
-    private String id;
+    private UUID id;
 
     @NotNull
     @Column(unique = true)
     private String principalName;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -9,7 +9,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "BOOKR_PERSON_AUTHORIZATION")
+@NamedQueries(@NamedQuery(name = PersonAuthorization.GET_FOR_PERSON_ID, query = "FROM PersonAuthorization AS pa WHERE pa.id = :personId"))
 public class PersonAuthorization implements Serializable {
+
+    public static final String GET_FOR_PERSON_ID = "PersonAuthorization.getForPersonID";
 
     @Id
     @OneToOne

@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collections;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Stateless
 public class BookingService {
 
-    @PersistenceContext(unitName = "bookr")
+    @Inject
     EntityManager em;
 
     @Resource

@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @Path("v1/persons")
 @ValidateOnExecution(type = ExecutableType.NON_GETTER_METHODS)

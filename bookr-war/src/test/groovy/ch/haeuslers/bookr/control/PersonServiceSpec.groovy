@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Person
+import ch.haeuslers.bookr.entity.UUIDToStringConverter
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -26,9 +27,11 @@ class PersonServiceSpec extends Specification {
         ShrinkWrap.create(WebArchive.class, 'PersonServiceSpec.war')
             .addClass(PersonService.class)
             .addClass(PasswordService.class)
+            .addClass(UUIDToStringConverter.class)
             .addPackage(Person.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(SecurityUtils.class)
+            .addClass(EntityManagerProducer.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
@@ -51,7 +54,7 @@ class PersonServiceSpec extends Specification {
 
     def "create and get it back as administrator"() {
         setup:
-        Person person = new Person(principalName: '1', id: UUID.randomUUID().toString())
+        Person person = new Person(principalName: '1', id: UUID.randomUUID())
         LoginContext loginContext = loginAsAdministrator()
 
         when:
@@ -68,7 +71,7 @@ class PersonServiceSpec extends Specification {
 
     def "create and get it back - without admin role - throws exception"() {
         setup:
-        Person person = new Person(principalName: '2', id: UUID.randomUUID().toString())
+        Person person = new Person(principalName: '2', id: UUID.randomUUID())
         LoginContext loginContext = loginAsUser()
 
         when:
@@ -83,7 +86,7 @@ class PersonServiceSpec extends Specification {
 
     def "create and delete it afterwards"() {
         setup:
-        Person person = new Person(principalName: '3', id: UUID.randomUUID().toString())
+        Person person = new Person(principalName: '3', id: UUID.randomUUID())
         LoginContext loginContext = loginAsAdministrator()
 
         when:
@@ -104,7 +107,7 @@ class PersonServiceSpec extends Specification {
 
     def "create, find and update as administrator"() {
         setup:
-        String id = UUID.randomUUID().toString()
+        UUID id = UUID.randomUUID()
         Person person = new Person(principalName: '4', id: id)
         LoginContext loginContext = loginAsAdministrator()
 
@@ -115,7 +118,7 @@ class PersonServiceSpec extends Specification {
         service.getAll().contains(person)
 
         when: 'find person by id'
-        Optional<Person> foundPerson = service.find(id)
+        Optional<Person> foundPerson = service.find(id.toString())
 
         then: 'check equality of the found person'
         foundPerson.get().equals(person)
