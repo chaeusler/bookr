@@ -13,7 +13,7 @@ public class ProjectService {
     @Inject
     EntityManager em;
 
-    public Project find(UUID id) {
+    public Project find(String id) {
         return em.find(Project.class, id);
     }
 }

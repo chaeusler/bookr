@@ -2,7 +2,6 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Project
-import ch.haeuslers.bookr.entity.UUIDToStringConverter
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -18,7 +17,6 @@ class ProjectServiceSpec extends Specification {
         return ShrinkWrap.create(WebArchive.class, 'test.war')
             .addClass(ProjectService.class)
             .addPackage(Project.class.getPackage())
-            .addClass(UUIDToStringConverter.class)
             .addClass(JBossLoginContextFactory.class)
             .addClass(EntityManagerProducer.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
@@ -26,4 +24,6 @@ class ProjectServiceSpec extends Specification {
             .addAsResource("users.properties")
             .addAsResource("roles.properties")
     }
+
+    def crud
 }

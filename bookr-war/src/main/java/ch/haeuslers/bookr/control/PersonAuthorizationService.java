@@ -8,7 +8,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.Optional;
-import java.util.UUID;
 
 @Stateless
 @DeclareRoles("ADMINISTRATOR")
@@ -23,7 +22,7 @@ public class PersonAuthorizationService {
     }
 
     public Optional<PersonAuthorization> read(String personId) {
-        return Optional.ofNullable(em.find(PersonAuthorization.class, UUID.fromString(personId)));
+        return Optional.ofNullable(em.find(PersonAuthorization.class, personId));
     }
 
     public void update(PersonAuthorization personAuthorization) {

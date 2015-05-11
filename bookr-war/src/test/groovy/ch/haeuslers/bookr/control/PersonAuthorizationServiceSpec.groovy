@@ -4,7 +4,6 @@ import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.PersonAuthorization
 import ch.haeuslers.bookr.entity.RoleType
-import ch.haeuslers.bookr.entity.UUIDToStringConverter
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -26,7 +25,6 @@ class PersonAuthorizationServiceSpec extends Specification {
             .addClass(PersonService.class)
             .addClass(PersonAuthorizationService.class)
             .addClass(PasswordService.class)
-            .addClass(UUIDToStringConverter.class)
             .addPackage(Person.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(SecurityUtils.class)

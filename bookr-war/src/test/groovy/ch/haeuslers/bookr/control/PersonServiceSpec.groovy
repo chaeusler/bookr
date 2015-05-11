@@ -2,7 +2,6 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Person
-import ch.haeuslers.bookr.entity.UUIDToStringConverter
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -27,7 +26,6 @@ class PersonServiceSpec extends Specification {
         ShrinkWrap.create(WebArchive.class, 'PersonServiceSpec.war')
             .addClass(PersonService.class)
             .addClass(PasswordService.class)
-            .addClass(UUIDToStringConverter.class)
             .addPackage(Person.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(SecurityUtils.class)

@@ -5,7 +5,6 @@ import ch.haeuslers.bookr.control.PersonService;
 import javax.inject.Inject;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Optional;
-import java.util.UUID;
 
 public class PersonReferenceXmlAdapter extends XmlAdapter<String, Person> {
 
@@ -23,6 +22,6 @@ public class PersonReferenceXmlAdapter extends XmlAdapter<String, Person> {
 
     @Override
     public String marshal(Person person) throws Exception {
-        return person.getId().toString();
+        return person.getId();
     }
 }

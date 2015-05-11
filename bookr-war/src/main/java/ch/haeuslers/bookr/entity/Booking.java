@@ -38,7 +38,8 @@ public class Booking implements Serializable {
 
     @Id
     @XmlAttribute
-    private UUID id;
+    @ValidUUID
+    private String id;
 
     @ManyToOne(optional = false)
     @XmlElementRef(name = "project-id")
@@ -59,11 +60,11 @@ public class Booking implements Serializable {
     @NotNull
     private Date end;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

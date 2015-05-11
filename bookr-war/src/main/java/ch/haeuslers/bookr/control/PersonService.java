@@ -15,7 +15,6 @@ import javax.persistence.EntityManager;
 import javax.security.auth.message.AuthException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Stateless
 @DeclareRoles({"ADMINISTRATOR", "USER", "MANAGER"})
@@ -47,7 +46,7 @@ public class PersonService {
 
     @PermitAll
     public Optional<Person> find(String id) {
-        return Optional.ofNullable(em.find(Person.class, UUID.fromString(id)));
+        return Optional.ofNullable(em.find(Person.class, id));
     }
 
     @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
