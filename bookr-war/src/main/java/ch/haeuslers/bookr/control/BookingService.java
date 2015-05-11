@@ -57,6 +57,11 @@ public class BookingService {
         return em.merge(booking);
     }
 
+    public void delete(Booking booking) {
+        booking = em.merge(booking);
+        em.remove(booking);
+    }
+
     public List<Booking> listMine() {
         String principalName = context.getCallerPrincipal().getName();
         System.out.println(principalName);

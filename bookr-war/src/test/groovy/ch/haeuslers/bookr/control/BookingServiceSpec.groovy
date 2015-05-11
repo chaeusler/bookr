@@ -98,6 +98,14 @@ class BookingServiceSpec extends Specification {
         then: "the time should be updated"
         foundBooking.end.equals(newEndDate)
 
+        when: "we delete the booking"
+        Optional<Booking> deleted = session.call {
+            bookingService.delete(foundBooking)
+            bookingService.read(foundBooking.id)
+        }
+
+        then: "it's deleted"
+        !deleted.isPresent()
 
         cleanup:
         session.logout()
