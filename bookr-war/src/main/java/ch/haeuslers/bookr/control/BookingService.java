@@ -5,6 +5,8 @@ import ch.haeuslers.bookr.entity.Person;
 import ch.haeuslers.bookr.entity.RoleType;
 
 import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Stateless
+@DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
+@RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
 public class BookingService {
 
     @Inject
@@ -26,7 +30,7 @@ public class BookingService {
     @EJB
     PersonService personService;
 
-    public Booking persist(Booking booking) throws IllegalAccessException {
+    public void create(Booking booking) throws IllegalAccessException {
         ensureEditRights(booking);
 
         // TODO validate person needs to be in project
@@ -36,10 +40,13 @@ public class BookingService {
             //return; // Todo throw Business Exceptios
         }
         em.persist(booking);
-        return booking;
     }
 
-    public Booking merge(Booking booking) throws IllegalAccessException {
+    public Optional<Booking> read(String id) {
+        return Optional.ofNullable(em.find(Booking.class, id));
+    }
+
+    public Booking update(Booking booking) throws IllegalAccessException {
         ensureEditRights(booking);
 
         // TODO validate person needs to be in project

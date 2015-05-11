@@ -21,7 +21,7 @@ class ProjectServiceSpec extends Specification {
 
     @Deployment
     def static WebArchive "create deployment"() {
-        return ShrinkWrap.create(WebArchive.class, 'test.war')
+        return ShrinkWrap.create(WebArchive.class, 'ProjectServiceSpec.war')
             .addClass(ProjectService.class)
             .addClass(PersonService.class)
             .addClass(PasswordService.class)
