@@ -45,7 +45,7 @@ public class PersonService {
     }
 
     @PermitAll
-    public Optional<Person> find(String id) {
+    public Optional<Person> read(String id) {
         return Optional.ofNullable(em.find(Person.class, id));
     }
 
@@ -65,7 +65,7 @@ public class PersonService {
 
     @PermitAll // secured inside
     public void setPassword(String personId, String password) throws AuthException {
-        Optional<Person> person = find(personId);
+        Optional<Person> person = read(personId);
 
         if (!person.isPresent()) {
             return;// TODO what do?

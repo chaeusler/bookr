@@ -116,7 +116,7 @@ class PersonServiceSpec extends Specification {
         service.getAll().contains(person)
 
         when: 'find person by id'
-        Optional<Person> foundPerson = service.find(id.toString())
+        Optional<Person> foundPerson = service.read(id.toString())
 
         then: 'check equality of the found person'
         foundPerson.get().equals(person)

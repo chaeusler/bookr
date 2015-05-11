@@ -25,7 +25,7 @@ public class Project implements Serializable {
     @NotNull
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name="BOOKR_PROJECT_PERSON",
         joinColumns = @JoinColumn(name = "project_id")

@@ -89,7 +89,7 @@ public class JBossLoginContextFactory {
 
         /**
          * The {@link org.jboss.security.ClientLoginModule} associates the user credentials with the
-         * {@link org.jboss.security.SecurityContext} where the JBoss security runtime can find it.
+         * {@link org.jboss.security.SecurityContext} where the JBoss security runtime can read it.
          *
          * @return
          */

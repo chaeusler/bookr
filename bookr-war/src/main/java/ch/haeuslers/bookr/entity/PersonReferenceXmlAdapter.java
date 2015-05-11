@@ -4,7 +4,6 @@ import ch.haeuslers.bookr.control.PersonService;
 
 import javax.inject.Inject;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.util.Optional;
 
 public class PersonReferenceXmlAdapter extends XmlAdapter<String, Person> {
 
@@ -13,11 +12,9 @@ public class PersonReferenceXmlAdapter extends XmlAdapter<String, Person> {
 
     @Override
     public Person unmarshal(String personId) throws Exception {
-        Optional<Person> person = personService.find(personId);
-        if (person.isPresent()) {
-            return person.get();
-        }
-        throw new RuntimeException("unable to unmarshal person.id - entity not found");
+        return personService
+            .read(personId)
+            .orElseThrow(() -> new RuntimeException("unable to unmarshal person.id - entity not found"));
     }
 
     @Override
