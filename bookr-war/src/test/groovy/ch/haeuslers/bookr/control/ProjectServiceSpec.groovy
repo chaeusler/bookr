@@ -10,8 +10,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive
 import org.junit.runner.RunWith
 import spock.lang.Specification
 
-import static ch.haeuslers.bookr.control.SecurityUtils.*;
-
 import javax.inject.Inject
 
 @RunWith(ArquillianSputnik.class)

@@ -15,8 +15,6 @@ import javax.ejb.EJBAccessException
 import javax.inject.Inject
 import javax.security.auth.login.LoginContext
 
-import static ch.haeuslers.bookr.control.SecurityUtils.*;
-
 @RunWith(ArquillianSputnik.class)
 class PersonAuthorizationServiceSpec extends Specification {
     @Deployment
@@ -27,7 +25,7 @@ class PersonAuthorizationServiceSpec extends Specification {
             .addClass(PasswordService.class)
             .addPackage(Person.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
-            .addClass(SecurityUtils.class)
+            .addClass(LoginSession.class)
             .addClass(EntityManagerProducer.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
@@ -43,20 +41,20 @@ class PersonAuthorizationServiceSpec extends Specification {
 
     def "crud as admin"() {
         setup:
-        LoginContext loginContext = loginAsAdministrator()
+        LoginSession session = LoginSession.loginAsAdministrator()
 
         UUID personsId = UUID.randomUUID()
         Person person = new Person(principalName: "nameForAuthorizationTest", id: personsId)
         PersonAuthorization authorization = new PersonAuthorization(person: person)
 
         when: "create user and authorization is created"
-        doWith(loginContext) {
+        session.call {
             personService.create(person)
             authorizationService.create(authorization)
         }
 
         then: "the authorization can be found with the users id"
-        PersonAuthorization foundAuthorization = doWith(loginContext) {
+        PersonAuthorization foundAuthorization = session.call {
             authorizationService.read(personsId.toString()).get()
         }
         foundAuthorization.equals(authorization)
@@ -64,7 +62,7 @@ class PersonAuthorizationServiceSpec extends Specification {
 
         when: "the authorization is changed"
         foundAuthorization.roles.add(RoleType.USER)
-        foundAuthorization = doWith(loginContext) {
+        foundAuthorization = session.call {
             authorizationService.update(foundAuthorization)
             authorizationService.read(personsId.toString()).get()
         }
@@ -74,26 +72,26 @@ class PersonAuthorizationServiceSpec extends Specification {
         foundAuthorization.roles.size() == 1
 
         when: "the autorization is deleted"
-        doWith(loginContext) {
+        session.call {
             authorizationService.delete(authorization)
         }
 
         then: "it can't be found anymore"
-        Optional<PersonAuthorization> optional = doWith(loginContext) {
+        Optional<PersonAuthorization> optional = session.call {
             authorizationService.read(personsId.toString())
         }
         !optional.present
 
         cleanup:
-        loginContext.logout()
+        session.logout()
     }
 
     def "unauthorized user - user"() {
         setup:
-        LoginContext loginContext = loginAsUser()
+        LoginSession session = LoginSession.loginAsUser()
 
         when:
-        doWith(loginContext) {
+        session.call {
             authorizationService.read("anything")
         }
 
@@ -103,10 +101,10 @@ class PersonAuthorizationServiceSpec extends Specification {
 
     def "unauthorized user - manager"() {
         setup:
-        LoginContext loginContext = loginAsManager()
+        LoginSession session = LoginSession.loginAsManager()
 
         when:
-        doWith(loginContext) {
+        session.call {
             authorizationService.read("anything")
         }
 

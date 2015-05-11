@@ -1,17 +1,14 @@
 package ch.haeuslers.bookr
 
 import ch.haeuslers.bookr.control.EntityManagerProducer
-import ch.haeuslers.bookr.control.SecurityUtils
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.PersonAuthorization
 import ch.haeuslers.bookr.entity.RoleType
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
-import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.WebArchive
 import org.junit.runner.RunWith
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.inject.Inject
@@ -29,7 +26,6 @@ class RoleQuerySpec extends Specification {
             .addPackage(Person.class.getPackage())
             .addClass(EntityManagerProducer.class)
             .addClass(JBossLoginContextFactory.class)
-            .addClass(SecurityUtils.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
