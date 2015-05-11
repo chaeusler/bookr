@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -55,10 +56,10 @@ public class Booking implements Serializable {
     private String description;
 
     @NotNull
-    private Date start;
+    private LocalDateTime start;
 
     @NotNull
-    private Date end;
+    private LocalDateTime end;
 
     public String getId() {
         return id;
@@ -84,19 +85,19 @@ public class Booking implements Serializable {
         this.person = person;
     }
 
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 

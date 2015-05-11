@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Booking
+import ch.haeuslers.bookr.entity.LocalDateTimeConverter
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Project
 import org.jboss.arquillian.container.test.api.Deployment
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith
 import spock.lang.Specification
 
 import javax.inject.Inject
+import java.time.LocalDateTime
 
 
 @RunWith(ArquillianSputnik.class)
@@ -28,6 +30,7 @@ class BookingServiceSpec extends Specification {
             .addClass(JBossLoginContextFactory.class)
             .addClass(LoginSession.class)
             .addClass(EntityManagerProducer.class)
+            .addClass(LocalDateTimeConverter.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
@@ -66,11 +69,11 @@ class BookingServiceSpec extends Specification {
 
         when: "creating a new booking"
         Booking booking = new Booking(
-            id: UUID.randomUUID(),
+            id: UUID.randomUUID().toString(),
             project: theProject,
             person: theUser,
-            start: new Date(System.currentTimeMillis() - 100000),
-            end: new Date(),
+            start: LocalDateTime.now().minusHours(1),
+            end: LocalDateTime.now().plusHours(1),
             description: 'lets test'
         )
         session.call {
@@ -79,9 +82,22 @@ class BookingServiceSpec extends Specification {
 
         then: "we should be able to get it"
         Booking foundBooking = session.call {
-            bookingService.read(booking.id.toString()).get()
+            bookingService.read(booking.id).get()
         }
         foundBooking.equals(booking)
+
+        when: "updating the booking"
+        LocalDateTime endDate = foundBooking.end
+        LocalDateTime newEndDate = endDate.plusHours(2);
+        foundBooking.end = newEndDate
+        foundBooking = session.call {
+            bookingService.update(foundBooking)
+            bookingService.read(foundBooking.id).get()
+        }
+
+        then: "the time should be updated"
+        foundBooking.end.equals(newEndDate)
+
 
         cleanup:
         session.logout()
