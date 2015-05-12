@@ -12,7 +12,9 @@ import org.jboss.shrinkwrap.api.spec.WebArchive
 import org.junit.runner.RunWith
 import spock.lang.Specification
 
+import javax.ejb.EJBException
 import javax.inject.Inject
+import java.security.PrivilegedActionException
 import java.time.LocalDateTime
 
 
@@ -58,6 +60,17 @@ class BookingServiceSpec extends Specification {
         session.call {
             personService.create(theUser)
             projectService.create(theProject)
+        }
+
+        session.logout()
+    }
+
+    def cleanup() {
+        LoginSession session = LoginSession.loginAsAdministrator();
+
+        session.call {
+            projectService.delete(theProject)
+            personService.delete(theUser)
         }
 
         session.logout()
@@ -109,5 +122,26 @@ class BookingServiceSpec extends Specification {
 
         cleanup:
         session.logout()
+    }
+
+    def "create as wron user fails"() {
+        setup:
+        LoginSession session = LoginSession.loginAsUser()
+
+        when:
+        Booking booking = new Booking(
+            id: UUID.randomUUID().toString(),
+            project: theProject,
+            person: theUser,
+            start: LocalDateTime.now().minusHours(1),
+            end: LocalDateTime.now().plusHours(1),
+            description: 'lets test'
+        )
+        session.call {
+            bookingService.create(booking)
+        }
+
+        then:
+        thrown PrivilegedActionException
     }
 }

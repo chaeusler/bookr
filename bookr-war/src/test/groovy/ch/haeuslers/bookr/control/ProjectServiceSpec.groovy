@@ -10,6 +10,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive
 import org.junit.runner.RunWith
 import spock.lang.Specification
 
+import javax.ejb.EJBException
 import javax.inject.Inject
 
 @RunWith(ArquillianSputnik.class)
@@ -83,7 +84,19 @@ class ProjectServiceSpec extends Specification {
 
         cleanup:
         session.logout()
+    }
 
+    def "create as user fails"() {
+        setup:
+        LoginSession session = LoginSession.loginAsUser()
+
+        when:
+        session.call {
+            projectService.create(new Project(id: UUID.randomUUID(), name: "noname"))
+        }
+
+        then:
+        thrown EJBException
     }
 }
 
