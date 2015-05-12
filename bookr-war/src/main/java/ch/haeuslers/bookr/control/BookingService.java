@@ -12,6 +12,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +65,6 @@ public class BookingService {
 
     public List<Booking> listMine() {
         String principalName = context.getCallerPrincipal().getName();
-        System.out.println(principalName);
         Optional<Person> person = personService.getByPrincipalName(principalName);
         if (person.isPresent()) {
             return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USER, Booking.class).
@@ -78,8 +78,8 @@ public class BookingService {
         return !em.createNamedQuery(Booking.QUERY_FIND_OVERLAPPING)
             .setParameter("startDate", booking.getStart())
             .setParameter("endDate", booking.getEnd())
-            .getResultList()
-            .isEmpty();
+                .getResultList()
+                .isEmpty();
         // TODO use count in DB
     }
 

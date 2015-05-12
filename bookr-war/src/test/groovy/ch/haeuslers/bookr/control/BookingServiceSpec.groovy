@@ -3,24 +3,21 @@ package ch.haeuslers.bookr.control
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Booking
 import ch.haeuslers.bookr.entity.LocalDateTimeConverter
-import ch.haeuslers.bookr.entity.Password
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Project
-import ch.haeuslers.bookr.entity.UUIDValidator
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.spec.WebArchive
 import org.junit.runner.RunWith
+import spock.lang.Ignore
 import spock.lang.Specification
 
-import javax.ejb.EJBException
 import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.transaction.UserTransaction
 import java.security.PrivilegedActionException
 import java.time.LocalDateTime
-
 
 @RunWith(ArquillianSputnik.class)
 class BookingServiceSpec extends Specification {
@@ -183,5 +180,84 @@ class BookingServiceSpec extends Specification {
 
         then: "it's deleted"
         !deleted.isPresent()
+    }
+
+    @Ignore
+    def "no overlapping bookings allowed"() {
+        setup:
+        LoginSession session = LoginSession.loginAsUser()
+
+        when:
+        Booking booking1 = new Booking(
+            id: UUID.randomUUID().toString(),
+            project: theProject,
+            person: theUser,
+            start: LocalDateTime.now().minusHours(1),
+            end: LocalDateTime.now().plusHours(1),
+            description: 'lets test'
+        )
+        Booking booking2 = new Booking(
+            id: UUID.randomUUID().toString(),
+            project: theProject,
+            person: theUser,
+            start: LocalDateTime.now(),
+            end: LocalDateTime.now().plusHours(2),
+            description: 'lets test'
+        )
+
+        session.call {
+            bookingService.create(booking1)
+            bookingService.create(booking2)
+        }
+
+        then:
+        false
+
+        cleanup:
+        session.call {
+            bookingService.delete(booking1)
+            bookingService.delete(booking2)
+        }
+    }
+
+    @Ignore
+    def "list users"() {
+        setup:
+        LoginSession session = LoginSession.loginAsUser()
+
+        when:
+        Booking booking1 = new Booking(
+            id: UUID.randomUUID().toString(),
+            project: theProject,
+            person: theUser,
+            start: LocalDateTime.now().minusHours(2),
+            end: LocalDateTime.now().minusHours(1),
+            description: 'lets test'
+        )
+        Booking booking2 = new Booking(
+            id: UUID.randomUUID().toString(),
+            project: theProject,
+            person: theUser,
+            start: LocalDateTime.now(),
+            end: LocalDateTime.now().plusHours(2),
+            description: 'lets test'
+        )
+
+        List<Booking> myBookings = session.call {
+            bookingService.create(booking1)
+            bookingService.create(booking2)
+            bookingService.listMine()
+        }
+
+        then:
+        myBookings.size() == 2
+        myBookings.contains(booking1)
+        myBookings.contains(booking2)
+
+        cleanup:
+        session.call {
+            bookingService.delete(booking1)
+            bookingService.delete(booking2)
+        }
     }
 }
