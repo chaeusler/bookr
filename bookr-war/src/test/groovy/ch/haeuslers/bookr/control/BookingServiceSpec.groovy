@@ -3,8 +3,10 @@ package ch.haeuslers.bookr.control
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Booking
 import ch.haeuslers.bookr.entity.LocalDateTimeConverter
+import ch.haeuslers.bookr.entity.Password
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Project
+import ch.haeuslers.bookr.entity.UUIDValidator
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -14,6 +16,8 @@ import spock.lang.Specification
 
 import javax.ejb.EJBException
 import javax.inject.Inject
+import javax.persistence.EntityManager
+import javax.transaction.UserTransaction
 import java.security.PrivilegedActionException
 import java.time.LocalDateTime
 
@@ -48,32 +52,36 @@ class BookingServiceSpec extends Specification {
     @Inject
     PersonService personService
 
+    @Inject
+    EntityManager em
+
+    @Inject
+    UserTransaction utx;
+
     Person theUser
+    Person anotherPerson
     Project theProject
 
     def setup() {
-        LoginSession session = LoginSession.loginAsAdministrator();
+        theUser = new Person(id: UUID.randomUUID().toString(), principalName: 'user')
+        theProject = new Project(id: UUID.randomUUID().toString(), name: 'the name', persons: [theUser])
+        anotherPerson = new Person(id: UUID.randomUUID().toString(), principalName: 'another user')
 
-        theUser = new Person(id: UUID.randomUUID(), principalName: 'the name')
-        theProject = new Project(id: UUID.randomUUID(), name: 'the name', persons: [theUser])
-
-        session.call {
-            personService.create(theUser)
-            projectService.create(theProject)
-        }
-
-        session.logout()
+        utx.begin()
+        em.joinTransaction()
+        em.persist(theUser)
+        em.persist(anotherPerson)
+        em.persist(theProject)
+        utx.commit()
     }
 
     def cleanup() {
-        LoginSession session = LoginSession.loginAsAdministrator();
-
-        session.call {
-            projectService.delete(theProject)
-            personService.delete(theUser)
-        }
-
-        session.logout()
+        utx.begin()
+        em.joinTransaction()
+        em.remove(em.merge(theProject))
+        em.remove(em.merge(anotherPerson))
+        em.remove(em.merge(theUser))
+        utx.commit()
     }
 
     def "crud as admin"() {
@@ -124,7 +132,29 @@ class BookingServiceSpec extends Specification {
         session.logout()
     }
 
-    def "create as wron user fails"() {
+    def "create as wrong user fails"() {
+        setup:
+        LoginSession session = LoginSession.loginAsUser()
+
+        when:
+
+        Booking booking = new Booking(
+            id: UUID.randomUUID().toString(),
+            project: theProject,
+            person: anotherPerson,
+            start: LocalDateTime.now().minusHours(1),
+            end: LocalDateTime.now().plusHours(1),
+            description: 'lets test'
+        )
+        session.call {
+            bookingService.create(booking)
+        }
+
+        then:
+        thrown PrivilegedActionException
+    }
+
+    def "create as right user successes"() {
         setup:
         LoginSession session = LoginSession.loginAsUser()
 
@@ -137,11 +167,21 @@ class BookingServiceSpec extends Specification {
             end: LocalDateTime.now().plusHours(1),
             description: 'lets test'
         )
-        session.call {
+        Booking foundBooking = session.call {
             bookingService.create(booking)
+            bookingService.read(booking.id).get()
         }
 
         then:
-        thrown PrivilegedActionException
+        foundBooking.equals(booking)
+
+        when: "we delete the booking"
+        Optional<Booking> deleted = session.call {
+            bookingService.delete(foundBooking)
+            bookingService.read(foundBooking.id)
+        }
+
+        then: "it's deleted"
+        !deleted.isPresent()
     }
 }

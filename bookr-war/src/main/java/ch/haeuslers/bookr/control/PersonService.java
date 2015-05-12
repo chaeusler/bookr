@@ -80,6 +80,7 @@ public class PersonService {
 
     @RolesAllowed("ADMINISTRATOR")
     public void delete(Person person) {
+        // TODO don't remove - set inactive instead
         person = em.merge(person);
         em.remove(person);
     }
