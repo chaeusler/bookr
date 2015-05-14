@@ -9,13 +9,11 @@ import org.jboss.shrinkwrap.api.spec.WebArchive
 import org.junit.runner.RunWith
 import spock.lang.Specification
 
-import javax.annotation.security.RunAs
 import javax.ejb.EJBAccessException
 import javax.inject.Inject
 import javax.security.auth.login.FailedLoginException
 import javax.security.auth.login.LoginContext
 
-@RunAs("ADMINISTRATOR")
 @RunWith(ArquillianSputnik.class)
 class PersonServiceSpec extends Specification {
 

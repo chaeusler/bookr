@@ -38,47 +38,39 @@ class PersonAuthorizationServiceSpec extends Specification {
     @Inject
     AuthorizationService authorizationService
 
-    def "crud as admin"() {
+    def "rean and update as admin"() {
         setup:
         LoginSession session = LoginSession.loginAsAdministrator()
+        Person user = new Person(id: UUID.randomUUID().toString(), principalName: 'wertwertwert')
 
-        UUID personsId = UUID.randomUUID()
-        Person person = new Person(principalName: "nameForAuthorizationTest", id: personsId)
-        Authorization authorization = new Authorization(person: person)
-
-        when: "create user and authorization is created"
-        session.call {
-            personService.create(person)
-            authorizationService.create(authorization)
-        }
-
-        then: "the authorization can be found with the users id"
+        when: "create user and read authorisation"
         Authorization foundAuthorization = session.call {
-            authorizationService.read(personsId.toString()).get()
+            personService.create(user)
+            authorizationService.read(user.id).get()
         }
-        foundAuthorization.equals(authorization)
-        foundAuthorization.roles.isEmpty()
+
+        then: "ith should be there"
+        foundAuthorization.roles.size() == 1
+        foundAuthorization.roles.contains(Role.USER)
 
         when: "the authorization is changed"
-        foundAuthorization.roles.add(Role.USER)
+        foundAuthorization.roles.add(Role.MANAGER)
         foundAuthorization = session.call {
             authorizationService.update(foundAuthorization)
-            authorizationService.read(personsId.toString()).get()
+            authorizationService.read(user.id).get()
         }
 
         then: "the reread object has been updated"
-        foundAuthorization.roles.contains(Role.USER)
-        foundAuthorization.roles.size() == 1
+        foundAuthorization.roles.contains(Role.MANAGER)
+        foundAuthorization.roles.size() == 2
 
-        when: "the autorization is deleted"
-        session.call {
-            authorizationService.delete(authorization)
+        when: "the user is deleted"
+        Optional<Authorization> optional = session.call {
+            personService.delete(user)
+            authorizationService.read(user.id)
         }
 
         then: "it can't be found anymore"
-        Optional<Authorization> optional = session.call {
-            authorizationService.read(personsId.toString())
-        }
         !optional.present
 
         cleanup:

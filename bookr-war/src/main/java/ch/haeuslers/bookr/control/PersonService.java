@@ -1,6 +1,8 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.entity.Authorization;
 import ch.haeuslers.bookr.entity.Person;
+import ch.haeuslers.bookr.entity.Role;
 
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -32,6 +34,14 @@ public class PersonService {
     @RolesAllowed("ADMINISTRATOR")
     public void create(Person person) {
         em.persist(person);
+        createAndPersistAuthFor(person);
+    }
+
+    private void createAndPersistAuthFor(Person person) {
+        Authorization authorization = new Authorization();
+        authorization.getRoles().add(Role.USER);
+        authorization.setPerson(person);
+        em.persist(authorization);
     }
 
     @PermitAll
@@ -82,14 +92,19 @@ public class PersonService {
     public void delete(Person person) {
         // TODO don't remove - set inactive instead
         person = em.merge(person);
-        em.remove(person);
+        remove(person);
     }
 
     @RolesAllowed("ADMINISTRATOR")
     public void delete(String id) {
         // TODO don't remove - set inactive instead
-        em.remove(read(id).get());
+        Person person = read(id).get();
+        remove(person);
     }
 
-    // TODO when deleting a person the roles need to be deleted too
+    private void remove(Person person) {
+        Authorization authorization = em.find(Authorization.class, person.getId());
+        em.remove(authorization);
+        em.remove(person);
+    }
 }

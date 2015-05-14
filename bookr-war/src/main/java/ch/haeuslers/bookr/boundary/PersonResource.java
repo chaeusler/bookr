@@ -28,35 +28,32 @@ public class PersonResource {
     @Inject
     PasswordService passwordService;
 
+    @GET
+    @Produces({"application/json", "application/xml"})
+    public List<Person> getAll() {
+        return personService.getAll();
+    }
+
     @POST
     @Path("{id}")
     @Consumes({"application/json", "application/xml"})
-    public Response create(@PathParam("id") String personId, Person person) {
+    public void create(@PathParam("id") String personId, Person person) {
         // TODO verify id
         personService.create(person);
-        return Response.created(URI.create("blablablab"+person)).build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({"application/json", "application/xml"})
-    public Response update(@PathParam("id") String personId, Person person) {
+    public void update(@PathParam("id") String personId, Person person) {
         // TODO verify id
         personService.update(person);
-        return Response.noContent().build();
     }
 
     @DELETE
     @Path("{id}")
-    public Response delete(@PathParam("id") String id) {
+    public void delete(@PathParam("id") String id) {
         personService.delete(id);
-        return Response.noContent().build();
-    }
-
-    @GET
-    @Produces({"application/json", "application/xml"})
-    public List<Person> getAll() {
-        return personService.getAll();
     }
 
     @POST
