@@ -85,5 +85,11 @@ public class PersonService {
         em.remove(person);
     }
 
+    @RolesAllowed("ADMINISTRATOR")
+    public void delete(String id) {
+        // TODO don't remove - set inactive instead
+        em.remove(read(id).get());
+    }
+
     // TODO when deleting a person the roles need to be deleted too
 }

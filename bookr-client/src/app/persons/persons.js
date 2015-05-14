@@ -32,15 +32,18 @@ angular.module('bookr.persons', ['uuid', 'bookr.base'])
     };
 
     $scope.removePerson = function(index) {
+      var toDelete = $scope.persons[index];
       $scope.persons.splice(index, 1);
-      // TODO call Resource
+      toDelete.$delete();
     };
 
     $scope.addPerson = function() {
-      $scope.inserted = {
+      var newPerson = new Person({
         id: uuid.v4(),
         principalName: ''
-      };
+      });
+      newPerson.$save();
+      $scope.persons.push(newPerson);
     };
 
   }]);

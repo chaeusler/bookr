@@ -29,8 +29,10 @@ public class PersonResource {
     PasswordService passwordService;
 
     @POST
+    @Path("{id}")
     @Consumes({"application/json", "application/xml"})
-    public Response create(Person person) {
+    public Response create(@PathParam("id") String personId, Person person) {
+        // TODO verify id
         personService.create(person);
         return Response.created(URI.create("blablablab"+person)).build();
     }
@@ -41,6 +43,13 @@ public class PersonResource {
     public Response update(@PathParam("id") String personId, Person person) {
         // TODO verify id
         personService.update(person);
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response delete(@PathParam("id") String id) {
+        personService.delete(id);
         return Response.noContent().build();
     }
 
