@@ -2,8 +2,8 @@ package ch.haeuslers.bookr
 
 import ch.haeuslers.bookr.control.EntityManagerProducer
 import ch.haeuslers.bookr.entity.Person
-import ch.haeuslers.bookr.entity.PersonAuthorization
-import ch.haeuslers.bookr.entity.RoleType
+import ch.haeuslers.bookr.entity.Authorization
+import ch.haeuslers.bookr.entity.Role
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -45,7 +45,7 @@ class RoleQuerySpec extends Specification {
         em.joinTransaction()
 
         Person person = new Person(principalName: "principal", id: UUID.randomUUID())
-        PersonAuthorization personAuthorization = new PersonAuthorization(person: person, roles: [RoleType.USER, RoleType.MANAGER])
+        Authorization personAuthorization = new Authorization(person: person, roles: [Role.USER, Role.MANAGER])
 
         em.persist(person)
         em.persist(personAuthorization)
@@ -55,9 +55,9 @@ class RoleQuerySpec extends Specification {
         utx.begin()
         em.joinTransaction()
         Query q = em.createNativeQuery(
-            "SELECT par.role \"role\", 'Roles' " +
-                "FROM BOOKR_PERSON p, BOOKR_PERSON_AUTHORIZATION_ROLE par " +
-                "WHERE p.id = par.person_authorization_id AND p.principalName = 'principal'")
+            "SELECT ar.role \"role\", 'Roles' " +
+                "FROM BOOKR_PERSON p, BOOKR_AUTHORIZATION_ROLE ar " +
+                "WHERE p.id = ar.authorization_id AND p.principalName = 'principal'")
         List results = q.getResultList();
 
         then:

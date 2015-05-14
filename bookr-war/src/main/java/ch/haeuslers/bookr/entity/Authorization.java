@@ -8,8 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "BOOKR_PERSON_AUTHORIZATION")
-public class PersonAuthorization implements Serializable {
+@Table(name = "BOOKR_AUTHORIZATION")
+public class Authorization implements Serializable {
 
     @Id
     @OneToOne
@@ -20,10 +20,10 @@ public class PersonAuthorization implements Serializable {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     @JoinTable(
-        name = "BOOKR_PERSON_AUTHORIZATION_ROLE",
-        joinColumns = @JoinColumn(name = "person_authorization_id")
+        name = "BOOKR_AUTHORIZATION_ROLE",
+        joinColumns = @JoinColumn(name = "authorization_id")
     )
-    private Set<RoleType> roles;
+    private Set<Role> roles;
 
     public void setPerson(Person person) {
         this.person = person;
@@ -33,22 +33,22 @@ public class PersonAuthorization implements Serializable {
         return person;
     }
 
-    public Set<RoleType> getRoles() {
+    public Set<Role> getRoles() {
         if (roles == null) {
             roles = new HashSet<>();
         }
         return roles;
     }
 
-    public void setRoles(Set<RoleType> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PersonAuthorization)) return false;
-        PersonAuthorization that = (PersonAuthorization) o;
+        if (!(o instanceof Authorization)) return false;
+        Authorization that = (Authorization) o;
         return Objects.equals(person, that.person);
     }
 

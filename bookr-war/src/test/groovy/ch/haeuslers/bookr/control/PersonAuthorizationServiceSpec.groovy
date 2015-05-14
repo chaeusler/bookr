@@ -2,8 +2,8 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Person
-import ch.haeuslers.bookr.entity.PersonAuthorization
-import ch.haeuslers.bookr.entity.RoleType
+import ch.haeuslers.bookr.entity.Authorization
+import ch.haeuslers.bookr.entity.Role
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -13,7 +13,6 @@ import spock.lang.Specification
 
 import javax.ejb.EJBAccessException
 import javax.inject.Inject
-import javax.security.auth.login.LoginContext
 
 @RunWith(ArquillianSputnik.class)
 class PersonAuthorizationServiceSpec extends Specification {
@@ -21,7 +20,7 @@ class PersonAuthorizationServiceSpec extends Specification {
     def static WebArchive "create deployment"() {
         ShrinkWrap.create(WebArchive.class, 'PersonAuthorizationServiceSpec.war')
             .addClass(PersonService.class)
-            .addClass(PersonAuthorizationService.class)
+            .addClass(AuthorizationService.class)
             .addClass(PasswordService.class)
             .addPackage(Person.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
@@ -37,7 +36,7 @@ class PersonAuthorizationServiceSpec extends Specification {
     PersonService personService
 
     @Inject
-    PersonAuthorizationService authorizationService
+    AuthorizationService authorizationService
 
     def "crud as admin"() {
         setup:
@@ -45,7 +44,7 @@ class PersonAuthorizationServiceSpec extends Specification {
 
         UUID personsId = UUID.randomUUID()
         Person person = new Person(principalName: "nameForAuthorizationTest", id: personsId)
-        PersonAuthorization authorization = new PersonAuthorization(person: person)
+        Authorization authorization = new Authorization(person: person)
 
         when: "create user and authorization is created"
         session.call {
@@ -54,21 +53,21 @@ class PersonAuthorizationServiceSpec extends Specification {
         }
 
         then: "the authorization can be found with the users id"
-        PersonAuthorization foundAuthorization = session.call {
+        Authorization foundAuthorization = session.call {
             authorizationService.read(personsId.toString()).get()
         }
         foundAuthorization.equals(authorization)
         foundAuthorization.roles.isEmpty()
 
         when: "the authorization is changed"
-        foundAuthorization.roles.add(RoleType.USER)
+        foundAuthorization.roles.add(Role.USER)
         foundAuthorization = session.call {
             authorizationService.update(foundAuthorization)
             authorizationService.read(personsId.toString()).get()
         }
 
         then: "the reread object has been updated"
-        foundAuthorization.roles.contains(RoleType.USER)
+        foundAuthorization.roles.contains(Role.USER)
         foundAuthorization.roles.size() == 1
 
         when: "the autorization is deleted"
@@ -77,7 +76,7 @@ class PersonAuthorizationServiceSpec extends Specification {
         }
 
         then: "it can't be found anymore"
-        Optional<PersonAuthorization> optional = session.call {
+        Optional<Authorization> optional = session.call {
             authorizationService.read(personsId.toString())
         }
         !optional.present

@@ -2,7 +2,7 @@ package ch.haeuslers.bookr.control;
 
 import ch.haeuslers.bookr.entity.Booking;
 import ch.haeuslers.bookr.entity.Person;
-import ch.haeuslers.bookr.entity.RoleType;
+import ch.haeuslers.bookr.entity.Role;
 
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -12,7 +12,6 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -94,10 +93,10 @@ public class BookingService {
     }
 
     private boolean hasOnlyUserRole() {
-        return hasRole(RoleType.USER) && !hasRole(RoleType.MANAGER) && !hasRole(RoleType.ADMINISTRATOR);
+        return hasRole(Role.USER) && !hasRole(Role.MANAGER) && !hasRole(Role.ADMINISTRATOR);
     }
 
-    private boolean hasRole(RoleType role) {
+    private boolean hasRole(Role role) {
         return context.isCallerInRole(role.toString());
     }
 

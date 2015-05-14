@@ -25,7 +25,7 @@ Needs PersistenceUnit named "bookr"
       <login-module code="Database" flag="required">
           <module-option name="dsJndiName" value="java:jboss/datasources/BookrDS"/>
           <module-option name="principalsQuery" value="SELECT pwd.password AS passwd FROM BOOKR_PASSWORD AS pwd JOIN BOOKR_PERSON AS p ON pwd.PERSON_ID = p.ID AND p.PRINCIPALNAME = ?"/>
-          <module-option name="rolesQuery" value="SELECT par.role AS role, 'Roles' FROM BOOKR_PERSON p, BOOKR_PERSON_AUTHORIZATION_ROLE par WHERE p.id = par.person_authorization_id AND p.principalName = ?"/>
+          <module-option name="rolesQuery" value="SELECT par.role AS role, 'Roles' FROM BOOKR_PERSON p, BOOKR_AUTHORIZATION_ROLE par WHERE p.id = par.authorization_id AND p.principalName = ?"/>
       </login-module>
   </authentication>
 </security-domain>
