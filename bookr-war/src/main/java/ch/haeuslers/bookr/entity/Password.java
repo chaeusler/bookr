@@ -7,7 +7,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "BOOKR_PASSWORD")
+@Table(name = "PASSWORD")
 public class Password implements Serializable {
 
     @Id

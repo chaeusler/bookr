@@ -56,7 +56,7 @@ class RoleQuerySpec extends Specification {
         em.joinTransaction()
         Query q = em.createNativeQuery(
             "SELECT ar.role \"role\", 'Roles' " +
-                "FROM BOOKR_PERSON p, BOOKR_AUTHORIZATION_ROLE ar " +
+                "FROM PERSON p, AUTHORIZATION_ROLE ar " +
                 "WHERE p.id = ar.authorization_id AND p.principalName = 'principal'")
         List results = q.getResultList();
 

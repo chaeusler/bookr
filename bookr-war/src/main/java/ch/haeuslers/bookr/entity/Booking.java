@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @BookingCheck
 @Entity
-@Table(name = "BOOKR_BOOKING")
+@Table(name = "BOOKING")
 @NamedQueries({
 @NamedQuery(name = Booking.QUERY_FIND_OVERLAPPING,
 query = "SELECT b " +

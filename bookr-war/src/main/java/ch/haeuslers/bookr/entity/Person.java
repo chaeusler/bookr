@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "BOOKR_PERSON")
+@Table(name = "PERSON")
 @NamedQueries({
         @NamedQuery(name = Person.QUERY_FIND_BY_PRINCIPAL_NAME, query = "SELECT u FROM Person u WHERE u.principalName = :principalName"),
         @NamedQuery(name = Person.QUERY_ALL, query = "FROM Person")

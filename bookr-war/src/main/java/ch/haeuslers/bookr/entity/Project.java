@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "BOOKR_PROJECT")
+@Table(name = "PROJECT")
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Project implements Serializable {
@@ -27,7 +27,7 @@ public class Project implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name="BOOKR_PROJECT_PERSON",
+        name="PROJECT_PERSON",
         joinColumns = @JoinColumn(name = "project_id")
     )
     private Set<Person> persons;

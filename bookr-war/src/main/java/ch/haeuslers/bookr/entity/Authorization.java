@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "BOOKR_AUTHORIZATION")
+@Table(name = "AUTHORIZATION")
 public class Authorization implements Serializable {
 
     @Id
@@ -20,7 +20,7 @@ public class Authorization implements Serializable {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     @JoinTable(
-        name = "BOOKR_AUTHORIZATION_ROLE",
+        name = "AUTHORIZATION_ROLE",
         joinColumns = @JoinColumn(name = "authorization_id")
     )
     private Set<Role> roles;
