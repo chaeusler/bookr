@@ -56,9 +56,4 @@ public class PersonResource {
         personService.delete(id);
     }
 
-    @POST
-    @Path("{id}/setPassword")
-    public void setPassword(@PathParam("id") String personId, @FormParam("password") @NotNull String password) throws AuthException{
-       personService.setPassword(personId, password);
-    }
 }

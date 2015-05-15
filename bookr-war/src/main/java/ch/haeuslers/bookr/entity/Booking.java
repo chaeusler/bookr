@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @BookingCheck
 @Entity
-@Table(name = "BOOKING")
+@Table(name = "BOOKR_BOOKING")
 @NamedQueries({
 @NamedQuery(name = Booking.QUERY_FIND_OVERLAPPING,
 query = "SELECT b " +
@@ -20,7 +20,7 @@ query = "SELECT b " +
 "WHERE b.start >= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end >= :endDate" +
 "   OR b.start <= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end <= :endDate"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USER, query = "SELECT b FROM Booking b WHERE b.person = :user"),
-@NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USERNAME, query = "SELECT b FROM Booking b WHERE b.person.principalName = :username"),
+@NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USERNAME, query = "SELECT b FROM Booking b WHERE b.person.name = :username"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL, query = "SELECT b FROM Booking b"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE, query = "SELECT b FROM Booking b WHERE b.start <= :fromDate"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE_TO_DATE, query = "SELECT b FROM Booking b WHERE b.start BETWEEN :fromDate AND :toDate")

@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "PROJECT")
+@Table(name = "BOOKR_PROJECT")
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Project implements Serializable {

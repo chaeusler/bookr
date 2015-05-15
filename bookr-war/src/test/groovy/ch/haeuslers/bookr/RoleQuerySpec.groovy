@@ -1,6 +1,7 @@
 package ch.haeuslers.bookr
 
 import ch.haeuslers.bookr.control.EntityManagerProducer
+import ch.haeuslers.bookr.entity.Password
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Authorization
 import ch.haeuslers.bookr.entity.Role
@@ -44,26 +45,36 @@ class RoleQuerySpec extends Specification {
         utx.begin()
         em.joinTransaction()
 
-        Person person = new Person(principalName: "principal", id: UUID.randomUUID())
-        Authorization personAuthorization = new Authorization(person: person, roles: [Role.USER, Role.MANAGER])
+        Person person = new Person(name: "principal", id: UUID.randomUUID())
+        Authorization personAuthorization = new Authorization(person: person, principalName: "principal", roles: [Role.USER, Role.MANAGER])
+        Password password = new Password(id: person.id, authorization: personAuthorization, password: "top secret")
 
         em.persist(person)
         em.persist(personAuthorization)
+        em.persist(password)
         utx.commit()
 
-        when: "the query happens"
-        utx.begin()
-        em.joinTransaction()
-        Query q = em.createNativeQuery(
-            "SELECT ar.role \"role\", 'Roles' " +
-                "FROM PERSON p, AUTHORIZATION_ROLE ar " +
-                "WHERE p.id = ar.authorization_id AND p.principalName = 'principal'")
-        List results = q.getResultList();
+
+        when: "password query"
+        Query q1 = em.createNativeQuery(
+            "SELECT p.password " +
+                "FROM BOOKR_AUTHORIZATION a JOIN BOOKR_PASSWORD p " +
+                "ON a.person_id = p.authorization_id " +
+                "WHERE a.principalName = 'principal'")
+        List results1 = q1.getResultList();
 
         then:
-        results.size() == 2
+        results1.size() == 1
 
-        cleanup:
-        utx.commit()
+        when: "role query"
+        Query q2 = em.createNativeQuery(
+            "SELECT ar.role, 'Roles' " +
+                "FROM BOOKR_AUTHORIZATION a JOIN BOOKR_AUTHORIZATION_ROLE ar " +
+                "ON a.person_id = ar.authorization_id " +
+                "WHERE a.principalName = 'principal'")
+        List results2 = q2.getResultList();
+
+        then:
+        results2.size() == 2
     }
 }

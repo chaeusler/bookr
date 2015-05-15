@@ -60,9 +60,9 @@ class BookingServiceSpec extends Specification {
     Project theProject
 
     def setup() {
-        theUser = new Person(id: UUID.randomUUID().toString(), principalName: 'user')
+        theUser = new Person(id: UUID.randomUUID().toString(), name: 'user')
         theProject = new Project(id: UUID.randomUUID().toString(), name: 'the name', persons: [theUser])
-        anotherPerson = new Person(id: UUID.randomUUID().toString(), principalName: 'another user')
+        anotherPerson = new Person(id: UUID.randomUUID().toString(), name: 'another user')
 
         utx.begin()
         em.joinTransaction()

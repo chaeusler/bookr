@@ -14,7 +14,6 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.security.auth.message.AuthException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,20 +33,12 @@ public class PersonService {
     @RolesAllowed("ADMINISTRATOR")
     public void create(Person person) {
         em.persist(person);
-        createAndPersistAuthFor(person);
-    }
-
-    private void createAndPersistAuthFor(Person person) {
-        Authorization authorization = new Authorization();
-        authorization.getRoles().add(Role.USER);
-        authorization.setPerson(person);
-        em.persist(authorization);
     }
 
     @PermitAll
     public Person update(Person person) {
         if (context.isCallerInRole("ADMINISTRATOR")
-            || context.getCallerPrincipal().getName().equalsIgnoreCase(person.getPrincipalName())) {
+            || context.getCallerPrincipal().getName().equalsIgnoreCase(person.getName())) {
             return em.merge(person);
         } else {
             throw new EJBAccessException("only for administrators or the user itself");
@@ -73,38 +64,17 @@ public class PersonService {
             .findFirst();
     }
 
-    @PermitAll // secured inside
-    public void setPassword(String personId, String password) throws AuthException {
-        Optional<Person> person = read(personId);
-
-        if (!person.isPresent()) {
-            return;// TODO what do?
-        }
-        if (context.isCallerInRole("ADMINISTRATOR")
-            || context.getCallerPrincipal().getName().equals(person.get().getPrincipalName())) {
-            passwordService.updatePassword(person.get(), password);
-        } else {
-            throw new EJBAccessException("only for administrators or the user itself");
-        }
-    }
-
     @RolesAllowed("ADMINISTRATOR")
     public void delete(Person person) {
         // TODO don't remove - set inactive instead
         person = em.merge(person);
-        remove(person);
+        em.remove(person);
     }
 
     @RolesAllowed("ADMINISTRATOR")
     public void delete(String id) {
         // TODO don't remove - set inactive instead
         Person person = read(id).get();
-        remove(person);
-    }
-
-    private void remove(Person person) {
-        Authorization authorization = em.find(Authorization.class, person.getId());
-        em.remove(authorization);
         em.remove(person);
     }
 }

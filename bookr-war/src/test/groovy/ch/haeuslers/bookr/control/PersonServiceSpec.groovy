@@ -48,7 +48,7 @@ class PersonServiceSpec extends Specification {
 
     def "create and get it back as administrator"() {
         setup:
-        Person person = new Person(principalName: '1', id: UUID.randomUUID())
+        Person person = new Person(name: '1', id: UUID.randomUUID())
         LoginSession session = LoginSession.loginAsAdministrator()
 
         when:
@@ -57,7 +57,7 @@ class PersonServiceSpec extends Specification {
         then:
         service.getAll().contains(person)
         service.getAll().size() == 1
-        service.getAll().get(0).getPrincipalName().equals('1')
+        service.getAll().get(0).getName().equals('1')
 
         cleanup:
         session.logout()
@@ -65,7 +65,7 @@ class PersonServiceSpec extends Specification {
 
     def "create and get it back - without admin role - throws exception"() {
         setup:
-        Person person = new Person(principalName: '2', id: UUID.randomUUID())
+        Person person = new Person(name: '2', id: UUID.randomUUID())
         LoginSession session = LoginSession.loginAsUser()
 
         when:
@@ -80,7 +80,7 @@ class PersonServiceSpec extends Specification {
 
     def "create and delete it afterwards"() {
         setup:
-        Person person = new Person(principalName: '3', id: UUID.randomUUID())
+        Person person = new Person(name: '3', id: UUID.randomUUID())
         LoginSession session = LoginSession.loginAsAdministrator()
 
         when:
@@ -102,7 +102,7 @@ class PersonServiceSpec extends Specification {
     def "create, find and update as administrator"() {
         setup:
         UUID id = UUID.randomUUID()
-        Person person = new Person(principalName: '4', id: id)
+        Person person = new Person(name: '4', id: id)
         LoginSession session = LoginSession.loginAsAdministrator()
 
         when: 'create person'
@@ -118,11 +118,11 @@ class PersonServiceSpec extends Specification {
         foundPerson.get().equals(person)
 
         when: 'update the principalName'
-        foundPerson.get().principalName = 'new Name'
+        foundPerson.get().name = 'new Name'
         def updated = session.call { service.update(foundPerson.get()) }
 
         then: 'verify the updated entity'
-        updated.principalName.equals('new Name')
+        updated.name.equals('new Name')
 
         cleanup:
         session.logout()

@@ -7,22 +7,34 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "PASSWORD")
+@Table(name = "BOOKR_PASSWORD")
 public class Password implements Serializable {
 
     @Id
-    @ManyToOne(optional = false, cascade = CascadeType.REMOVE)
-    private Person person;
+    @Column(name = "authorization_id")
+    private String id; // needed to get the mapping working
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "authorization_id")
+    private Authorization authorization;
 
     @NotNull
     private String password;
 
-    public Person getPerson() {
-        return person;
+    public String getId() {
+        return id;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 
     public String getPassword() {
@@ -38,11 +50,11 @@ public class Password implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Password password1 = (Password) o;
-        return Objects.equals(person, password1.person) && Objects.equals(password, password1.password);
+        return Objects.equals(authorization, password1.authorization) && Objects.equals(password, password1.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(person, password);
+        return Objects.hash(authorization, password);
     }
 }

@@ -38,14 +38,16 @@ class PersonAuthorizationServiceSpec extends Specification {
     @Inject
     AuthorizationService authorizationService
 
-    def "rean and update as admin"() {
+    def "read and update as admin"() {
         setup:
         LoginSession session = LoginSession.loginAsAdministrator()
-        Person user = new Person(id: UUID.randomUUID().toString(), principalName: 'wertwertwert')
+        Person user = new Person(id: UUID.randomUUID().toString(), name: 'wertwertwert')
+        Authorization authorization = new Authorization(person: user, principalName: 'principalname')
 
-        when: "create user and read authorisation"
+        when: "create user and authorization"
         Authorization foundAuthorization = session.call {
             personService.create(user)
+            authorizationService.create(authorization)
             authorizationService.read(user.id).get()
         }
 
@@ -66,6 +68,7 @@ class PersonAuthorizationServiceSpec extends Specification {
 
         when: "the user is deleted"
         Optional<Authorization> optional = session.call {
+            authorizationService.delete(user.id)
             personService.delete(user)
             authorizationService.read(user.id)
         }

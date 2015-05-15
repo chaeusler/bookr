@@ -55,7 +55,7 @@ class ProjectServiceSpec extends Specification {
         foundProject.equals(project)
 
         when: "the persons are added"
-        Person person = new Person(id: UUID.randomUUID(), principalName: 'the first')
+        Person person = new Person(id: UUID.randomUUID(), name: 'the first')
         session.call {
             personService.create(person)
         }

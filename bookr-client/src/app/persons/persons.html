@@ -6,8 +6,8 @@
   <tr ng-repeat="person in persons">
     <td>
       <!-- editable username (text with validation) -->
-        <span editable-text="person.principalName" e-name="principalName" e-form="rowform" e-required>
-          {{ person.principalName || 'empty' }}
+        <span editable-text="person.name" e-name="name" e-form="rowform" e-required>
+          {{ person.name || 'empty' }}
         </span>
     </td>
     <td style="white-space: nowrap">

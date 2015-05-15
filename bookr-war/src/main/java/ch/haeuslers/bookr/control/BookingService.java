@@ -85,7 +85,7 @@ public class BookingService {
     private void ensureEditRights(Booking booking) throws IllegalAccessException {
         if (hasOnlyUserRole()) {
             String principalName = context.getCallerPrincipal().getName();
-            if (!principalName.equals(booking.getPerson().getPrincipalName())) {
+            if (!principalName.equals(booking.getPerson().getName())) {
                 // abort because principal with the the only role user can't edit foreign bookings
                 throw new IllegalAccessException("not allowed to edit foreign bookings");
             }

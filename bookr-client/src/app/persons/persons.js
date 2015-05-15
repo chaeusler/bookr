@@ -40,7 +40,7 @@ angular.module('bookr.persons', ['uuid', 'bookr.base'])
     $scope.addPerson = function() {
       var newPerson = new Person({
         id: uuid.v4(),
-        principalName: ''
+        name: ''
       });
       newPerson.$save();
       $scope.persons.push(newPerson);
