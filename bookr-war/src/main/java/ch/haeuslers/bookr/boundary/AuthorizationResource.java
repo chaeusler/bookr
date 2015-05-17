@@ -4,7 +4,6 @@ import ch.haeuslers.bookr.control.AuthorizationService;
 import ch.haeuslers.bookr.entity.Authorization;
 
 import javax.inject.Inject;
-import javax.websocket.server.PathParam;
 import javax.ws.rs.*;
 import java.util.List;
 

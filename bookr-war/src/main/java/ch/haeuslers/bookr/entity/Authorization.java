@@ -1,7 +1,12 @@
 package ch.haeuslers.bookr.entity;
 
+import sun.jvm.hotspot.opto.PhaseRegAlloc;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,12 +17,15 @@ import java.util.Set;
 @NamedQueries(
     @NamedQuery(name = Authorization.QUERY_ALL, query = "FROM Authorization")
 )
+@XmlRootElement(name = "authorization")
 public class Authorization implements Serializable {
 
     public static final String QUERY_ALL = "Authorization.findAll";
 
     @Id
     @OneToOne(optional = false)
+    @XmlJavaTypeAdapter(PersonReferenceXmlAdapter.class)
+    @XmlAttribute(name = "id")
     private Person person;
 
     @NotNull
