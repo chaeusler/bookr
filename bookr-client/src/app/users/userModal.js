@@ -5,6 +5,16 @@ angular.module('bookr.users')
 
     $scope.user = user;
 
+    $scope.toggleRole = function(rolename) {
+      var roles = $scope.user.authorization.roles;
+      var index = roles.indexOf(rolename);
+      if (index == -1) {
+        roles.push(rolename);
+      } else {
+        roles.splice(index, 1);
+      }
+    };
+
     $scope.ok = function() {
       $modalInstance.close(user);
     };
