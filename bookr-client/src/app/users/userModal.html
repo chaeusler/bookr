@@ -1,0 +1,16 @@
+<div class="modal-header">
+  hello
+</div>
+<div class="modal-body">
+  <input type="text" ng-model="user.person.name" required="true"/>
+
+  <ul>
+    <li ng-repeat="role in user.authorization.roles">
+      {{role}}
+    </li>
+  </ul>
+</div>
+<div class="modal-footer">
+  <button class="btn-primary" ng-click="ok()">OK</button>
+  <button class="btn-warning" ng-click="cancel()">Cancel</button>
+</div>

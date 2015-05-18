@@ -6,16 +6,14 @@ angular.module('bookr',
     'bookr.error',
     'bookr.login',
     'bookr.home',
-    'bookr.persons',
-    'bookr.authorizations',
+    'bookr.users',
     'ngAnimate',
     'ngCookies',
     'ngTouch',
     'ngSanitize',
     'ngResource',
     'ngRoute',
-    'ui.bootstrap',
-    'xeditable'])
+    'ui.bootstrap'])
   .config(function ($urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
   })
