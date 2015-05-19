@@ -7,6 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -29,8 +30,11 @@ public class ProjectService {
         em.merge(project);
     }
 
-    public void delete(Project project) {
-        project = em.merge(project);
-        em.remove(project);
+    public void delete(String id) {
+        read(id).ifPresent(em::remove);
+    }
+
+    public List<Project> getAll() {
+        return em.createNamedQuery(Project.QUERY_ALL, Project.class).getResultList();
     }
 }

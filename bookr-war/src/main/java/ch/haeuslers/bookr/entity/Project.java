@@ -13,10 +13,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "BOOKR_PROJECT")
+@NamedQueries(@NamedQuery(name= Project.QUERY_ALL, query = "FROM Project"))
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Project implements Serializable {
 
+    public static final String QUERY_ALL = "Project.queryAll";
     @Id
     @XmlAttribute
     @ValidUUID

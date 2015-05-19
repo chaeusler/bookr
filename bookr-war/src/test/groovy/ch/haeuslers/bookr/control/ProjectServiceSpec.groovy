@@ -73,7 +73,7 @@ class ProjectServiceSpec extends Specification {
 
         when: "the autorization is deleted"
         session.call {
-            projectService.delete(foundProject)
+            projectService.delete(foundProject.id)
         }
 
         then: "it can't be found anymore"
