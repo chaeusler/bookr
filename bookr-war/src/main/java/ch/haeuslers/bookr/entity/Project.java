@@ -2,10 +2,8 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -29,9 +27,12 @@ public class Project implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name="PROJECT_PERSON",
-        joinColumns = @JoinColumn(name = "project_id")
+        name="BOOKR_PROJECT_PERSON",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "person_id")
     )
+    @XmlJavaTypeAdapter(PersonSetReferenceAdapter.class)
+    @XmlElement(name = "person-ids")
     private Set<Person> persons;
 
     public String getId() {

@@ -1,20 +1,15 @@
 package ch.haeuslers.bookr.entity;
 
-import ch.haeuslers.bookr.util.BeanLocator;
-
 import javax.persistence.EntityManager;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Optional;
 
-public class PersonReferenceXmlAdapter extends XmlAdapter<String, Person> {
-
-    Optional<EntityManager> em = Optional.empty();
+public class PersonReferenceXmlAdapter extends EntityXmlAdapter<String, Person> {
 
     @Override
     public Person unmarshal(String personId) throws Exception {
-        ensureEntityManager();
+        EntityManager em = getEntityManager();
 
-        return Optional.ofNullable(em.get().find(Person.class, personId))
+        return Optional.ofNullable(em.find(Person.class, personId))
             .orElseThrow(() -> new RuntimeException("unable to unmarshal person.id - entity not found"));
     }
 
@@ -23,11 +18,4 @@ public class PersonReferenceXmlAdapter extends XmlAdapter<String, Person> {
         return person.getId();
     }
 
-    private void ensureEntityManager() {
-        if (em.isPresent()) {
-            return;
-        }
-
-        em = Optional.of((EntityManager) BeanLocator.lookup("java:/entitymanager/bookr"));
-    }
 }
