@@ -8,6 +8,7 @@ angular.module('bookr',
     'bookr.home',
     'bookr.users',
     'bookr.projects',
+    'bookr.bookings',
     'ngAnimate',
     'ngCookies',
     'ngTouch',
@@ -50,7 +51,19 @@ angular.module('bookr',
     // Expose $state and $stateParams to the <body> tag
     $scope.$state = $state;
     $scope.$stateParams = $stateParams;
-  });
+  })
+  .factory('Person', ['$resource', function ($resource) {
+    return $resource('http://localhost:8080/bookr/rest/v1/persons/:personId', {personId: '@id'});
+  }])
+  .factory('Project', ['$resource', function ($resource) {
+    return $resource('http://localhost:8080/bookr/rest/v1/projects/:projectId', {projectId: '@id'});
+  }])
+  .factory('Booking', ['$resource', function ($resource) {
+    return $resource('http://localhost:8080/bookr/rest/v1/bookings/:bookingId', {bookingId: '@id'});
+  }])
+  .factory('Authorization', ['$resource', function ($resource) {
+    return $resource('http://localhost:8080/bookr/rest/v1/authorizations/:authorizationId', {authorizationId: '@id'});
+  }]);
 
 
 

@@ -1,0 +1,37 @@
+<table class="table">
+  <tr>
+    <th>
+      Description
+    </th>
+    <th>
+      Person
+    </th>
+    <th>
+      Project
+    </th>
+    <th>
+      Start
+    </th>
+    <th>
+      End
+    </th>
+  </tr>
+
+  <tr ng-repeat="booking in bookings" ng-click="detail(booking)">
+    <td>
+      {{booking.description}}
+    </td>
+    <td>
+      {{getPersonFor(booking).name}}
+    </td>
+    <td>
+      {{getProjectFor(booking).name}}
+    </td>
+    <td>
+      {{formatDate(booking.start)}}
+    </td>
+    <td>
+      {{formatDate(booking.end)}}
+    </td>
+  </tr>
+</table>

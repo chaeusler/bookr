@@ -6,7 +6,7 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
       .state('app.projects', {
         url: '/projects',
         abstract: true,
-        templateUrl: 'app/projects/projects.html',
+        template: '<div ui-view></div>',
         controller: 'ProjectsController'
       })
       .state('app.projects.list', {
