@@ -13,6 +13,7 @@ import org.junit.runner.RunWith
 import spock.lang.Ignore
 import spock.lang.Specification
 
+import javax.ejb.EJBAccessException
 import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.transaction.UserTransaction
@@ -118,7 +119,7 @@ class BookingServiceSpec extends Specification {
 
         when: "we delete the booking"
         Optional<Booking> deleted = session.call {
-            bookingService.delete(foundBooking)
+            bookingService.delete(foundBooking.id)
             bookingService.read(foundBooking.id)
         }
 
@@ -148,7 +149,7 @@ class BookingServiceSpec extends Specification {
         }
 
         then:
-        thrown PrivilegedActionException
+        thrown EJBAccessException
     }
 
     def "create as right user successes"() {
@@ -174,7 +175,7 @@ class BookingServiceSpec extends Specification {
 
         when: "we delete the booking"
         Optional<Booking> deleted = session.call {
-            bookingService.delete(foundBooking)
+            bookingService.delete(foundBooking.id)
             bookingService.read(foundBooking.id)
         }
 
@@ -215,8 +216,8 @@ class BookingServiceSpec extends Specification {
 
         cleanup:
         session.call {
-            bookingService.delete(booking1)
-            bookingService.delete(booking2)
+            bookingService.delete(booking1.id)
+            bookingService.delete(booking2.id)
         }
     }
 
@@ -256,8 +257,8 @@ class BookingServiceSpec extends Specification {
 
         cleanup:
         session.call {
-            bookingService.delete(booking1)
-            bookingService.delete(booking2)
+            bookingService.delete(booking1.id)
+            bookingService.delete(booking2.id)
         }
     }
 }

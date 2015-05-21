@@ -1,7 +1,5 @@
 package ch.haeuslers.bookr.entity;
 
-import sun.jvm.hotspot.opto.PhaseRegAlloc;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;

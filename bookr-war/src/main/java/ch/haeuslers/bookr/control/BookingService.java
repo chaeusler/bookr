@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -30,7 +31,7 @@ public class BookingService {
     @EJB
     PersonService personService;
 
-    public void create(Booking booking) throws IllegalAccessException {
+    public void create(Booking booking) {
         ensureEditRights(booking);
 
         // TODO validate person needs to be in project
@@ -46,7 +47,7 @@ public class BookingService {
         return Optional.ofNullable(em.find(Booking.class, id));
     }
 
-    public Booking update(Booking booking) throws IllegalAccessException {
+    public Booking update(Booking booking) {
         ensureEditRights(booking);
 
         // TODO validate person needs to be in project
@@ -57,9 +58,8 @@ public class BookingService {
         return em.merge(booking);
     }
 
-    public void delete(Booking booking) {
-        booking = em.merge(booking);
-        em.remove(booking);
+    public void delete(String bookingId) {
+        read(bookingId).ifPresent(em::remove);
     }
 
     public List<Booking> listMine() {
@@ -82,12 +82,12 @@ public class BookingService {
         // TODO use count in DB
     }
 
-    private void ensureEditRights(Booking booking) throws IllegalAccessException {
+    private void ensureEditRights(Booking booking) {
         if (hasOnlyUserRole()) {
             String principalName = context.getCallerPrincipal().getName();
             if (!principalName.equals(booking.getPerson().getName())) {
                 // abort because principal with the the only role user can't edit foreign bookings
-                throw new IllegalAccessException("not allowed to edit foreign bookings");
+                throw new EJBAccessException("not allowed to edit foreign bookings");
             }
         }
     }
@@ -104,5 +104,10 @@ public class BookingService {
         return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USERNAME, Booking.class)
             .setParameter("username", user)
             .getResultList();
+    }
+
+    @RolesAllowed({"MANAGER", "ADMINISTRATOR"})
+    public List<Booking> getAll() {
+        return em.createNamedQuery(Booking.QUERY_FIND_ALL, Booking.class).getResultList();
     }
 }
