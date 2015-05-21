@@ -19,7 +19,7 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
         controller: 'ProjectsDetailsController'
       })
   })
-  .controller('ProjectsController', ['$scope', '$modal', 'Project', '$location', function ($scope, $modal, Project, $location) {
+  .controller('ProjectsController', ['$scope', 'Project', '$location', function ($scope, Project, $location) {
     $scope.projects = Project.query();
 
     $scope.project = {};
@@ -30,27 +30,7 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
       $location.path("/projects/" + project.id);
     };
 
-    $scope.open = function (selectedProject) {
-
-      var modalInstance = $modal.open({
-        templateUrl: 'app/projects/projectModal.html',
-        controller: 'ProjectModalController',
-        resolve: {
-          project: function () {
-            return selectedProject;
-          }
-        }
-      });
-      modalInstance.result.then(function (project) {
-        // TODO only submit when changed
-        Project.update(project);
-      }, function () {
-        $scope.projects = Project.query();
-      });
-
-    };
-
-  }]).controller('ProjectsDetailsController', ['$scope', 'Person', function($scope, Person) {
+  }]).controller('ProjectsDetailsController', ['$scope', '$state', 'Person', 'Project', function($scope, $state, Person, Project) {
 
     $scope.persons = [];
 
@@ -59,4 +39,34 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
         $scope.persons.push(person);
       });
     });
+
+    $scope.allPersons = Person.query();
+
+    $scope.isPartOfIt = function(person) {
+      if ($scope.project['person-ids']) {
+        return $scope.project['person-ids'].indexOf(person.id) !== -1;
+      }
+      return false;
+    };
+
+    $scope.toggle = function(person) {
+      var personIds = $scope.project['person-ids'];
+      var index = personIds.indexOf(person.id);
+      if (index == -1) {
+        personIds.push(person.id);
+      } else {
+        personIds.splice(index, 1);
+      }
+    };
+
+    $scope.update = function(){
+      Project.update($scope.project);
+      $state.go('app.projects.list');
+    };
+
+    $scope.cancel = function(){
+      $scope.projects = Project.query();
+      $state.go('app.projects.list');
+    }
+
   }]);
