@@ -18,8 +18,13 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
         templateUrl: 'app/bookings/bookings.detail.html',
         controller: 'BookingsDetailsController'
       })
+      .state('app.bookings.create', {
+        url: '/create',
+        templateUrl: 'app/bookings/bookings.create.html',
+        controller: 'BookingsCreateController'
+      })
   })
-  .controller('BookingsController', ['$scope', 'Booking', 'Person', 'Project', '$location', function ($scope, Booking, Person, Project, $location) {
+  .controller('BookingsController', ['$scope', 'Booking', 'Person', 'Project', '$location', '$state', function ($scope, Booking, Person, Project, $location, $state) {
     $scope.bookings = Booking.query();
 
     $scope.personsMap = {};
@@ -37,6 +42,8 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
     });
 
     $scope.booking = {};
+
+    $scope.newBooking = {};
 
     $scope.getPersonFor = function(booking){
       return $scope.personsMap[booking['person-id']];
@@ -56,10 +63,30 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
       $location.path("/bookings/" + booking.id);
     };
 
-  }]).controller('BookingsDetailsController', ['$scope', '$state', 'Booking', function($scope, $state, Booking) {
+    $scope.createBooking = function () {
+      $state.go('app.bookings.create')
+    };
+
+  }])
+  .controller('BookingsDetailsController', ['$scope', '$state', 'Booking', function($scope, $state, Booking) {
 
     $scope.update = function(){
       Booking.update($scope.booking);
+      $state.go('app.bookings.list');
+    };
+
+    $scope.cancel = function(){
+      $scope.bookings = Booking.query();
+      $state.go('app.bookings.list');
+    }
+
+  }])
+  .controller('BookingsCreateController', ['$scope', '$state', 'rfc4122', 'Booking', function($scope, $state, uuid, Booking) {
+    $scope.newBooking = new Booking();
+
+    $scope.create = function(){
+      $scope.newBooking.id = uuid.v4();
+      $scope.newBooking.$save();
       $state.go('app.bookings.list');
     };
 

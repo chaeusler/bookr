@@ -1,0 +1,18 @@
+<form name="createBooking">
+  <label>Person
+    <select ng-model="newBooking['person-id']">
+      <option ng-repeat="person in personsMap" id="person.id">{{person.name}}</option>
+    </select>
+  </label>
+  <label>Project
+    <select ng-model="newBooking['project-id']">
+      <option ng-repeat="project in projectsMap" id="project.id">{{project.name}}</option>
+    </select>
+  </label>
+  <label>From
+    <input type="datetime" ng-model="newBooking.start"/>
+  </label>
+  <label>To
+    <input type="datetime" ng-model="newBooking.end"/>
+  </label>
+</form>
