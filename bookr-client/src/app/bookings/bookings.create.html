@@ -1,4 +1,4 @@
-<form name="createBooking">
+<form class="form-horizontal">
   <label>Person
     <select ng-model="newBooking['person-id']">
       <option ng-repeat="person in personsMap" id="person.id">{{person.name}}</option>
@@ -9,10 +9,16 @@
       <option ng-repeat="project in projectsMap" id="project.id">{{project.name}}</option>
     </select>
   </label>
-  <label>From
-    <input type="datetime" ng-model="newBooking.start"/>
+
+  <label>day
+    <input type="date"  datepicker-popup ng-model="day"/>
   </label>
-  <label>To
-    <input type="datetime" ng-model="newBooking.end"/>
+  <label>from
+    <timepicker ng-model="fromTime" show-meridian="false"/>
   </label>
+  <label>to
+    <timepicker ng-model="toTime" show-meridian="false"/>
+  </label>
+  <button class="btn btn-primary" ng-click="createBooking()">ok</button>
+  <button class="btn btn-default" ng-click="cancel()">cancel</button>
 </form>

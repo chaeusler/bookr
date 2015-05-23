@@ -84,8 +84,18 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
   .controller('BookingsCreateController', ['$scope', '$state', 'rfc4122', 'Booking', function($scope, $state, uuid, Booking) {
     $scope.newBooking = new Booking();
 
-    $scope.create = function(){
+    $scope.day = new Date();
+    $scope.fromTime = new Date();
+    $scope.toTime = new Date();
+
+    $scope.createBooking = function(){
       $scope.newBooking.id = uuid.v4();
+      $scope.newBooking.start = angular.copy($scope.day);
+      $scope.newBooking.start.setHours($scope.fromTime.getHours());
+      $scope.newBooking.start.setMinutes($scope.fromTime.getMinutes());
+      $scope.newBooking.end = angular.copy($scope.day);
+      $scope.newBooking.end.setHours($scope.toTime.getHours());
+      $scope.newBooking.end.setMinutes($scope.toTime.getMinutes());
       $scope.newBooking.$save();
       $state.go('app.bookings.list');
     };
