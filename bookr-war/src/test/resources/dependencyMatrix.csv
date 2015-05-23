@@ -1,0 +1,5 @@
+-,ch.haeuslers.bookr.boundary.*,ch.haeuslers.bookr.control.*,ch.haeuslers.bookr.entity.*,ch.haeuslers.bookr.util.*
+ch.haeuslers.bookr.boundary.*,-,yes,yes,yes
+ch.haeuslers.bookr.control.*,no,-,yes,yes
+ch.haeuslers.bookr.entity.*,no,no,-,yes
+ch.haeuslers.bookr.util.*,no,no,no,-
