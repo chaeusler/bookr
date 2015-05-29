@@ -1,4 +1,4 @@
-package ch.haeuslers.bookr.util;
+package ch.haeuslers.bookr.common;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

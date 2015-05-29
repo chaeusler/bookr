@@ -1,6 +1,6 @@
 package ch.haeuslers.bookr.entity;
 
-import ch.haeuslers.bookr.util.BeanLocator;
+import ch.haeuslers.bookr.common.BeanLocator;
 
 import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
