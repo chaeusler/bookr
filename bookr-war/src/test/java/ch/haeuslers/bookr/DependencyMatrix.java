@@ -7,22 +7,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DependencyMatrix {
     private static final String COL_SEPARATOR = ",";
     private static final String NO_DEP_ALLOWED = "no";
 
-    private final List<InvalidOutgoingDependencyPattern> invalidDependencies = new LinkedList<InvalidOutgoingDependencyPattern>();
+    private final List<InvalidOutgoingDependencyPattern> invalidDependencies = new LinkedList<>();
 
 
     public void parse(InputStream inputStream) {
         try {
-            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
-            try {
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(inputStream))) {
                 parse(r);
-            }
-            finally {
-                r.close();
             }
         }
         catch (IOException e) {
@@ -48,15 +45,15 @@ public class DependencyMatrix {
 
     @SuppressWarnings("unchecked")
     public String violationReport(Collection<JavaPackage> packages) {
-        Set<String> violations = new HashSet<String>();
+        Set<String> violations = new HashSet<>();
 
         for (JavaPackage dependentPackage : packages) {
             for (InvalidOutgoingDependencyPattern pattern : patternsForDependencPackage(dependentPackage)) {
-                for (JavaPackage outgoingDependency : (Collection<JavaPackage>)dependentPackage.getEfferents()) {
-                    if (pattern.outgoingDependencyPatternMatch(outgoingDependency)) {
-                        violations.add("Violation: " + pattern.getDependentPackagePattern() + " is dependent on " + outgoingDependency.getName() + "\n");
-                    }
-                }
+                violations.addAll(((Collection<JavaPackage>) dependentPackage.getEfferents())
+                    .stream()
+                    .filter(pattern::outgoingDependencyPatternMatch)
+                    .map(outgoingDependency -> "Violation: " + pattern.getDependentPackagePattern() + " is dependent on " + outgoingDependency.getName() + "\n")
+                    .collect(Collectors.toList()));
             }
         }
 
@@ -64,13 +61,10 @@ public class DependencyMatrix {
     }
 
     private List<InvalidOutgoingDependencyPattern> patternsForDependencPackage(JavaPackage dependentPackage) {
-        List<InvalidOutgoingDependencyPattern> patterns = new LinkedList<InvalidOutgoingDependencyPattern>();
-        for (InvalidOutgoingDependencyPattern pattern : invalidDependencies) {
-            if (pattern.dependentPackagePatternMatch(dependentPackage)) {
-                patterns.add(pattern);
-            }
-        }
-        return patterns;
+        return invalidDependencies
+            .stream()
+            .filter(pattern -> pattern.dependentPackagePatternMatch(dependentPackage))
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     private void addInvalidOutgoingDependencyPattern(String dependentPackage, String outgoingDependency) {
@@ -78,7 +72,7 @@ public class DependencyMatrix {
     }
 
     private LinkedList<String> readColumns(String line) {
-        LinkedList<String> columnValues = new LinkedList<String>();
+        LinkedList<String> columnValues = new LinkedList<>();
         StringTokenizer st = new StringTokenizer(line, COL_SEPARATOR);
         while (st.hasMoreTokens()) {
             String columnValue = st.nextToken();
@@ -96,8 +90,8 @@ public class DependencyMatrix {
         private final String outgoingDependencyPattern;
 
         /**
-         * @param dependentPackagePattern like "ch.zuehlke" or "ch.zuehlke.*"
-         * @param outgoingDependencyPattern like "ch.zuehlke" or "ch.zuehlke.*"
+         * @param dependentPackagePattern like "com.acme" or "com.acme.*"
+         * @param outgoingDependencyPattern like "com.acme" or "com.acme.*"
          */
         public InvalidOutgoingDependencyPattern(String dependentPackagePattern, String outgoingDependencyPattern) {
             this.dependentPackagePattern = dependentPackagePattern;

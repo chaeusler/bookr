@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.entity.Person
+import ch.haeuslers.bookr.util.LoggerProducer
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -22,11 +23,15 @@ class PersonServiceSpec extends Specification {
         ShrinkWrap.create(WebArchive.class, 'PersonServiceSpec.war')
             .addClass(PersonService.class)
             .addClass(PasswordService.class)
+            .addClass(PerformanceLogged.class)
+            .addClass(PerformanceLogger.class)
             .addPackage(Person.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(LoginSession.class)
             .addClass(EntityManagerProducer.class)
+            .addClass(LoggerProducer.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
+            .addAsResource("META-INF/beans.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
             .addAsResource("roles.properties")
@@ -52,7 +57,7 @@ class PersonServiceSpec extends Specification {
         LoginSession session = LoginSession.loginAsAdministrator()
 
         when:
-        session.call  { service.create(person) }
+        session.call { service.create(person) }
 
         then:
         service.getAll().contains(person)
@@ -69,7 +74,7 @@ class PersonServiceSpec extends Specification {
         LoginSession session = LoginSession.loginAsUser()
 
         when:
-        session.call  { service.create(person) }
+        session.call { service.create(person) }
 
         then:
         thrown EJBAccessException

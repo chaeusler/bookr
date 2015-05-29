@@ -1,8 +1,7 @@
 package ch.haeuslers.bookr.control;
 
-import ch.haeuslers.bookr.entity.Authorization;
 import ch.haeuslers.bookr.entity.Person;
-import ch.haeuslers.bookr.entity.Role;
+import org.slf4j.Logger;
 
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -19,6 +18,7 @@ import java.util.Optional;
 
 @Stateless
 @DeclareRoles({"ADMINISTRATOR", "USER", "MANAGER"})
+@PerformanceLogged
 public class PersonService {
 
     @Inject
