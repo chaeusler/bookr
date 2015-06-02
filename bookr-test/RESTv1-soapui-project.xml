@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="23cb65de-523f-4803-a7dc-2090cc59c795" activeEnvironment="Default" name="bookr RESTv1" resourceRoot="" soapui-version="5.1.3" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings/>
+  <con:interface xsi:type="con:RestService" id="c107297f-0ed7-438d-b533-cf7e4cfbbdf3" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+
+
+    
+    <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
+      <con:endpoint>http://localhost:8080</con:endpoint>
+    </con:endpoints>
+    <con:resource name="V1" path="/bookr/rest/v1" id="88daeab4-6687-41cc-8a2c-4faa49c41491">
+      <con:settings/>
+      <con:parameters/>
+      <con:resource name="persons" path="persons" id="e0f5118f-f73a-4aef-bf1a-122ed9a5833b">
+        <con:settings/>
+        <con:parameters>
+
+          <con:parameter>
+            <con:name>id</con:name>
+            <con:value/>
+            <con:style>TEMPLATE</con:style>
+            <con:default/>
+            <con:description xsi:nil="true"/>
+          </con:parameter>
+        </con:parameters>
+        <con:resource name="persons/{id}" path="{id}" id="c51435bc-4b58-4f3b-99dd-9bbe691bd715">
+          <con:settings/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>id</con:name>
+              <con:value>id</con:value>
+              <con:style>TEMPLATE</con:style>
+              <con:default>id</con:default>
+            </con:parameter>
+          </con:parameters>
+          <con:method name="get" id="25974187-288d-4e1e-adb0-324416132588" method="GET">
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType>application/json</con:mediaType>
+              <con:status>200</con:status>
+              <con:params/>
+              <con:element xmlns:f110="http://localhost/bookr/rest/v1/persons/3811f110-6601-4584-8aff-6c242dd25705">
+                f110:Response
+              </con:element>
+            </con:representation>
+            <con:request name="specific Person" id="ee5504f7-97cd-4528-9d0f-549196ff3737" mediaType="application/json">
+              <con:settings>
+                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                </con:setting>
+              </con:settings>
+              <con:endpoint>http://localhost:8080</con:endpoint>
+              <con:request/>
+              <con:credentials>
+                <con:authType>No Authorization</con:authType>
+              </con:credentials>
+              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+              <con:jmsPropertyConfig/>
+              <con:parameters/>
+            </con:request>
+          </con:method>
+          <con:method name="create" id="d88ed222-9337-4249-acbe-53ca61d984af" method="POST">
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType xsi:nil="true"/>
+              <con:status>204</con:status>
+              <con:params/>
+              <con:element>data</con:element>
+            </con:representation>
+            <con:representation type="REQUEST">
+              <con:mediaType>application/json</con:mediaType>
+              <con:params/>
+            </con:representation>
+            <con:representation type="FAULT">
+              <con:mediaType>text/html; charset=UTF-8</con:mediaType>
+              <con:status>500</con:status>
+              <con:params/>
+              <con:element>html</con:element>
+            </con:representation>
+            <con:request name="create Person" id="63d2bb83-9340-46dd-8d9e-06effa3ffaf1" mediaType="application/json" postQueryString="false">
+              <con:settings>
+                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                </con:setting>
+              </con:settings>
+              <con:endpoint>http://localhost:8080</con:endpoint>
+              <con:request/>
+              <con:credentials>
+                <con:authType>No Authorization</con:authType>
+              </con:credentials>
+              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+              <con:jmsPropertyConfig/>
+              <con:parameters/>
+            </con:request>
+          </con:method>
+          <con:method name="delete" id="8c336698-1d41-4e7a-a60d-de321243c391" method="DELETE">
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="RESPONSE">
+              <con:mediaType xsi:nil="true"/>
+              <con:status>204</con:status>
+              <con:params/>
+              <con:element>data</con:element>
+            </con:representation>
+            <con:representation type="REQUEST">
+              <con:mediaType>application/json</con:mediaType>
+              <con:params/>
+            </con:representation>
+            <con:request name="delete person" id="c33e953d-3528-4809-bfcb-7879b7ff33ae" mediaType="application/json" postQueryString="false">
+              <con:settings>
+                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                </con:setting>
+              </con:settings>
+              <con:endpoint>http://localhost:8080</con:endpoint>
+              <con:request/>
+              <con:credentials>
+                <con:authType>No Authorization</con:authType>
+              </con:credentials>
+              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+              <con:jmsPropertyConfig/>
+              <con:parameters/>
+            </con:request>
+          </con:method>
+          <con:method name="update" id="881eb9de-62d3-4c46-bf22-e6d3f2f46c8a" method="PUT">
+            <con:settings/>
+            <con:parameters/>
+            <con:representation type="REQUEST">
+              <con:mediaType>application/json</con:mediaType>
+              <con:params/>
+            </con:representation>
+            <con:representation type="RESPONSE">
+              <con:mediaType xsi:nil="true"/>
+              <con:status>204</con:status>
+              <con:params/>
+              <con:element>data</con:element>
+            </con:representation>
+            <con:request name="update Person" id="45fb5126-f18c-46a3-a200-a5518b4bad25" mediaType="application/json" postQueryString="false">
+              <con:settings>
+                <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                </con:setting>
+              </con:settings>
+              <con:endpoint>http://localhost:8080</con:endpoint>
+              <con:request/>
+              <con:credentials>
+                <con:authType>No Authorization</con:authType>
+              </con:credentials>
+              <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+              <con:jmsPropertyConfig/>
+              <con:parameters>
+                <entry key="id" value="" xmlns="http://eviware.com/soapui/config"/>
+              </con:parameters>
+            </con:request>
+          </con:method>
+        </con:resource>
+        <con:method name="get" id="2c51e7bb-7c59-4634-aecc-9bf45d3e009a" method="GET">
+          <con:settings/>
+          <con:parameters/>
+          <con:representation type="RESPONSE">
+            <con:mediaType>application/json</con:mediaType>
+            <con:status>200</con:status>
+            <con:params/>
+            <con:element>Response</con:element>
+          </con:representation>
+
+          <con:request name="all" id="b3d511e7-8372-474c-bd84-5d3e2ae41091" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+              </con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost/bookr/rest/v1/persons/</con:originalUri>
+            <con:credentials>
+              <con:username>administrator</con:username>
+              <con:password>administrator</con:password>
+              <con:domain xsi:nil="true"/>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+            <con:parameterOrder>
+              <con:entry/>
+            </con:parameterOrder>
+          </con:request>
+        </con:method>
+
+
+      </con:resource>
+      <con:resource name="projects" path="projects" id="9c127808-f305-4827-a8b5-99c8c0cedab3">
+        <con:settings/>
+        <con:parameters/>
+        <con:method name="Method 1" id="be235686-ad00-402b-9b93-991f33e9cc5f" method="GET">
+          <con:settings/>
+          <con:parameters/>
+          <con:request name="Request 1" id="a601596a-8271-4532-9130-c63cab0315ff" mediaType="application/json">
+            <con:settings/>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:username>administrator</con:username>
+              <con:password>administrator</con:password>
+              <con:domain xsi:nil="true"/>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters/>
+          </con:request>
+        </con:method>
+      </con:resource>
+    </con:resource>
+  </con:interface>
+  <con:testSuite id="9c624afa-5ecb-4ee3-a0ab-ffb7fbe40724" name="Person crud">
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="f91243bc-638f-42ab-b0d6-c08995cf6de9" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Person CRUD" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="properties" name="uuid" id="8eafa341-dbb9-4515-9bd9-1072e137e11d">
+        <con:settings/>
+        <con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:properties>
+            <con:property>
+              <con:name>uuid</con:name>
+              <con:value>3811f110-6601-4584-8aff-6c242dd25705</con:value>
+            </con:property>
+          </con:properties>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="create - create Person" id="283352c1-3879-4eb1-a09c-60ad4ed562a9">
+        <con:settings/>
+        <con:config service="http://localhost:8080" resourcePath="/bookr/rest/v1/persons/{id}" methodName="create" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="create - create Person" id="63d2bb83-9340-46dd-8d9e-06effa3ffaf1" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+              </con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:request>{
+              "id": "${uuid#uuid}",
+              "name": "theName"
+              }
+            </con:request>
+            <con:originalUri>http://localhost/bookr/rest/v1/persons/3811f110-6601-4584-8aff-6c242dd25705
+            </con:originalUri>
+            <con:assertion type="Simple Contains" id="bd4958ab-f082-4e10-aeaa-46f6a37382fe" name="Contains">
+              <con:configuration><token>dfsddsfdsf</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration>
+            </con:assertion><con:assertion type="Status" id="bd4958ab-f082-4e10-aeaa-46f6a37382fe" name="Contains 2">
+              <con:configuration>
+                <token/>
+                <ignoreCase>false</ignoreCase>
+                <useRegEx>false</useRegEx>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="${uuid#uuid}" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+
+
+      <con:testStep type="restrequest" name="get - specific Person" id="29be48c8-8471-4922-93ee-bfcb55eec4a8">
+        <con:settings/>
+        <con:config service="http://localhost:8080" resourcePath="/bookr/rest/v1/persons/{id}" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="get - specific Person" id="ee5504f7-97cd-4528-9d0f-549196ff3737" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+              </con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost/bookr/rest/v1/persons/3811f110-6601-4584-8aff-6c242dd25705
+            </con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="${uuid#uuid}" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="update - update Person" id="e2a01dee-be12-4809-80aa-b4f9fec38ef3">
+        <con:settings/>
+        <con:config service="http://localhost:8080" resourcePath="/bookr/rest/v1/persons/{id}" methodName="update" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="update - update Person" id="45fb5126-f18c-46a3-a200-a5518b4bad25" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+              </con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:request>{
+              "id": "${uuid#uuid}",
+              "name": "theOtherName"
+              }
+            </con:request>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="${uuid#uuid}" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="get - specific Person updated" id="6a4ba065-5906-4488-869f-19ae2cb0701a">
+        <con:settings/>
+        <con:config service="http://localhost:8080" resourcePath="/bookr/rest/v1/persons/{id}" methodName="get" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="get - specific Person updated" id="ee5504f7-97cd-4528-9d0f-549196ff3737" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+              </con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:request/>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="${uuid#uuid}" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:testStep type="restrequest" name="delete - delete person" id="2f5bff89-3952-4d44-a0e7-f937bce9519d">
+        <con:settings/>
+        <con:config service="http://localhost:8080" resourcePath="/bookr/rest/v1/persons/{id}" methodName="delete" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="delete - delete person" id="c33e953d-3528-4809-bfcb-7879b7ff33ae" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+              </con:setting>
+            </con:settings>
+            <con:endpoint>http://localhost:8080</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://localhost/bookr/rest/v1/persons/</con:originalUri>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:parameters>
+              <entry key="id" value="${uuid#uuid}" xmlns="http://eviware.com/soapui/config"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+    </con:testCase>
+    <con:properties/>
+  </con:testSuite>
+  <con:endpointStrategy xsi:type="con:DefaultEndpointStrategy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:endpoint mode="OVERRIDE" username="administrator" password="administrator">http://localhost:8080</con:endpoint>
+  </con:endpointStrategy>
+  <con:properties/>
+  <con:wssContainer/>
+  <con:oAuth2ProfileContainer/>
+  <con:sensitiveInformation/>
+</con:soapui-project>
