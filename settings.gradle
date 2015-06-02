@@ -1,1 +1,1 @@
-include 'bookr-client', 'bookr-war', 'bookr-test', 'modules:common', 'modules:person', 'modules:project', 'modules:booking', 'modules:autorization'
+include 'bookr-client', 'bookr-war', 'bookr-test', 'modules:core', 'modules:person', 'modules:project', 'modules:booking', 'modules:authorization'
