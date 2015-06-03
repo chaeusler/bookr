@@ -3,7 +3,7 @@ package ch.haeuslers.bookr.booking.service;
 import ch.haeuslers.bookr.booking.api.Booking;
 import ch.haeuslers.bookr.core.common.Role;
 import ch.haeuslers.bookr.person.api.Person;
-import ch.haeuslers.bookr.person.service.PersonService;
+import ch.haeuslers.bookr.person.service.PersonServiceBean;
 
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -30,7 +30,7 @@ public class BookingService {
     SessionContext context;
 
     @EJB
-    PersonService personService;
+    PersonServiceBean personServiceBean;
 
     public void create(Booking booking) {
         ensureEditRights(booking);
@@ -65,7 +65,7 @@ public class BookingService {
 
     public List<Booking> listMine() {
         String principalName = context.getCallerPrincipal().getName();
-        Optional<Person> person = personService.getByPrincipalName(principalName);
+        Optional<Person> person = personServiceBean.getByPrincipalName(principalName);
         if (person.isPresent()) {
             return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USER, Booking.class).
                 setParameter("user", person.get()).

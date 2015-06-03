@@ -1,9 +1,14 @@
 package ch.haeuslers.bookr.authorization.service
 
-import JBossLoginContextFactory
-import Person
-import Authorization
-import Role
+import ch.haeuslers.bookr.authorization.api.Authorization
+import ch.haeuslers.bookr.core.CoreDeployment
+import ch.haeuslers.bookr.core.JBossLoginContextFactory
+import ch.haeuslers.bookr.core.LoginSession
+import ch.haeuslers.bookr.core.common.EntityManagerProducer
+import ch.haeuslers.bookr.core.common.Role
+import ch.haeuslers.bookr.person.api.Person
+import ch.haeuslers.bookr.person.api.PersonService
+import ch.haeuslers.bookr.person.service.PersonDeployment
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -19,13 +24,10 @@ class PersonAuthorizationServiceSpec extends Specification {
     @Deployment
     def static WebArchive "create deployment"() {
         ShrinkWrap.create(WebArchive.class, 'PersonAuthorizationServiceSpec.war')
-            .addClass(PersonService.class)
             .addClass(AuthorizationService.class)
             .addClass(PasswordService.class)
-            .addPackage(Person.class.getPackage())
-            .addClass(JBossLoginContextFactory.class)
-            .addClass(LoginSession.class)
-            .addClass(EntityManagerProducer.class)
+            .addAsLibrary(PersonDeployment.personJar())
+            .addAsLibrary(CoreDeployment.core())
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")

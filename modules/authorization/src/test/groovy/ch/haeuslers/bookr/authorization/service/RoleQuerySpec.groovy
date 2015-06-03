@@ -1,5 +1,12 @@
 package ch.haeuslers.bookr.authorization.service
 
+import ch.haeuslers.bookr.authorization.api.Authorization
+import ch.haeuslers.bookr.authorization.api.Password
+import ch.haeuslers.bookr.core.CoreDeployment
+import ch.haeuslers.bookr.core.JBossLoginContextFactory
+import ch.haeuslers.bookr.core.common.EntityManagerProducer
+import ch.haeuslers.bookr.person.api.Person
+import ch.haeuslers.bookr.person.service.PersonDeployment
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -19,9 +26,8 @@ class RoleQuerySpec extends Specification {
     @Deployment
     def static WebArchive "create deployment"() {
         ShrinkWrap.create(WebArchive.class, 'PersonServiceSpec.war')
-            .addPackage(Person.class.getPackage())
-            .addClass(EntityManagerProducer.class)
-            .addClass(JBossLoginContextFactory.class)
+            .addAsLibrary(CoreDeployment.core())
+            .addAsLibrary(PersonDeployment.personJar())
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")

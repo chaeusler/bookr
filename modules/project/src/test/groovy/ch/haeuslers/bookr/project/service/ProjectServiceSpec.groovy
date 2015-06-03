@@ -1,8 +1,10 @@
 package ch.haeuslers.bookr.project.service
 
-import JBossLoginContextFactory
-import Person
-import Project
+import ch.haeuslers.bookr.core.JBossLoginContextFactory
+import ch.haeuslers.bookr.core.LoginSession
+import ch.haeuslers.bookr.core.common.EntityManagerProducer
+import ch.haeuslers.bookr.person.service.PersonServiceBean
+import ch.haeuslers.bookr.project.api.Project
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -20,8 +22,7 @@ class ProjectServiceSpec extends Specification {
     def static WebArchive "create deployment"() {
         return ShrinkWrap.create(WebArchive.class, 'ProjectServiceSpec.war')
             .addClass(ProjectService.class)
-            .addClass(PersonService.class)
-            .addClass(PasswordService.class)
+            .addClass(PersonServiceBean.class)
             .addPackage(Project.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(LoginSession.class)
@@ -36,7 +37,7 @@ class ProjectServiceSpec extends Specification {
     ProjectService projectService
 
     @Inject
-    PersonService personService
+    PersonServiceBean personService
 
     def "crud as admin" (){
         setup:

@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.person.service;
 
 import ch.haeuslers.bookr.core.common.PerformanceLogged;
 import ch.haeuslers.bookr.person.api.Person;
+import ch.haeuslers.bookr.person.api.PersonService;
 
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Stateless
 @DeclareRoles({"ADMINISTRATOR", "USER", "MANAGER"})
 @PerformanceLogged
-public class PersonService {
+public class PersonServiceBean implements PersonService {
 
     @Inject
     EntityManager em;
@@ -26,11 +27,13 @@ public class PersonService {
     @Resource
     SessionContext context;
 
+    @Override
     @RolesAllowed("ADMINISTRATOR")
     public void create(Person person) {
         em.persist(person);
     }
 
+    @Override
     @PermitAll
     public Person update(Person person) {
         if (context.isCallerInRole("ADMINISTRATOR")
@@ -41,16 +44,19 @@ public class PersonService {
         }
     }
 
+    @Override
     @PermitAll
     public Optional<Person> read(String id) {
         return Optional.ofNullable(em.find(Person.class, id));
     }
 
+    @Override
     @RolesAllowed({"ADMINISTRATOR", "MANAGER"})
     public List<Person> getAll() {
         return em.createNamedQuery(Person.QUERY_ALL, Person.class).getResultList();
     }
 
+    @Override
     @PermitAll
     public Optional<Person> getByPrincipalName(String principalName) {
         return em.createNamedQuery(Person.QUERY_FIND_BY_PRINCIPAL_NAME, Person.class)
@@ -60,6 +66,7 @@ public class PersonService {
             .findFirst();
     }
 
+    @Override
     @RolesAllowed("ADMINISTRATOR")
     public void delete(Person person) {
         // TODO don't remove - set inactive instead
@@ -67,6 +74,7 @@ public class PersonService {
         em.remove(person);
     }
 
+    @Override
     @RolesAllowed("ADMINISTRATOR")
     public void delete(String id) {
         // TODO don't remove - set inactive instead

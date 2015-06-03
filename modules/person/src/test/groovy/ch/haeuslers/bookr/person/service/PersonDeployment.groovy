@@ -3,17 +3,23 @@ package ch.haeuslers.bookr.person.service
 import ch.haeuslers.bookr.core.CoreDeployment
 import ch.haeuslers.bookr.person.api.Person
 import org.jboss.shrinkwrap.api.ShrinkWrap
+import org.jboss.shrinkwrap.api.spec.JavaArchive
 import org.jboss.shrinkwrap.api.spec.WebArchive
+
 /**
  * Contains module deployments for test with arquillian.
  */
 class PersonDeployment {
-    def static person() {
-        ShrinkWrap.create(WebArchive.class, 'Person.war')
-            .addAsLibrary(CoreDeployment.core())
+    def static JavaArchive personJar() {
+        ShrinkWrap.create(JavaArchive.class, 'person.jar')
             .addClass(Person.class)
-            .addClass(PersonService.class)
+            .addClass(PersonServiceBean.class)
             .addAsResource("META-INF/beans.xml")
-            .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+    }
+
+    def static WebArchive personWar() {
+        ShrinkWrap.create(WebArchive.class, 'person.war')
+            .merge(CoreDeployment.core())
+            .merge(personJar())
     }
 }

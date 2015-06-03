@@ -1,7 +1,7 @@
 package ch.haeuslers.bookr.person.rest;
 
 import ch.haeuslers.bookr.person.api.Person;
-import ch.haeuslers.bookr.person.service.PersonService;
+import ch.haeuslers.bookr.person.api.PersonService;
 
 import javax.inject.Inject;
 import javax.validation.executable.ExecutableType;

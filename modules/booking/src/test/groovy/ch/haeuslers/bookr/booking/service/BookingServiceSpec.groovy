@@ -1,10 +1,12 @@
 package ch.haeuslers.bookr.booking.service
 
-import JBossLoginContextFactory
-import Booking
-import LocalDateTimeConverter
-import Person
-import Project
+import ch.haeuslers.bookr.booking.api.Booking
+import ch.haeuslers.bookr.core.JBossLoginContextFactory
+import ch.haeuslers.bookr.core.LoginSession
+import ch.haeuslers.bookr.core.api.LocalDateTimeConverter
+import ch.haeuslers.bookr.core.common.EntityManagerProducer
+import ch.haeuslers.bookr.person.service.PersonServiceBean
+import ch.haeuslers.bookr.project.service.ProjectService
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -27,8 +29,7 @@ class BookingServiceSpec extends Specification {
         return ShrinkWrap.create(WebArchive.class, 'BookingServiceSpec.war')
             .addClass(BookingService.class)
             .addClass(ProjectService.class)
-            .addClass(PersonService.class)
-            .addClass(PasswordService.class)
+            .addClass(PersonServiceBean.class)
             .addPackage(Booking.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(LoginSession.class)
@@ -47,7 +48,7 @@ class BookingServiceSpec extends Specification {
     ProjectService projectService
 
     @Inject
-    PersonService personService
+    PersonServiceBean personService
 
     @Inject
     EntityManager em

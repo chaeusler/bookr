@@ -1,4 +1,5 @@
 package ch.haeuslers.bookr.person.service
+
 import ch.haeuslers.bookr.core.JBossLoginContextFactory
 import ch.haeuslers.bookr.core.LoginSession
 import ch.haeuslers.bookr.person.api.Person
@@ -18,11 +19,11 @@ class PersonServiceSpec extends Specification {
 
     @Deployment
     def static WebArchive "create deployment"() {
-        PersonDeployment.person()
+        PersonDeployment.personWar()
     }
 
     @Inject
-    PersonService service
+    PersonServiceBean service
 
     def "invalid login"() {
         setup:
