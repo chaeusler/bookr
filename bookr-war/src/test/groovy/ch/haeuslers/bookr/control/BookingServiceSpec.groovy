@@ -42,19 +42,19 @@ class BookingServiceSpec extends Specification {
     }
 
     @Inject
-    BookingService bookingService
+    transient BookingService bookingService
 
     @Inject
-    ProjectService projectService
+    transient ProjectService projectService
 
     @Inject
-    PersonService personService
+    transient PersonService personService
 
     @Inject
-    EntityManager em
+    transient EntityManager em
 
     @Inject
-    UserTransaction utx;
+    transient UserTransaction utx;
 
     Person theUser
     Person anotherPerson

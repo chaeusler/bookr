@@ -1,7 +1,5 @@
 apply plugin: 'jacoco'
 
-logger.info("JaCoCo 1.+ Plugin activated")
-
 jacoco {
     toolVersion = project.jacocoToolVersion
 }

@@ -13,6 +13,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,9 @@ import java.util.Optional;
 @Stateless
 @DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
 @RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
-public class BookingService {
+public class BookingService implements Serializable {
+
+    private static final long serialVersionUID = 1;
 
     @Inject
     private transient EntityManager em;

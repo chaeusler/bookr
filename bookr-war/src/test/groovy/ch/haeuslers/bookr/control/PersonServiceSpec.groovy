@@ -18,6 +18,8 @@ import javax.security.auth.login.LoginContext
 @RunWith(ArquillianSputnik.class)
 class PersonServiceSpec extends Specification {
 
+    private static final long serialVersionUID = 1;
+
     @Deployment
     def static WebArchive "create deployment"() {
         ShrinkWrap.create(WebArchive.class, 'PersonServiceSpec.war')
