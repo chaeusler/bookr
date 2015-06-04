@@ -30,3 +30,5 @@ Needs PersistenceUnit named "bookr"
   </authentication>
 </security-domain>
 
+### https
+Configuring https: http://blog.eisele.net/2015/01/ssl-with-wildfly-8-and-undertow.html
