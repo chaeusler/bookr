@@ -5,46 +5,50 @@ import ch.haeuslers.bookr.entity.Booking;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("v1/bookings")
 public class BookingResource {
 
+    public static final String PATH_ID = "{id}";
+    public static final String PATH_PARAM_ID = "id";
+
     @Inject
-    BookingService bookingService;
+    private transient BookingService bookingService;
 
     @GET
-    @Produces({"application/json", "application/xml"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Booking> getAll() {
         return bookingService.getAll();
     }
 
     @GET
-    @Path("{id}")
-    @Produces({"application/json", "application/xml"})
-    public Booking read(@PathParam("id") String bookingId) {
+    @Path(PATH_ID)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Booking read(final @PathParam(PATH_PARAM_ID) String bookingId) {
         return bookingService.read(bookingId).orElseThrow(NotFoundException::new);
     }
 
     @POST
-    @Path("{id}")
-    @Consumes({"application/json", "application/xml"})
-    public void create(@PathParam("id") String bookingId, Booking booking) {
+    @Path(PATH_ID)
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public void create(final @PathParam(PATH_PARAM_ID) String bookingId, final Booking booking) {
         // TODO verify id
         bookingService.create(booking);
     }
 
     @PUT
-    @Path("{id}")
-    @Consumes({"application/json", "application/xml"})
-    public void update(@PathParam("id") String bookingId, Booking booking) {
+    @Path(PATH_ID)
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public void update(final @PathParam(PATH_PARAM_ID) String bookingId, final Booking booking) {
         // TODO verify id
         bookingService.update(booking);
     }
 
     @DELETE
     @Path("{id}")
-    public void delete(@PathParam("id") String id) {
+    public void delete(final @PathParam(PATH_PARAM_ID) String id) {
         bookingService.delete(id);
     }
 }

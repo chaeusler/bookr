@@ -16,6 +16,8 @@ import java.util.Objects;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Person implements Serializable {
 
+    private static final long serialVersionUID = 1;
+
     public static final String QUERY_FIND_BY_PRINCIPAL_NAME = "Person.findByPrincipalName";
     public static final String QUERY_ALL = "Person.findAll";
 

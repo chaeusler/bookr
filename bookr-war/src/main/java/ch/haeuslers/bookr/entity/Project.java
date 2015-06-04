@@ -16,6 +16,8 @@ import java.util.Set;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Project implements Serializable {
 
+    private static final long serialVersionUID = 1;
+
     public static final String QUERY_ALL = "Project.queryAll";
     @Id
     @XmlAttribute

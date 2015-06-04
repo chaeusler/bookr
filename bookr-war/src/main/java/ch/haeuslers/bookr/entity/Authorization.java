@@ -18,6 +18,8 @@ import java.util.Set;
 @XmlRootElement(name = "authorization")
 public class Authorization implements Serializable {
 
+    private static final long serialVersionUID = 1;
+
     public static final String QUERY_ALL = "Authorization.findAll";
 
     @Id

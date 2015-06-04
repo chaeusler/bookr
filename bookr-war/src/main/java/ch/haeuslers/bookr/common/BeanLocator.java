@@ -5,14 +5,18 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-public class BeanLocator {
+public final class BeanLocator {
 
-    public static <T> T lookup(Class<T> type, String jndiName) {
-        Object bean = lookup(jndiName);
+    private BeanLocator() {
+        // utilities
+    }
+
+    public static <T> T lookup(final Class<T> type, final String jndiName) {
+        final Object bean = lookup(jndiName);
         return type.cast(PortableRemoteObject.narrow(bean, type));
     }
 
-    public static Object lookup(String jndiName) {
+    public static Object lookup(final String jndiName) {
         Context contex = null;
         try {
             contex = new InitialContext();

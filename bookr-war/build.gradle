@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'war'
 apply plugin: 'groovy'
 apply from: "${project.gradleApplyFromPath}/plugin-jacoco.gradle"
+apply from: "${project.gradleApplyFromPath}/plugin-pmd.gradle"
 //apply from: "${project.gradleApplyFromPath}/plugin-jdepend.gradle"
 //apply plugin: 'checkstyle'
 //apply plugin: 'findbugs'

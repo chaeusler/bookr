@@ -13,7 +13,7 @@ public class LoggerProducer {
 
     @Default
     @Produces
-    public Logger produceLogger(InjectionPoint injectionPoint) {
+    public Logger produceLogger(final InjectionPoint injectionPoint) {
         return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
     }
 }

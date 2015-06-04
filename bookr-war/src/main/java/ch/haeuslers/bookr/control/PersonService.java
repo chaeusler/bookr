@@ -22,21 +22,21 @@ import java.util.Optional;
 public class PersonService {
 
     @Inject
-    EntityManager em;
+    private transient EntityManager em;
 
     @EJB
-    PasswordService passwordService;
+    private transient PasswordService passwordService;
 
     @Resource
-    SessionContext context;
+    private transient SessionContext context;
 
     @RolesAllowed("ADMINISTRATOR")
-    public void create(Person person) {
+    public void create(final Person person) {
         em.persist(person);
     }
 
     @PermitAll
-    public Person update(Person person) {
+    public Person update(final Person person) {
         if (context.isCallerInRole("ADMINISTRATOR")
             || context.getCallerPrincipal().getName().equalsIgnoreCase(person.getName())) {
             return em.merge(person);
@@ -46,7 +46,7 @@ public class PersonService {
     }
 
     @PermitAll
-    public Optional<Person> read(String id) {
+    public Optional<Person> read(final String id) {
         return Optional.ofNullable(em.find(Person.class, id));
     }
 
@@ -56,7 +56,7 @@ public class PersonService {
     }
 
     @PermitAll
-    public Optional<Person> getByPrincipalName(String principalName) {
+    public Optional<Person> getByPrincipalName(final String principalName) {
         return em.createNamedQuery(Person.QUERY_FIND_BY_PRINCIPAL_NAME, Person.class)
             .setParameter("principalName", principalName)
             .getResultList()
@@ -65,16 +65,15 @@ public class PersonService {
     }
 
     @RolesAllowed("ADMINISTRATOR")
-    public void delete(Person person) {
+    public void delete(final Person person) {
         // TODO don't remove - set inactive instead
-        person = em.merge(person);
-        em.remove(person);
+        final Person p = em.merge(person);
+        em.remove(p);
     }
 
     @RolesAllowed("ADMINISTRATOR")
-    public void delete(String id) {
+    public void delete(final String id) {
         // TODO don't remove - set inactive instead
-        Person person = read(id).get();
-        em.remove(person);
+        read(id).ifPresent(this::delete);
     }
 }

@@ -18,24 +18,24 @@ import javax.persistence.PersistenceContext;
 public class PasswordService {
 
     @Inject
-    EntityManager em;
+    private transient EntityManager em;
 
     @Resource
-    SessionContext context;
+    private transient SessionContext context;
 
-    public void create(Password password) {
+    public void create(final Password password) {
         ensureRights(password.getAuthorization());
         em.persist(password);
     }
 
-    public void updatePassword(Authorization authorization, String password) {
+    public void updatePassword(final Authorization authorization, final String password) {
         ensureRights(authorization);
-        Password existing = em.find(Password.class, authorization);
+        final Password existing = em.find(Password.class, authorization);
         // TODO fail when it's the same
         existing.setPassword(password);
     }
 
-    private void ensureRights(Authorization authorization) {
+    private void ensureRights(final Authorization authorization) {
         if (!context.isCallerInRole("ADMINISTRATOR")
             || !context.getCallerPrincipal().getName().equals(authorization.getPrincipalName())) {
             throw new EJBAccessException("only for administrators or the user itself");

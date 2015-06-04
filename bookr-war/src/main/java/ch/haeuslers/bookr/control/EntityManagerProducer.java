@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 public class EntityManagerProducer {
 
     @PersistenceContext(unitName = "bookr")
-    private EntityManager em;
+    private transient EntityManager em;
 
     @Default
     @Produces

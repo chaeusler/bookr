@@ -10,6 +10,8 @@ import java.util.Objects;
 @Table(name = "BOOKR_PASSWORD")
 public class Password implements Serializable {
 
+    private static final long serialVersionUID = 1;
+
     @Id
     @Column(name = "authorization_id")
     private String id; // needed to get the mapping working

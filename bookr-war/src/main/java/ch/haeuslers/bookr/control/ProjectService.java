@@ -16,21 +16,21 @@ import java.util.Optional;
 public class ProjectService {
 
     @Inject
-    EntityManager em;
+    private transient EntityManager em;
 
-    public void create(Project project) {
+    public void create(final Project project) {
         em.persist(project);
     }
 
-    public Optional<Project> read(String id) {
+    public Optional<Project> read(final String id) {
         return Optional.ofNullable(em.find(Project.class, id));
     }
 
-    public void update(Project project) {
+    public void update(final Project project) {
         em.merge(project);
     }
 
-    public void delete(String id) {
+    public void delete(final String id) {
         read(id).ifPresent(em::remove);
     }
 

@@ -17,9 +17,9 @@ import java.util.Optional;
 public class AuthorizationService {
 
     @Inject
-    EntityManager em;
+    private transient EntityManager em;
 
-    public void create(Authorization authorization) {
+    public void create(final Authorization authorization) {
         authorization.getRoles().add(Role.USER);
         em.persist(authorization);
     }
@@ -28,16 +28,16 @@ public class AuthorizationService {
         return em.createNamedQuery(Authorization.QUERY_ALL, Authorization.class).getResultList();
     }
 
-    public Optional<Authorization> read(String personId) {
+    public Optional<Authorization> read(final String personId) {
         return Optional.ofNullable(em.find(Authorization.class, personId));
     }
 
-    public void update(Authorization authorization) {
+    public void update(final Authorization authorization) {
         authorization.getRoles().add(Role.USER);
         em.merge(authorization);
     }
 
-    public void delete(String authorizationId) {
+    public void delete(final String authorizationId) {
         read(authorizationId).ifPresent(em::remove);
     }
 }

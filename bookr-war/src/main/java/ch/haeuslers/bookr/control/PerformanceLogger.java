@@ -12,19 +12,19 @@ import javax.interceptor.InvocationContext;
 public class PerformanceLogger {
 
     @Inject
-    private Logger logger;
+    private transient Logger log;
 
     @AroundInvoke
-    public Object aroundInvoke(InvocationContext invocationContext) throws Exception {
-        if (logger.isDebugEnabled()) {
-            String clazz = invocationContext.getMethod().getDeclaringClass().getName();
-            String method = invocationContext.getMethod().getName();
+    public Object aroundInvoke(final InvocationContext invocationContext) throws Exception {
+        if (log.isDebugEnabled()) {
+            final String clazz = invocationContext.getMethod().getDeclaringClass().getName();
+            final String method = invocationContext.getMethod().getName();
 
-            long start = System.currentTimeMillis();
-            Object o = invocationContext.proceed();
-            long duration = start - System.currentTimeMillis();
+            final long start = System.currentTimeMillis();
+            final Object o = invocationContext.proceed();
+            final long duration = start - System.currentTimeMillis();
 
-            logger.debug("{}.{} - {} ms", clazz, method, duration);
+            log.debug("{}.{} - {} ms", clazz, method, duration);
 
             return o;
         }

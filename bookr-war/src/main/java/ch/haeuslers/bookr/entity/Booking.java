@@ -30,6 +30,8 @@ query = "SELECT b " +
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Booking implements Serializable {
 
+    private static final long serialVersionUID = 1;
+
     public static final String QUERY_FIND_OVERLAPPING = "Booking.findOverlapping";
     public static final String QUERY_FIND_ALL_FOR_USER = "Booking.findAllForUser";
     public static final String QUERY_FIND_ALL_FOR_USERNAME = "Booking.findAllForUsername";

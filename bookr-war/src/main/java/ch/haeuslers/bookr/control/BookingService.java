@@ -23,48 +23,47 @@ import java.util.Optional;
 public class BookingService {
 
     @Inject
-    EntityManager em;
+    private transient EntityManager em;
 
     @Resource
-    SessionContext context;
+    private transient SessionContext context;
 
     @EJB
-    PersonService personService;
+    private transient PersonService personService;
 
-    public void create(Booking booking) {
+    public void create(final Booking booking) {
         ensureEditRights(booking);
 
         // TODO validate person needs to be in project
 
         if (hasOverlappingBookings(booking)) {
-            throw new IllegalStateException("there are overlapping bookings");
-            //return; // Todo throw Business Exceptios
+            throw new IllegalArgumentException("there are overlapping bookings");
         }
         em.persist(booking);
     }
 
-    public Optional<Booking> read(String id) {
+    public Optional<Booking> read(final String id) {
         return Optional.ofNullable(em.find(Booking.class, id));
     }
 
-    public Booking update(Booking booking) {
+    public Booking update(final Booking booking) {
         ensureEditRights(booking);
 
         // TODO validate person needs to be in project
 
         if (hasOverlappingBookings(booking)) {
-            //return; // Todo throw Business Exceptios
+            throw new IllegalArgumentException("overlapping bokking not allowed");
         }
         return em.merge(booking);
     }
 
-    public void delete(String bookingId) {
+    public void delete(final String bookingId) {
         read(bookingId).ifPresent(em::remove);
     }
 
     public List<Booking> listMine() {
-        String principalName = context.getCallerPrincipal().getName();
-        Optional<Person> person = personService.getByPrincipalName(principalName);
+        final String principalName = context.getCallerPrincipal().getName();
+        final Optional<Person> person = personService.getByPrincipalName(principalName);
         if (person.isPresent()) {
             return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USER, Booking.class).
                 setParameter("user", person.get()).
@@ -73,7 +72,7 @@ public class BookingService {
         return Collections.emptyList();
     }
 
-    private boolean hasOverlappingBookings(Booking booking) {
+    private boolean hasOverlappingBookings(final Booking booking) {
         return !em.createNamedQuery(Booking.QUERY_FIND_OVERLAPPING)
             .setParameter("startDate", booking.getStart())
             .setParameter("endDate", booking.getEnd())
@@ -82,9 +81,9 @@ public class BookingService {
         // TODO use count in DB
     }
 
-    private void ensureEditRights(Booking booking) {
+    private void ensureEditRights(final Booking booking) {
         if (hasOnlyUserRole()) {
-            String principalName = context.getCallerPrincipal().getName();
+            final String principalName = context.getCallerPrincipal().getName();
             if (!principalName.equals(booking.getPerson().getName())) {
                 // abort because principal with the the only role user can't edit foreign bookings
                 throw new EJBAccessException("not allowed to edit foreign bookings");
@@ -96,14 +95,8 @@ public class BookingService {
         return hasRole(Role.USER) && !hasRole(Role.MANAGER) && !hasRole(Role.ADMINISTRATOR);
     }
 
-    private boolean hasRole(Role role) {
+    private boolean hasRole(final Role role) {
         return context.isCallerInRole(role.toString());
-    }
-
-    public List<Booking> listAllForUser(String user) {
-        return em.createNamedQuery(Booking.QUERY_FIND_ALL_FOR_USERNAME, Booking.class)
-            .setParameter("username", user)
-            .getResultList();
     }
 
     @RolesAllowed({"MANAGER", "ADMINISTRATOR"})
