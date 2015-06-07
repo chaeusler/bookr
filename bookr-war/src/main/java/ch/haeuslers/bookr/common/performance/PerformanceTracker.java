@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 @Startup
-public class PerformanceTracking implements PerformanceTrackingMXBean, PerformanceTrackingService {
+public class PerformanceTracker implements PerformanceTrackingMXBean, PerformanceTrackingService {
 
     private MBeanServer platformMBeanServer;
     private ObjectName objectName = null;
@@ -80,12 +80,14 @@ public class PerformanceTracking implements PerformanceTrackingMXBean, Performan
     private static class MethodCallKey {
         private final Class clazz;
         private final String methodName;
-        private final Class<?>[] parameterTypes;
+        private final String parameterTypes;
 
         public MethodCallKey(Class clazz, String methodName, Class<?>[] parameterTypes) {
             this.clazz = clazz;
             this.methodName = methodName;
-            this.parameterTypes = parameterTypes;
+            this.parameterTypes = Arrays.stream(parameterTypes)
+                .map(Class::getName)
+                .reduce("", (l ,r) -> l + ", " +r);
         }
 
         @Override
@@ -105,7 +107,7 @@ public class PerformanceTracking implements PerformanceTrackingMXBean, Performan
 
         @Override
         public String toString() {
-            return clazz.getName() + "." + methodName + "(" + Arrays.toString(parameterTypes) + ")";
+            return clazz.getName() + "." + methodName + "(" + parameterTypes + ")";
         }
     }
 
