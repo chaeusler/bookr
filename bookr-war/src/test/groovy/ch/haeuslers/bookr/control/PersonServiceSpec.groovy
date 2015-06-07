@@ -26,15 +26,12 @@ class PersonServiceSpec extends Specification {
     @Deployment
     def static WebArchive "create deployment"() {
         ShrinkWrap.create(WebArchive.class, 'PersonServiceSpec.war')
-            .addClass(PersonService.class)
-            .addClass(PasswordService.class)
-            .addClass(PerformanceLogged.class)
-            .addClass(PerformanceLogger.class)
+            .addPackage(PersonService.class.getPackage())
+            .addPackage(PerformanceLogger.class.getPackage())
             .addPackage(Person.class.getPackage())
+            .addPackage(EntityManagerProducer.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(LoginSession.class)
-            .addClass(EntityManagerProducer.class)
-            .addClass(LoggerProducer.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
             .addAsResource("META-INF/beans.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")

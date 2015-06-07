@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.common.EntityManagerProducer
+import ch.haeuslers.bookr.common.performance.PerformanceLogger
 import ch.haeuslers.bookr.entity.Booking
 import ch.haeuslers.bookr.entity.LocalDateTimeConverter
 import ch.haeuslers.bookr.entity.Person
@@ -26,16 +27,14 @@ class BookingServiceSpec extends Specification {
     @Deployment
     def static WebArchive "create deployment"() {
         return ShrinkWrap.create(WebArchive.class, 'BookingServiceSpec.war')
-            .addClass(BookingService.class)
-            .addClass(ProjectService.class)
-            .addClass(PersonService.class)
-            .addClass(PasswordService.class)
+            .addPackage(BookingService.class.getPackage())
             .addPackage(Booking.class.getPackage())
+            .addPackage(PerformanceLogger.class.getPackage())
+            .addPackage(EntityManagerProducer.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(LoginSession.class)
-            .addClass(EntityManagerProducer.class)
-            .addClass(LocalDateTimeConverter.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
+            .addAsResource("META-INF/beans.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
             .addAsResource("roles.properties")

@@ -11,4 +11,8 @@
     <class>ch.haeuslers.bookr.common.Auditor</class>
   </interceptors>
 
+  <decorators>
+    <class>ch.haeuslers.bookr.control.BookingServiceChangeNotifyDecorator</class>
+  </decorators>
+
 </beans>

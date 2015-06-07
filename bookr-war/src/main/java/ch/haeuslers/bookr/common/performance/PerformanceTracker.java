@@ -3,6 +3,7 @@ package ch.haeuslers.bookr.common.performance;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.management.MBeanServer;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 @Startup
+@PermitAll
 public class PerformanceTracker implements PerformanceTrackingMXBean, PerformanceTrackingService {
 
     private MBeanServer platformMBeanServer;
