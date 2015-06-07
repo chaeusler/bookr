@@ -1,0 +1,9 @@
+plugins {
+    id "org.flyway.flyway" version "3.2"
+}
+
+flyway {
+    user = 'bookr'
+    password = 'bookr'
+    url='jdbc:postgresql://localhost:5432'
+}

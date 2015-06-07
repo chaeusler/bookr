@@ -11,6 +11,7 @@
       <property name="javax.persistence.sql-load-script-source" value="META-INF/load.sql"/>
       <property name="hibernate.show_sql" value="true"/>
 
+      <!-- add jndi capabilities to our entitymanager -->
       <property name="jboss.entity.manager.jndi.name" value="java:/entitymanager/bookr"/>
       <property name="jboss.entity.manager.factory.jndi.name" value="java:/entitymanagerFactory/bookr"/>
     </properties>
