@@ -1,4 +1,4 @@
-package ch.haeuslers.bookr.control;
+package ch.haeuslers.bookr.common;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;

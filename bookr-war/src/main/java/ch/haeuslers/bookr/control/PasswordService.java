@@ -1,20 +1,18 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Authorization;
 import ch.haeuslers.bookr.entity.Password;
-import ch.haeuslers.bookr.entity.Person;
 
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
 import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
-import javax.enterprise.context.Initialized;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Stateless
+@PerformanceLogged
 public class PasswordService {
 
     @Inject

@@ -7,7 +7,7 @@
   bean-discovery-mode="all">
 
   <interceptors>
-    <class>ch.haeuslers.bookr.control.PerformanceLogger</class>
+    <class>ch.haeuslers.bookr.common.performance.PerformanceLogger</class>
   </interceptors>
 
 </beans>

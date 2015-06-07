@@ -1,6 +1,7 @@
 package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
+import ch.haeuslers.bookr.common.EntityManagerProducer
 import ch.haeuslers.bookr.entity.Booking
 import ch.haeuslers.bookr.entity.LocalDateTimeConverter
 import ch.haeuslers.bookr.entity.Person
@@ -17,7 +18,6 @@ import javax.ejb.EJBAccessException
 import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.transaction.UserTransaction
-import java.security.PrivilegedActionException
 import java.time.LocalDateTime
 
 @RunWith(ArquillianSputnik.class)

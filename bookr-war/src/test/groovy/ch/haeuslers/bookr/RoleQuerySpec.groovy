@@ -1,6 +1,6 @@
 package ch.haeuslers.bookr
 
-import ch.haeuslers.bookr.control.EntityManagerProducer
+import ch.haeuslers.bookr.common.EntityManagerProducer
 import ch.haeuslers.bookr.entity.Password
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Authorization

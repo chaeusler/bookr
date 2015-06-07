@@ -1,4 +1,4 @@
-package ch.haeuslers.bookr.control;
+package ch.haeuslers.bookr.common.performance;
 
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.*;

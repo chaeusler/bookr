@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Booking;
 import ch.haeuslers.bookr.entity.Person;
 import ch.haeuslers.bookr.entity.Role;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @Stateless
 @DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
 @RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
+@PerformanceLogged
 public class BookingService implements Serializable {
 
     private static final long serialVersionUID = 1;

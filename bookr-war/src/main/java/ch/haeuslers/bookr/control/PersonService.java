@@ -1,7 +1,7 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Person;
-import org.slf4j.Logger;
 
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;

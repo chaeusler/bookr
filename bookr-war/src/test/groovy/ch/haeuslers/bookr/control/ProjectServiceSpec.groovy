@@ -1,6 +1,7 @@
 package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
+import ch.haeuslers.bookr.common.EntityManagerProducer
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Project
 import org.jboss.arquillian.container.test.api.Deployment

@@ -1,6 +1,5 @@
-package ch.haeuslers.bookr.control;
+package ch.haeuslers.bookr.common.performance;
 
-import ch.haeuslers.bookr.common.performance.PerformanceTrackingService;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;

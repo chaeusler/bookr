@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Authorization;
 import ch.haeuslers.bookr.entity.Role;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Stateless
 @DeclareRoles("ADMINISTRATOR")
 @RolesAllowed("ADMINISTRATOR")
+@PerformanceLogged
 public class AuthorizationService {
 
     @Inject

@@ -74,6 +74,7 @@ public class PerformanceTracking implements PerformanceTrackingMXBean, Performan
         MethodCallKey key = new MethodCallKey(clazz, methodName, parameterTypes);
         List<MethodCall> methodCalls = methodCallMap.getOrDefault(key, new ArrayList<>());
         methodCalls.add(new MethodCall(LocalDateTime.now(), duration));
+        methodCallMap.putIfAbsent(key, methodCalls);
     }
 
     private static class MethodCallKey {
@@ -104,11 +105,7 @@ public class PerformanceTracking implements PerformanceTrackingMXBean, Performan
 
         @Override
         public String toString() {
-            return "MethodCallKey{" +
-                "clazz=" + clazz +
-                ", methodName='" + methodName + '\'' +
-                ", parameterTypes=" + Arrays.toString(parameterTypes) +
-                '}';
+            return clazz.getName() + "." + methodName + "(" + Arrays.toString(parameterTypes) + ")";
         }
     }
 

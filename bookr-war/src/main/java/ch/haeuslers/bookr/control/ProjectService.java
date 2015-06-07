@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Project;
 
 import javax.annotation.security.DeclareRoles;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @Stateless
 @DeclareRoles({"MANAGER", "ADMINISTRATOR"})
 @RolesAllowed({"MANAGER", "ADMINISTRATOR"})
+@PerformanceLogged
 public class ProjectService {
 
     @Inject
