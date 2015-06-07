@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.Audited;
 import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Person;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 @Stateless
 @DeclareRoles({"ADMINISTRATOR", "USER", "MANAGER"})
 @PerformanceLogged
+@Audited
 public class PersonService {
 
     @Inject

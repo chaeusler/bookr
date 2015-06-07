@@ -8,6 +8,7 @@
 
   <interceptors>
     <class>ch.haeuslers.bookr.common.performance.PerformanceLogger</class>
+    <class>ch.haeuslers.bookr.common.Auditor</class>
   </interceptors>
 
 </beans>

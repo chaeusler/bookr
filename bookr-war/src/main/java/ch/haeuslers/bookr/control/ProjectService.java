@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.Audited;
 import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Project;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 @DeclareRoles({"MANAGER", "ADMINISTRATOR"})
 @RolesAllowed({"MANAGER", "ADMINISTRATOR"})
 @PerformanceLogged
+@Audited
 public class ProjectService {
 
     @Inject

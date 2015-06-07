@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.control;
 
+import ch.haeuslers.bookr.common.Audited;
 import ch.haeuslers.bookr.common.performance.PerformanceLogged;
 import ch.haeuslers.bookr.entity.Authorization;
 import ch.haeuslers.bookr.entity.Password;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManager;
 
 @Stateless
 @PerformanceLogged
+@Audited
 public class PasswordService {
 
     @Inject
