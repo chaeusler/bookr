@@ -18,8 +18,13 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
         templateUrl: 'app/users/users.detail.html',
         controller: 'UsersDetailController'
       })
+      .state('app.users.create', {
+        url: '/create',
+        templateUrl: 'app/users/users.detail.html',
+        controller: 'UsersDetailController'
+      })
   })
-  .controller('UsersController', ['$scope', '$filter', '$location', 'rfc4122',  'Authorization', 'Person', function ($scope, $filter, $location, uuid,  Authorization, Person) {
+  .controller('UsersController', ['$scope', '$state', '$location', 'rfc4122',  'Authorization', 'Person', function ($scope, $state, $location, uuid,  Authorization, Person) {
 
     $scope.persons = Person.query();
 
@@ -33,6 +38,20 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
 
       $location.path("/users/" + $scope.user.person.id);
     };
+
+    $scope.createUser = function() {
+      var id = uuid.v4();
+      $scope.user = {
+        person: new Person(),
+        authorization: new Authorization()
+      };
+
+      $scope.user.person.id = id;
+      $scope.user.authorization.id = id;
+      $scope.user.authorization.roles = [];
+
+      $state.go("app.users.create");
+    }
 
   }]).controller('UsersDetailController', ['$scope', '$state', 'Person', 'Authorization', function ($scope, $state, Person, Authorization) {
 
@@ -52,9 +71,21 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
       $state.go('app.users.list');
     };
 
+    $scope.save = function() {
+      $scope.user.person.$save(function(person){
+        $scope.user.authorization.$save(function(auth){
+          $scope.persons.push($scope.user.person);
+        }, function(){
+          person.$delete();
+        });
+      });
+
+      $state.go('app.users.list');
+    };
+
     $scope.cancel = function() {
       $scope.persons = Person.query();
       $state.go('app.users.list');
-    }
+    };
 
   }]);

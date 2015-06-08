@@ -20,7 +20,7 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
       })
       .state('app.projects.create', {
         url: '/create',
-        templateUrl: 'app/projects/projects.create.html',
+        templateUrl: 'app/projects/projects.detail.html',
         controller: 'ProjectsDetailsController'
       })
   })
@@ -79,6 +79,7 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
 
     $scope.save = function(){
       $scope.project.$save();
+      $scope.projects.push($scope.project);
       $state.go('app.projects.list');
     };
 

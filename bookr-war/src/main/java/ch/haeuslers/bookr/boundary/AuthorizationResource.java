@@ -42,6 +42,14 @@ public class AuthorizationResource {
         authorizationService.update(authorization);
     }
 
+    @POST
+    @Path(PATH_ID)
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public void create(final @PathParam(PATH_PARAM_ID) String authId, final Authorization authorization) {
+        // TODO verify id
+        authorizationService.create(authorization);
+    }
+
     @DELETE
     @Path(PATH_ID)
     public void delete(final @PathParam(PATH_PARAM_ID) String id) {
