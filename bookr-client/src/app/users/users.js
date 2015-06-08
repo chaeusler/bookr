@@ -2,42 +2,59 @@
 
 angular.module('bookr.users', ['uuid', 'bookr.base'])
   .config(function ($stateProvider) {
-    $stateProvider.state(
-      'app.users',
-      {
+    $stateProvider
+      .state('app.users', {
         url: '/users',
-        templateUrl: 'app/users/users.html',
+        abstract: true,
+        template: '<div ui-view></div>',
         controller: 'UsersController'
-      }
-    )
+      })
+      .state('app.users.list', {
+        url: '/list',
+        templateUrl: 'app/users/users.list.html'
+      })
+      .state('app.users.detail', {
+        url: '/:id',
+        templateUrl: 'app/users/users.detail.html',
+        controller: 'UsersDetailController'
+      })
   })
-  .controller('UsersController', ['$scope', '$filter', '$modal', 'rfc4122',  'Authorization', 'Person', function ($scope, $filter, $modal, uuid,  Authorization, Person) {
+  .controller('UsersController', ['$scope', '$filter', '$location', 'rfc4122',  'Authorization', 'Person', function ($scope, $filter, $location, uuid,  Authorization, Person) {
 
     $scope.persons = Person.query();
 
-    $scope.open = function(selectedPerson) {
+    $scope.user = {};
 
-      var user = {
+    $scope.detail = function(selectedPerson){
+      $scope.user = {
         person: selectedPerson,
         authorization: Authorization.get({authorizationId:selectedPerson.id})
       };
 
-      var modalInstance = $modal.open({
-        templateUrl: 'app/users/userModal.html',
-        controller: 'UserModalController',
-        resolve: {
-          user: function() {
-            return user;
-          }
-        }
-      });
-      modalInstance.result.then(function(user){
-        // TODO only submit when changed
-        Person.update(user.person);
-        Authorization.update(user.authorization);
-      }, function() {
-        $scope.persons = Person.query();
-      });
-
+      $location.path("/users/" + $scope.user.person.id);
     };
+
+  }]).controller('UsersDetailController', ['$scope', '$state', 'Person', 'Authorization', function ($scope, $state, Person, Authorization) {
+
+    $scope.toggleRole = function(rolename) {
+      var roles = $scope.user.authorization.roles;
+      var index = roles.indexOf(rolename);
+      if (index == -1) {
+        roles.push(rolename);
+      } else {
+        roles.splice(index, 1);
+      }
+    };
+
+    $scope.update = function() {
+      Person.update($scope.user.person);
+      Authorization.update($scope.user.authorization);
+      $state.go('app.users.list');
+    };
+
+    $scope.cancel = function() {
+      $scope.persons = Person.query();
+      $state.go('app.users.list');
+    }
+
   }]);
