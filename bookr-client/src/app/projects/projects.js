@@ -18,9 +18,16 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
         templateUrl: 'app/projects/projects.detail.html',
         controller: 'ProjectsDetailsController'
       })
+      .state('app.projects.create', {
+        url: '/create',
+        templateUrl: 'app/projects/projects.create.html',
+        controller: 'ProjectsDetailsController'
+      })
   })
-  .controller('ProjectsController', ['$scope', 'Project', '$location', function ($scope, Project, $location) {
+  .controller('ProjectsController', ['$scope', '$state', 'rfc4122', 'Project', 'Person', '$location', function ($scope, $state, uuid, Project, Person, $location) {
     $scope.projects = Project.query();
+
+    $scope.allPersons = Person.query();
 
     $scope.project = {};
 
@@ -29,6 +36,14 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
 
       $location.path("/projects/" + project.id);
     };
+
+    $scope.createProject = function() {
+      $scope.project = new Project();
+      $scope.project.id = uuid.v4();
+      $scope.project['person-ids'] = [];
+
+      $state.go('app.projects.create');
+    }
 
   }]).controller('ProjectsDetailsController', ['$scope', '$state', 'Person', 'Project', function($scope, $state, Person, Project) {
 
@@ -39,8 +54,6 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
         $scope.persons.push(person);
       });
     });
-
-    $scope.allPersons = Person.query();
 
     $scope.isPartOfIt = function(person) {
       if ($scope.project['person-ids']) {
@@ -61,6 +74,11 @@ angular.module('bookr.projects', ['uuid', 'bookr.base'])
 
     $scope.update = function(){
       Project.update($scope.project);
+      $state.go('app.projects.list');
+    };
+
+    $scope.save = function(){
+      $scope.project.$save();
       $state.go('app.projects.list');
     };
 

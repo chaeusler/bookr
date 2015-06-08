@@ -1,0 +1,10 @@
+<label>Project: <input type="text" ng-model="project.name"/></label>
+
+<ul class="list-group">
+  <li ng-repeat="person in allPersons" class="list-group-item">
+    <label>{{person.name}} <input type="checkbox" ng-checked="isPartOfIt(person)" ng-click="toggle(person)"></label>
+  </li>
+</ul>
+
+<button class="btn btn-primary" ng-click="save()">ok</button>
+<button class="btn btn-default" ng-click="cancel()">cancel</button>

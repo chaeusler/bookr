@@ -64,7 +64,7 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
     };
 
     $scope.createBooking = function () {
-      $state.go('app.bookings.create')
+      $state.go('app.bookings.create');
     };
 
   }])
