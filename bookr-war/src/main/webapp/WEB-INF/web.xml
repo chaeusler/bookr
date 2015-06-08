@@ -8,11 +8,18 @@
       <web-resource-name>rest</web-resource-name>
       <url-pattern>/rest/*</url-pattern>
     </web-resource-collection>
+    <!--web-resource-collection>
+      <web-resource-name>ws</web-resource-name>
+      <url-pattern>/ws/*</url-pattern>
+    </web-resource-collection-->
     <auth-constraint>
       <role-name>ADMINISTRATOR</role-name>
       <role-name>MANAGER</role-name>
       <role-name>USER</role-name>
     </auth-constraint>
+    <!--user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint-->
   </security-constraint>
 
   <session-config>
