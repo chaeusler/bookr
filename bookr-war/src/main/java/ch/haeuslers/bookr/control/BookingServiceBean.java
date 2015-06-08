@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Stateless
-@DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
-@RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
 @PerformanceLogged
 @Audited
 public class BookingServiceBean implements BookingService, Serializable {
@@ -111,7 +109,7 @@ public class BookingServiceBean implements BookingService, Serializable {
         return context.isCallerInRole(role.toString());
     }
 
-    @RolesAllowed({"MANAGER", "ADMINISTRATOR"})
+    @Override
     public List<Booking> getAll() {
         return em.createNamedQuery(Booking.QUERY_FIND_ALL, Booking.class).getResultList();
     }

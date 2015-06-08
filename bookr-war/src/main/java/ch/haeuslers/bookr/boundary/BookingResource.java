@@ -1,5 +1,6 @@
 package ch.haeuslers.bookr.boundary;
 
+import ch.haeuslers.bookr.control.BookingService;
 import ch.haeuslers.bookr.control.BookingServiceBean;
 import ch.haeuslers.bookr.entity.Booking;
 
@@ -15,7 +16,7 @@ public class BookingResource {
     public static final String PATH_PARAM_ID = "id";
 
     @Inject
-    private transient BookingServiceBean bookingService;
+    private transient BookingService bookingService;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

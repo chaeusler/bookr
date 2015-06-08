@@ -9,7 +9,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
-@ServerEndpoint("ws/bookingChange")
+@ServerEndpoint("/ws/bookingChange")
 public class BookingChangeEndpoint {
 
     private transient Session session;
