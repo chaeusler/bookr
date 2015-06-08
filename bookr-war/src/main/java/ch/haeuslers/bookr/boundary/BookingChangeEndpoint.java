@@ -20,7 +20,7 @@ public class BookingChangeEndpoint {
     }
 
     void receive(@Observes ChangeEvent<Booking> bookingChangeEvent) throws IOException {
-        if (session.isOpen()) {
+        if (session != null && session.isOpen()) {
             session.getBasicRemote().sendText(bookingChangeEvent.toString());
         }
     }

@@ -7,8 +7,6 @@ import ch.haeuslers.bookr.entity.Person;
 import ch.haeuslers.bookr.entity.Role;
 
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
@@ -84,8 +82,8 @@ public class BookingServiceBean implements BookingService, Serializable {
 
     private boolean hasOverlappingBookings(final Booking booking) {
         return !em.createNamedQuery(Booking.QUERY_FIND_OVERLAPPING)
-            .setParameter("startDate", booking.getStart())
-            .setParameter("endDate", booking.getEnd())
+            .setParameter("startDate", booking.getStartTime())
+            .setParameter("endDate", booking.getEndTime())
                 .getResultList()
                 .isEmpty();
         // TODO use count in DB

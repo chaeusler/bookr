@@ -87,8 +87,8 @@ class BookingServiceChangeNotifyDecoratorSpec extends Specification {
             id: id,
             project: theProject,
             person: theUser,
-            start: LocalDateTime.now().minusHours(1),
-            end: LocalDateTime.now().plusHours(1),
+            startTime: LocalDateTime.now().minusHours(1),
+            endTime: LocalDateTime.now().plusHours(1),
             description: 'lets test'
         )
         session.call {

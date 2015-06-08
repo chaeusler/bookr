@@ -6,9 +6,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 @BookingCheck
 @Entity
@@ -17,13 +15,13 @@ import java.util.UUID;
 @NamedQuery(name = Booking.QUERY_FIND_OVERLAPPING,
 query = "SELECT b " +
 "FROM Booking b " +
-"WHERE b.start >= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end >= :endDate" +
-"   OR b.start <= :startDate AND b.end <= :startDate AND b.start >= :endDate AND b.end <= :endDate"),
+"WHERE b.startTime >= :startDate AND b.endTime <= :startDate AND b.startTime >= :endDate AND b.endTime >= :endDate" +
+"   OR b.startTime <= :startDate AND b.endTime <= :startDate AND b.startTime >= :endDate AND b.endTime <= :endDate"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USER, query = "SELECT b FROM Booking b WHERE b.person = :user"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL_FOR_USERNAME, query = "SELECT b FROM Booking b WHERE b.person.name = :username"),
 @NamedQuery(name = Booking.QUERY_FIND_ALL, query = "SELECT b FROM Booking b"),
-@NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE, query = "SELECT b FROM Booking b WHERE b.start <= :fromDate"),
-@NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE_TO_DATE, query = "SELECT b FROM Booking b WHERE b.start BETWEEN :fromDate AND :toDate")
+@NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE, query = "SELECT b FROM Booking b WHERE b.startTime <= :fromDate"),
+@NamedQuery(name = Booking.QUERY_FIND_ALL_FROM_DATE_TO_DATE, query = "SELECT b FROM Booking b WHERE b.startTime BETWEEN :fromDate AND :toDate")
 })
 
 @XmlRootElement(name = "booking")
@@ -58,10 +56,12 @@ public class Booking implements Serializable {
     private String description;
 
     @NotNull
-    private LocalDateTime start;
+    @XmlJavaTypeAdapter(LocalDateTimeXmlAdapter.class)
+    private LocalDateTime startTime;
 
     @NotNull
-    private LocalDateTime end;
+    @XmlJavaTypeAdapter(LocalDateTimeXmlAdapter.class)
+    private LocalDateTime endTime;
 
     public String getId() {
         return id;
@@ -87,20 +87,20 @@ public class Booking implements Serializable {
         this.person = person;
     }
 
-    public LocalDateTime getStart() {
-        return start;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start = start;
+    public void setStartTime(LocalDateTime start) {
+        this.startTime = start;
     }
 
-    public LocalDateTime getEnd() {
-        return end;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
+    public void setEndTime(LocalDateTime end) {
+        this.endTime = end;
     }
 
     public String getDescription() {

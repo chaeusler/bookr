@@ -4,7 +4,6 @@ import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.common.EntityManagerProducer
 import ch.haeuslers.bookr.common.performance.PerformanceLogger
 import ch.haeuslers.bookr.entity.Booking
-import ch.haeuslers.bookr.entity.LocalDateTimeConverter
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Project
 import org.jboss.arquillian.container.test.api.Deployment
@@ -84,8 +83,8 @@ class BookingServiceSpec extends Specification {
             id: UUID.randomUUID().toString(),
             project: theProject,
             person: theUser,
-            start: LocalDateTime.now().minusHours(1),
-            end: LocalDateTime.now().plusHours(1),
+            startTime: LocalDateTime.now().minusHours(1),
+            endTime: LocalDateTime.now().plusHours(1),
             description: 'lets test'
         )
         session.call {
@@ -99,16 +98,16 @@ class BookingServiceSpec extends Specification {
         foundBooking.equals(booking)
 
         when: "updating the booking"
-        LocalDateTime endDate = foundBooking.end
+        LocalDateTime endDate = foundBooking.endTime
         LocalDateTime newEndDate = endDate.plusHours(2);
-        foundBooking.end = newEndDate
+        foundBooking.endTime = newEndDate
         foundBooking = session.call {
             bookingService.update(foundBooking)
             bookingService.read(foundBooking.id).get()
         }
 
         then: "the time should be updated"
-        foundBooking.end.equals(newEndDate)
+        foundBooking.endTime.equals(newEndDate)
 
         when: "we delete the booking"
         Optional<Booking> deleted = session.call {
@@ -133,8 +132,8 @@ class BookingServiceSpec extends Specification {
             id: UUID.randomUUID().toString(),
             project: theProject,
             person: anotherPerson,
-            start: LocalDateTime.now().minusHours(1),
-            end: LocalDateTime.now().plusHours(1),
+            startTime: LocalDateTime.now().minusHours(1),
+            endTime: LocalDateTime.now().plusHours(1),
             description: 'lets test'
         )
         session.call {
@@ -154,8 +153,8 @@ class BookingServiceSpec extends Specification {
             id: UUID.randomUUID().toString(),
             project: theProject,
             person: theUser,
-            start: LocalDateTime.now().minusHours(1),
-            end: LocalDateTime.now().plusHours(1),
+            startTime: LocalDateTime.now().minusHours(1),
+            endTime: LocalDateTime.now().plusHours(1),
             description: 'lets test'
         )
         Booking foundBooking = session.call {
@@ -186,16 +185,16 @@ class BookingServiceSpec extends Specification {
             id: UUID.randomUUID().toString(),
             project: theProject,
             person: theUser,
-            start: LocalDateTime.now().minusHours(1),
-            end: LocalDateTime.now().plusHours(1),
+            startTime: LocalDateTime.now().minusHours(1),
+            endTime: LocalDateTime.now().plusHours(1),
             description: 'lets test'
         )
         Booking booking2 = new Booking(
             id: UUID.randomUUID().toString(),
             project: theProject,
             person: theUser,
-            start: LocalDateTime.now(),
-            end: LocalDateTime.now().plusHours(2),
+            startTime: LocalDateTime.now(),
+            endTime: LocalDateTime.now().plusHours(2),
             description: 'lets test'
         )
 
@@ -224,16 +223,16 @@ class BookingServiceSpec extends Specification {
             id: UUID.randomUUID().toString(),
             project: theProject,
             person: theUser,
-            start: LocalDateTime.now().minusHours(2),
-            end: LocalDateTime.now().minusHours(1),
+            startTime: LocalDateTime.now().minusHours(2),
+            endTime: LocalDateTime.now().minusHours(1),
             description: 'lets test'
         )
         Booking booking2 = new Booking(
             id: UUID.randomUUID().toString(),
             project: theProject,
             person: theUser,
-            start: LocalDateTime.now(),
-            end: LocalDateTime.now().plusHours(2),
+            startTime: LocalDateTime.now(),
+            endTime: LocalDateTime.now().plusHours(2),
             description: 'lets test'
         )
 

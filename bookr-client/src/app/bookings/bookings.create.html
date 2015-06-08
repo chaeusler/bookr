@@ -1,13 +1,16 @@
 <form class="form-horizontal">
   <label>Person
     <select ng-model="newBooking['person-id']">
-      <option ng-repeat="person in personsMap" id="person.id">{{person.name}}</option>
+      <option ng-repeat="person in personsMap" id="person.id" value="{{person.id}}">{{person.name}}</option>
     </select>
   </label>
   <label>Project
     <select ng-model="newBooking['project-id']">
-      <option ng-repeat="project in projectsMap" id="project.id">{{project.name}}</option>
+      <option ng-repeat="project in projectsMap" id="project.id" value="{{project.id}}">{{project.name}}</option>
     </select>
+  </label>
+  <label>Description
+    <input type="text" required ng-model="description">
   </label>
 
   <label>day

@@ -13,8 +13,8 @@ CREATE TABLE bookr_authorization_role (
 CREATE TABLE bookr_booking (
   id          VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL,
-  "end"       TIMESTAMP    NOT NULL,
-  start       TIMESTAMP    NOT NULL,
+  endTime     TIMESTAMP    NOT NULL,
+  startTime   TIMESTAMP    NOT NULL,
   person_id   VARCHAR(255) NOT NULL,
   project_id  VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)

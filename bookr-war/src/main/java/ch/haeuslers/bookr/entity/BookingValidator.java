@@ -12,6 +12,6 @@ public class BookingValidator implements ConstraintValidator<BookingCheck, Booki
 
     @Override
     public boolean isValid(Booking value, ConstraintValidatorContext context) {
-        return value.getStart().isBefore(value.getEnd());
+        return value.getStartTime().isBefore(value.getEndTime());
     }
 }

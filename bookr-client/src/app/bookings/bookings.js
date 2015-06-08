@@ -54,7 +54,8 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
     };
 
     $scope.formatDate = function(date){
-      return date.year + "-" + date.dayOfMonth + "-" + date.monthValue + " " + date.hour + ":" + date.minute;
+      var d = new Date(date);
+      return d.toLocaleString();
     };
 
     $scope.detail = function(booking){
@@ -87,15 +88,17 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
     $scope.day = new Date();
     $scope.fromTime = new Date();
     $scope.toTime = new Date();
+    $scope.description = "";
 
     $scope.createBooking = function(){
       $scope.newBooking.id = uuid.v4();
-      $scope.newBooking.start = angular.copy($scope.day);
-      $scope.newBooking.start.setHours($scope.fromTime.getHours());
-      $scope.newBooking.start.setMinutes($scope.fromTime.getMinutes());
-      $scope.newBooking.end = angular.copy($scope.day);
-      $scope.newBooking.end.setHours($scope.toTime.getHours());
-      $scope.newBooking.end.setMinutes($scope.toTime.getMinutes());
+      $scope.newBooking.startTime = angular.copy($scope.day);
+      $scope.newBooking.startTime.setHours($scope.fromTime.getHours());
+      $scope.newBooking.startTime.setMinutes($scope.fromTime.getMinutes());
+      $scope.newBooking.endTime = angular.copy($scope.day);
+      $scope.newBooking.endTime.setHours($scope.toTime.getHours());
+      $scope.newBooking.endTime.setMinutes($scope.toTime.getMinutes());
+      $scope.newBooking.description = $scope.description;
       $scope.newBooking.$save();
       $state.go('app.bookings.list');
     };
