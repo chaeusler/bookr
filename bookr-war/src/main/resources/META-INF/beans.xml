@@ -6,13 +6,12 @@
                       http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
   bean-discovery-mode="all">
 
-  <interceptors>
-    <class>ch.haeuslers.bookr.common.performance.PerformanceLogger</class>
-    <class>ch.haeuslers.bookr.common.Auditor</class>
-  </interceptors>
-
   <decorators>
     <class>ch.haeuslers.bookr.control.BookingServiceChangeNotifyDecorator</class>
   </decorators>
 
+  <interceptors>
+    <class>ch.haeuslers.bookr.common.performance.PerformanceLogger</class>
+    <class>ch.haeuslers.bookr.common.Auditor</class>
+  </interceptors>
 </beans>

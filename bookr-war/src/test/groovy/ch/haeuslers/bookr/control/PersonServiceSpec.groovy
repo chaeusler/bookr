@@ -2,10 +2,8 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.common.EntityManagerProducer
-import ch.haeuslers.bookr.common.performance.PerformanceLogged
 import ch.haeuslers.bookr.common.performance.PerformanceLogger
 import ch.haeuslers.bookr.entity.Person
-import ch.haeuslers.bookr.common.LoggerProducer
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
