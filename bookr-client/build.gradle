@@ -1,6 +1,5 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-
 buildscript {
     repositories {
         jcenter()
@@ -11,6 +10,11 @@ buildscript {
 }
 
 apply plugin: 'gulp'
+
+node {
+  // Version of node to use.
+  version = '0.12.1'
+}
 
 // altough this plugin should do the trick it's needed that you install node manually!
 // https://nodesource.com/blog/nodejs-v012-iojs-and-the-nodesource-linux-repositories
@@ -28,11 +32,6 @@ gulp_build.dependsOn 'npmInstall'
 // runs "gulp build" as part of your gradle build
 //build.dependsOn gulp_build
 
-node {
-    // Version of node to use.
-    version = '0.12.1'
-}
-
 /*
 def gulpCommand() {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -44,7 +43,6 @@ def gulpCommand() {
 task gulp(type: Exec) {
     commandLine gulpCommand()
 }
-
 */
 
 task bowerInstall(type:Exec){

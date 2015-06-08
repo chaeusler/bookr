@@ -104,62 +104,14 @@ task integrationTest(type: Test) {
     }
 }
 
-/*
 war {
-    it.dependsOn 'test'//':AngularClient:gulp_build'
-    from '../AngularClient/dist'
-}*/
-
-task deploy(dependsOn: war, type: Copy) {
-    println "configure task deploy"
-
-    from('build/libs/') {
-        include '*.war'
-    }
-
-    into "${System.env.JBOSS_HOME}/standalone/deployments/"
-
-    def target = "${project.name}.war"
-    def ok = new File("${System.env.JBOSS_HOME}/standalone/deployments/${target}.deployed");
-    def nok = new File("${System.env.JBOSS_HOME}/standalone/deployments/${target}.failed");
-
-    doFirst {
-        println "deploy doFirst"
-        if (ok.exists()) {
-            ok.delete()
-        }
-        if (nok.exists()) {
-            nok.delete()
-        }
-    }
-
-    doLast {
-        println "executing wildfly deploy..."
-        def deployed = false
-
-        for (def i = 0; i < 80; i++) {
-            if (ok.exists()) {
-                deployed = true
-                break
-            }
-            if (nok.exists()) {
-                break
-            }
-            sleep(500);
-        }
-
-        if (deployed) {
-            println("deploy ok.")
-        } else {
-            throw new RuntimeException("Deployment failed, see Wildfly logs!")
-        }
-    }
+    it.dependsOn ':bookr-client:gulp_build'
+    from '../bookr-client/dist'
 }
 
 flyway {
     user = 'bookr'
     password = 'bookr'
     url='jdbc:postgresql://localhost:5432/bookr'
-    //schemas = ['bookr']
 }
 
