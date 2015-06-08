@@ -37,7 +37,8 @@
     <div class="col-sm-offset-2 col-sm-10">
       <button class="btn btn-primary" ng-show="'app.users.detail'| isState" ng-click="update()">OK</button>
       <button class="btn btn-primary" ng-show="'app.users.create'| isState" ng-click="save()">OK</button>
-      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-warning" ng-show="'app.users.detail'| isState" ng-click="delete()">Delete</button>
     </div>
   </div>
 </form>

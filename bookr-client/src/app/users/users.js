@@ -73,7 +73,7 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
 
     $scope.save = function() {
       $scope.user.person.$save(function(person){
-        $scope.user.authorization.$save(function(auth){
+        $scope.user.authorization.$save(function(){
           $scope.persons.push($scope.user.person);
         }, function(){
           person.$delete();
@@ -85,6 +85,15 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
 
     $scope.cancel = function() {
       $scope.persons = Person.query();
+      $state.go('app.users.list');
+    };
+
+    $scope.delete = function() {
+      $scope.user.authorization.$delete(function(){
+        $scope.user.person.$delete(function(){
+          $scope.persons = Person.query();
+        });
+      });
       $state.go('app.users.list');
     };
 
