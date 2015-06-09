@@ -24,10 +24,10 @@ node {
 
 
 // makes sure on each build that gulp is installed
-gulp_build.dependsOn 'installGulp'
+//FIXME gulp_build.dependsOn 'installGulp'
 
 // processes your package.json before running gulp build
-gulp_build.dependsOn 'npmInstall'
+//FIXME gulp_build.dependsOn 'npmInstall'
 
 // runs "gulp build" as part of your gradle build
 //build.dependsOn gulp_build
@@ -45,6 +45,7 @@ task gulp(type: Exec) {
 }
 */
 
+
 task bowerInstall(type:Exec){
     dependsOn 'npmInstall'
     dependsOn 'installGulp'
@@ -58,6 +59,7 @@ def bower(command) {
         ['./node_modules/.bin/bower', command]
     }
 }
+
 
 
 

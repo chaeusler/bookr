@@ -105,7 +105,7 @@ task integrationTest(type: Test) {
 }
 
 war {
-    it.dependsOn ':bookr-client:gulp_build'
+    // FIXME it.dependsOn ':bookr-client:gulp_build'
     from '../bookr-client/dist'
 }
 
