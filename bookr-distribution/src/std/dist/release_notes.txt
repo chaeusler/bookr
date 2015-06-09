@@ -1,1 +1,3 @@
 // TODO add content from github issues
+
+https://github.com/chaeusler/bookr/issues

@@ -1,11 +1,10 @@
-# bookr
 
-## Intellij setup
+# Intellij setup
 ./gradlew idea or import gradle project
 
 
-## Application Server Setup
-### add PostgreSQL JDBC driver and configure datasource
+# Application Server Setup
+## add PostgreSQL JDBC driver and configure datasource
 Download the JDBC driver.
 
 Run Jboss and call jboss-cli.sh:
@@ -14,30 +13,10 @@ Run Jboss and call jboss-cli.sh:
 - /subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
 - data-source add --jndi-name=java:jboss/datasources/BookrDS --name=BookrDS --connection-url=jdbc:postgresql://localhost/bookr --jta=true --use-ccm=true --driver-name=postgres --user-name=bookr --password=bookr
 
-### Datasource
-Needs PersistenceUnit named "bookr"
-
-    <datasource jta="true" jndi-name="java:jboss/datasources/BookrDS" pool-name="java:jboss/datasources/BookrDS" enabled="true" use-ccm="true">
-        <connection-url>jdbc:h2:mem:bookr;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false</connection-url>
-        <driver-class>org.h2.Driver</driver-class>
-        <driver>h2</driver>
-        <security>
-            <user-name>sa</user-name>
-            <password>sa</password>
-        </security>
-    </datasource>
-    
-    <datasource jta="true" jndi-name="java:jboss/datasources/BookrDS" pool-name="BookrDS" enabled="true" use-ccm="true">
-            <connection-url>jdbc:h2:mem:bookr;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false</connection-url>
-            <driver-class>org.h2.Driver</driver-class>
-            <driver>h2</driver>
-            <security>
-                <user-name>bookr</user-name>
-                <password>bookr</password>
-            </security>
-        </datasource>
+## Additions in standalone.xml
                 
-### security
+### configure authentication
+in `<security-domain>`:
        
     <security-domain name="secureDomain" cache-type="default">
       <authentication>
@@ -49,24 +28,67 @@ Needs PersistenceUnit named "bookr"
       </authentication>
     </security-domain>
 
+### configure loggng
+in `<subsystem xmlns="urn:jboss:domain:logging:2.0">`:
 
-### https
-[Configuring https] (http://blog.eisele.net/2015/01/ssl-with-wildfly-8-and-undertow.html)
+      <periodic-rotating-file-handler name="BOOKR_PERFORMANCE_FILE" autoflush="true">
+          <formatter>
+              <named-formatter name="PATTERN"/>
+          </formatter>
+          <file relative-to="jboss.server.log.dir" path="bookr-performance.log"/>
+          <suffix value=".yyyy-MM-dd"/>
+          <append value="true"/>
+      </periodic-rotating-file-handler>
+      <periodic-rotating-file-handler name="BOOKR_AUDIT_FILE" autoflush="true">
+          <formatter>
+              <named-formatter name="PATTERN"/>
+          </formatter>
+          <file relative-to="jboss.server.log.dir" path="bookr-audit.log"/>
+          <suffix value=".yyyy-MM-dd"/>
+          <append value="true"/>
+      </periodic-rotating-file-handler>
+      <logger category="ch.haeuslers.bookr.common.performance.PerformanceLogger">
+          <level name="TRACE"/>
+          <handlers>
+              <handler name="BOOKR_PERFORMANCE_FILE"/>
+          </handlers>
+      </logger>
+      <logger category="ch.haeuslers.bookr.common.Auditor">
+          <level name="TRACE"/>
+          <handlers>
+              <handler name="BOOKR_AUDIT_FILE"/>
+          </handlers>
+      </logger>
 
-## Database
+## enable https
+follow [Configuring https] (http://blog.eisele.net/2015/01/ssl-with-wildfly-8-and-undertow.html)
+
+# Database
 
 The application is tested with PostgreSQL 9.4.
 
 
-### install and configure on OS X
+## install and configure on OS X
 - brew install prostgres
-- pg_ctl start -l logfile ([Official Documentation] (http://www.postgresql.org/docs/9.4/static/server-start.html))
+- pg_ctl start -l $logfile ([Official Documentation] (http://www.postgresql.org/docs/9.4/static/server-start.html))
 - initdb
 
-#### configure DB user and add database
-with `psql  
+## configure DB user and add database
+call `psql 
 
 - CREATE USER bookr PASSWORD 'bookr';
 - CREATE DATABASE bookr OWNER bookr;
 
+# build the distribution
 
+## preconditions
+- npm is installed
+- wildfly is configured and running
+- postresql is configured and running (postgres -D /usr/local/var/postgres)
+  
+## steps
+- in 'booker-client' call: `npm install && bower install && gulp build`
+- in 'bookr' call: gradle distribution
+
+## outcome
+The distribution is built as zip and tar into 'bookr-distribution/build/distriburions'
