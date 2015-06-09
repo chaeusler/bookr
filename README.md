@@ -14,6 +14,9 @@ Infrastructure:
 - PostgreSQL 9.4
 - Wildfly 8.2
 
+# Development and Architecture
+Take a look to the [Development Guide] (DevelopmentGuide.md) for development guidlines and architectural overwiew. 
+
 # Intellij setup
 ./gradlew idea or import gradle project
 
@@ -86,7 +89,7 @@ The application is tested with PostgreSQL 9.4.
 
 ## install and configure on OS X
 - brew install prostgres
-- pg_ctl start -l $logfile ([Official Documentation] (http://www.postgresql.org/docs/9.4/static/server-start.html))
+- pg_ctl start -l $logfile ([Official Documenttion] (http://www.postgresql.org/docs/9.4/static/server-start.html))
 - initdb
 
 ## configure DB user and add database
@@ -98,8 +101,12 @@ call `psql`
 # build the distribution
 
 ## preconditions
-- npm is installed
-- wildfly is configured and running
+- JDK 8 is installed (i.e. [Oracles JDK] (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html))
+- gradle 2.4 is installed (consider using [GVM] (http://gvmtool.net))
+- npm is installed (on OSX with `brew install npm`) 
+
+
+- wildfly is configured and running according this guide
 - postresql is configured and running (postgres -D /usr/local/var/postgres)
   
 ## steps
