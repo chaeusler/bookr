@@ -1,3 +1,18 @@
+# Introduction
+This is an educational project. Don't use it in production.
+
+Technologies:
+
+- Java EE7
+- Angular JS
+- Gradle
+- Arquilllian
+- Spock
+
+Infrastructure:
+
+- PostgreSQL
+- Wildfly 8.2
 
 # Intellij setup
 ./gradlew idea or import gradle project
