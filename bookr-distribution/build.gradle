@@ -1,0 +1,16 @@
+apply plugin: 'distribution'
+
+
+distributions {
+    std {
+        contents {
+            from '../bookr-war/build/libs'
+            from '../bookr-war/src/main/resources/db/migration'
+        }
+    }
+}
+
+stdDistTar.dependsOn ':bookr-war:war'
+stdDistZip.dependsOn ':bookr-war:war'
+build.dependsOn stdDistTar
+build.dependsOn stdDistZip

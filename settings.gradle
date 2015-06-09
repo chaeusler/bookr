@@ -1,4 +1,1 @@
-include 'bookr-client'
-include 'bookr-war'
-include 'bookr-test'
-
+include 'bookr-war', 'bookr-client', 'bookr-distribution'

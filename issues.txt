@@ -1,2 +1,8 @@
 - Bauen mit Intellij klappt nicht -> gulp plugin stellt sich quer
--
+- ditribution plugin benötigt custom configuration. Standarmässiges "main" wie in der Doku geht nicht.
+- SoapUI 5.0.3 lässt sich unter OSX nicht bedienen -> Integrationstests nicht realisiert
+- Jacoco ist nicht in der Lage die Testabdeckung mit Arquillian zu erkennen.
+
+Vorbedingungen
+- wildfly läuft
+- postresql läuft (postgres -D /usr/local/var/postgres)
