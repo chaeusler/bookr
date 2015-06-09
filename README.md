@@ -3,15 +3,15 @@ This is an educational project. Don't use it in production.
 
 Technologies:
 
-- Java EE7
-- Angular JS
-- Gradle
+- Java EE7 with Java 8
+- Angular JS 1.3.4
+- Gradle 2.4
 - Arquilllian
 - Spock
 
 Infrastructure:
 
-- PostgreSQL
+- PostgreSQL 9.4
 - Wildfly 8.2
 
 # Intellij setup
@@ -20,7 +20,7 @@ Infrastructure:
 
 # Application Server Setup
 ## add PostgreSQL JDBC driver and configure datasource
-Download the JDBC driver.
+Download the JDBC driver (i.E. into /tmp/postgresql-9.4-1201.jdbc41.jar).
 
 Run Jboss and call jboss-cli.sh:
 
@@ -29,7 +29,8 @@ Run Jboss and call jboss-cli.sh:
 - data-source add --jndi-name=java:jboss/datasources/BookrDS --name=BookrDS --connection-url=jdbc:postgresql://localhost/bookr --jta=true --use-ccm=true --driver-name=postgres --user-name=bookr --password=bookr
 
 ## Additions in standalone.xml
-                
+Make sure wildfly isn't running when editing the file.updateupdatedup
+
 ### configure authentication
 in `<security-domain>`:
        
@@ -43,7 +44,7 @@ in `<security-domain>`:
       </authentication>
     </security-domain>
 
-### configure loggng
+### configure logging
 in `<subsystem xmlns="urn:jboss:domain:logging:2.0">`:
 
       <periodic-rotating-file-handler name="BOOKR_PERFORMANCE_FILE" autoflush="true">
@@ -89,7 +90,7 @@ The application is tested with PostgreSQL 9.4.
 - initdb
 
 ## configure DB user and add database
-call `psql 
+call `psql`
 
 - CREATE USER bookr PASSWORD 'bookr';
 - CREATE DATABASE bookr OWNER bookr;
