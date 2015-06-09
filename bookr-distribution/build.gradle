@@ -4,13 +4,31 @@ apply plugin: 'distribution'
 distributions {
     std {
         contents {
-            from '../bookr-war/build/libs'
-            from '../bookr-war/src/main/resources/db/migration'
+            from "$buildDir/collection"
         }
     }
 }
 
-stdDistTar.dependsOn ':bookr-war:war'
-stdDistZip.dependsOn ':bookr-war:war'
-build.dependsOn stdDistTar
-build.dependsOn stdDistZip
+task getWar(type: Copy, dependsOn: ':bookr-war:war') {
+    from '../bookr-war/build/libs'
+    into "$buildDir/collection"
+}
+
+task getReports(type: Copy, dependsOn: [':bookr-war:check']) {
+    from '../bookr-war/build/reports'
+    from '../bookr-war/build/test-results'
+    into "$buildDir/collection/reports"
+}
+
+task getDDL(type: Copy) {
+    from '../bookr-war/src/main/resources/db/migration'
+    into "$buildDir/collection/ddl"
+}
+
+def taskDependencies = [getWar, getReports, getDDL]
+stdDistTar.dependsOn taskDependencies
+stdDistZip.dependsOn taskDependencies
+
+task distribution(dependsOn: ['stdDistTar', 'stdDistZip']) {
+    // just collects
+}
