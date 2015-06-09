@@ -7,6 +7,8 @@ import ch.haeuslers.bookr.entity.Person;
 import ch.haeuslers.bookr.entity.Role;
 
 import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
@@ -21,6 +23,8 @@ import java.util.Optional;
 @Stateless
 @PerformanceLogged
 @Audited
+@DeclareRoles({"USER", "MANAGER", "ADMINISTRATOR"})
+@RolesAllowed({"USER", "MANAGER", "ADMINISTRATOR"})
 public class BookingServiceBean implements BookingService, Serializable {
 
     private static final long serialVersionUID = 1;
@@ -108,6 +112,7 @@ public class BookingServiceBean implements BookingService, Serializable {
     }
 
     @Override
+    @RolesAllowed({"MANAGER", "ADMINISTRATOR"})
     public List<Booking> getAll() {
         return em.createNamedQuery(Booking.QUERY_FIND_ALL, Booking.class).getResultList();
     }
