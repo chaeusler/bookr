@@ -1,6 +1,5 @@
 package ch.haeuslers.bookr.boundary;
 
-import ch.haeuslers.bookr.control.PasswordService;
 import ch.haeuslers.bookr.control.PersonService;
 import ch.haeuslers.bookr.entity.Person;
 
