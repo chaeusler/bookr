@@ -82,23 +82,6 @@ test {
     }
 }
 
-task integrationTest(type: Test) {
-    // more infos https://gist.github.com/notsocomplex/57ad51550842954be811
-
-    // Enable the System.out if you want
-    testLogging.showStandardStreams = true
-
-    // Adds the integration tests classes to the test suite along with
-    // the runtime classpath
-    testClassesDir = sourceSets.integrationTest.output.classesDir
-    classpath += sourceSets.integrationTest.runtimeClasspath
-
-    // Before each test, log the execution detail for clarity
-    beforeTest { descriptor ->
-        logger.lifecycle("Running test: " + descriptor)
-    }
-}
-
 war {
     // FIXME it.dependsOn ':bookr-client:gulp_build'
     from '../bookr-client/dist'

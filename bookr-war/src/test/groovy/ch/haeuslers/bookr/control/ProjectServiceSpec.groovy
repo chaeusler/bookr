@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.control
 
 import ch.haeuslers.bookr.JBossLoginContextFactory
 import ch.haeuslers.bookr.common.EntityManagerProducer
+import ch.haeuslers.bookr.common.performance.PerformanceLogger
 import ch.haeuslers.bookr.entity.Person
 import ch.haeuslers.bookr.entity.Project
 import org.jboss.arquillian.container.test.api.Deployment
@@ -20,14 +21,14 @@ class ProjectServiceSpec extends Specification {
     @Deployment
     def static WebArchive "create deployment"() {
         return ShrinkWrap.create(WebArchive.class, 'ProjectServiceSpec.war')
-            .addClass(ProjectService.class)
-            .addClass(PersonService.class)
-            .addClass(PasswordService.class)
+            .addPackage(ProjectService.class.getPackage())
             .addPackage(Project.class.getPackage())
+            .addPackage(EntityManagerProducer.class.getPackage())
+            .addPackage(PerformanceLogger.class.getPackage())
             .addClass(JBossLoginContextFactory.class)
             .addClass(LoginSession.class)
-            .addClass(EntityManagerProducer.class)
             .addAsWebInfResource("META-INF/jboss-ejb3.xml")
+            .addAsResource("META-INF/beans.xml")
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsResource("users.properties")
             .addAsResource("roles.properties")

@@ -79,39 +79,4 @@ in `<subsystem xmlns="urn:jboss:domain:logging:2.0">`:
           </handlers>
       </logger>
 
-## enable https
-follow [Configuring https] (http://blog.eisele.net/2015/01/ssl-with-wildfly-8-and-undertow.html)
 
-# Database
-
-The application is tested with PostgreSQL 9.4.
-
-
-## install and configure on OS X
-- brew install prostgres
-- pg_ctl start -l $logfile ([Official Documenttion] (http://www.postgresql.org/docs/9.4/static/server-start.html))
-- initdb
-
-## configure DB user and add database
-call `psql`
-
-- CREATE USER bookr PASSWORD 'bookr';
-- CREATE DATABASE bookr OWNER bookr;
-
-# build the distribution
-
-## preconditions
-- JDK 8 is installed (i.e. [Oracles JDK] (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html))
-- gradle 2.4 is installed (consider using [GVM] (http://gvmtool.net))
-- npm is installed (on OSX with `brew install npm`) 
-
-
-- wildfly is configured and running according this guide
-- postresql is configured and running (postgres -D /usr/local/var/postgres)
-  
-## steps
-- in 'booker-client' call: `npm install && bower install && gulp build`
-- in 'bookr' call: gradle distribution
-
-## outcome
-The distribution is built as zip and tar into 'bookr-distribution/build/distriburions'

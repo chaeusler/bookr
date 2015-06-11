@@ -27,6 +27,7 @@ angular.module('bookr.base', ['ui.router', 'ngResource'])
         })
     }])
   .config(['$httpProvider', function($httpProvider){
+    // TODO use http-interceptor instead
     $httpProvider.defaults.headers.common.Authorization = 'Basic ' + btoa('administrator' + ':' + 'administrator');
   }])
   .config(['$resourceProvider', function($resourceProvider){

@@ -1,0 +1,9 @@
+connect
+batch
+
+# adding security settings for test
+/subsystem=security/security-domain=testing:add
+/subsystem=security/security-domain=testing/authentication=classic:add(login-modules=[{"code"=>"UserRoles","flag"=>"sufficient"}])
+
+run-batch
+:reload

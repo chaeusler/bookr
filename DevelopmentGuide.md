@@ -1,3 +1,12 @@
+# Database Setup
+Apply the instructions from the [Build Guide](BuildGuide.md)
+
+Then run `gradle flywayMigrate`
+
+# Wildfly Setup
+Apply the instructions from [the Distribution](bookr-distribution/src/std/dist/README.md)
+
+
 # Project Topology
 The whole project is organized in multiple modules and is built with gradle.
 
@@ -17,10 +26,10 @@ All Java packages are under ch.haeuslers.bookr.
 
 The web application ist organized with 4 main packages.
 
-boundary: Contains the REST API and the Websocket server endpoints.
-control: Holds all business services.
-entity: Defines the persistent entities. These are enriched with marshalling und unmarshalling Annotations (JAXB).
-common: All other stuff like producers and auditing related logic.
+- boundary: Contains the REST API and the Websocket server endpoints.
+- control: Holds all business services.
+- entity: Defines the persistent entities. These are enriched with marshalling und unmarshalling Annotations (JAXB).
+- common: All other stuff like producers and auditing related logic.
 
 It's layering is supervised by jdepend as Unit-Test.
 
