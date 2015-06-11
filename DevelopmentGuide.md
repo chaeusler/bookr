@@ -4,7 +4,7 @@ Apply the instructions from the [Build Guide](BuildGuide.md)
 Then run `gradle flywayMigrate`
 
 # Wildfly Setup
-Apply the instructions from [the Distribution](bookr-distribution/src/std/dist/README.md)
+To get a production like environment it's recommended to apply the instructions from [the Distribution](bookr-distribution/src/std/dist/README.md)
 
 
 # Project Topology
