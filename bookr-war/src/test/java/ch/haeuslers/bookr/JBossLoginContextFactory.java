@@ -20,6 +20,9 @@ import javax.security.auth.login.LoginException;
  * https://github.com/sfcoy/demos/blob/master/arquillian-security-demo/src/test/java/org/jboss/arquillian/secureejb/JBossLoginContextFactory.java
  *
  *
+ * Provides a {@link LoginContext} for use by unit tests. It is driven by users.properties and roles.properties files as
+ * described in <a href="https://community.jboss.org/wiki/UsersRolesLoginModule">UsersRolesLoginModule</a>
+ *
  * ensure standalone.xml contains:
  *
  * <subsystem xmlns="urn:jboss:domain:security:1.2">
@@ -82,7 +85,7 @@ public class JBossLoginContextFactory {
          * @return
          */
         private AppConfigurationEntry createUsersRolesLoginModuleConfigEntry() {
-            Map<String, String> options = new HashMap<String, String>();
+            Map<String, String> options = new HashMap<>();
             return new AppConfigurationEntry("org.jboss.security.auth.spi.UsersRolesLoginModule",
                 AppConfigurationEntry.LoginModuleControlFlag.REQUIRED, options);
         }
@@ -94,7 +97,7 @@ public class JBossLoginContextFactory {
          * @return
          */
         private AppConfigurationEntry createClientLoginModuleConfigEntry() {
-            Map<String, String> options = new HashMap<String, String>();
+            Map<String, String> options = new HashMap<>();
             options.put("multi-threaded", "true");
             options.put("restore-login-identity", "true");
 
