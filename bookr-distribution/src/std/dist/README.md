@@ -5,15 +5,16 @@
 These instructions fit the installation on a single machine running Postgresql und Wilfly.
 
 ## Preconditions
-- Postgresql 9.4 is installed and running
-- Wildfly 8.2 is installed and runnning
+- Postgresql 9.4 is installed and running 
+- Wildfly 8.2 is installed and runnning -> Ensure it's a new one without previous configuration
 
 ## Setup database
 create a Database named bookr with the username bookr and password bookr. If you want to change them, you need to adapt the datasource settings from wildfly.
 
 apply the Sql located in DDL scripts against the database:
 
-psql -d=bokr -U=bookr -f FILENAME
+psql --file="ddl/V1__initialTables.sql" bookr bookr
+psql --file="ddl/V2__adminUser.sql" bookr bookr
 
 ## Configure Wildfly
 JBOSS_HOME needs to be set.
