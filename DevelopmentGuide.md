@@ -1,5 +1,20 @@
+This Document contains informations how to develop the application. Additionally some architectural notes are contained.
+
+Please follow the instructions in the [Build Guide](BuildGuide.md) first.
+
 # Database Setup
-Apply the instructions from the [Build Guide](BuildGuide.md)
+
+## install and configure on OS X
+- brew install postgres
+- pg_ctl start -l $logfile ([Official Documentation] (http://www.postgresql.org/docs/9.4/static/server-start.html))
+- initdb
+
+## configure DB user and add database
+call `psql`
+
+- CREATE USER bookr PASSWORD 'bookr';
+- CREATE DATABASE bookr OWNER bookr;
+- \q
 
 Then run `gradle flywayMigrate`
 
