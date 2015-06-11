@@ -64,6 +64,9 @@ angular.module('bookr',
   }])
   .factory('Authorization', ['$resource', function ($resource) {
     return $resource('http://localhost:8080/bookr/rest/v1/authorizations/:authorizationId', {authorizationId: '@id'});
+  }])
+  .factory('Password', ['$resource', function ($resource) {
+    return $resource('http://localhost:8080/bookr/rest/v1/passwords/:passwordId', {passwordId: '@id'});
   }]);
 
 

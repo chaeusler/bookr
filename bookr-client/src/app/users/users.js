@@ -53,7 +53,10 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
       $state.go("app.users.create");
     }
 
-  }]).controller('UsersDetailController', ['$scope', '$state', 'Person', 'Authorization', function ($scope, $state, Person, Authorization) {
+  }]).controller('UsersDetailController', ['$scope', '$state', 'Person', 'Authorization', 'Password',
+    function ($scope, $state, Person, Authorization, Password) {
+
+    $scope.newPassword = new Password();
 
     $scope.toggleRole = function(rolename) {
       var roles = $scope.user.authorization.roles;
@@ -66,6 +69,8 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
     };
 
     $scope.update = function() {
+      $scope.newPassword.id = $scope.user.authorization.id;
+      Password.update($scope.newPassword);
       Person.update($scope.user.person);
       Authorization.update($scope.user.authorization);
       $state.go('app.users.list');
@@ -73,8 +78,15 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
 
     $scope.save = function() {
       $scope.user.person.$save(function(person){
-        $scope.user.authorization.$save(function(){
-          $scope.persons.push($scope.user.person);
+        $scope.user.authorization.$save(function(authorization){
+          $scope.newPassword.id = $scope.user.authorization.id;
+          $scope.newPassword.authorization = $scope.user.authorization.id;
+          $scope.newPassword.$save(function(){
+            $scope.persons.push($scope.user.person);
+          }, function(){
+            authorization.$delete();
+            person.$delete();
+          })
         }, function(){
           person.$delete();
         });
