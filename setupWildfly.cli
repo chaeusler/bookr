@@ -6,4 +6,4 @@ batch
 /subsystem=security/security-domain=testing/authentication=classic:add(login-modules=[{"code"=>"UserRoles","flag"=>"sufficient"}])
 
 run-batch
-:reload
+reload
