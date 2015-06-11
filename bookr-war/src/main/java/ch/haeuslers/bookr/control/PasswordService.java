@@ -24,20 +24,21 @@ public class PasswordService {
     private transient SessionContext context;
 
     public void create(final Password password) {
-        ensureRights(password.getAuthorization());
+        ensureRights(password);
         em.persist(password);
     }
 
-    public void updatePassword(final Authorization authorization, final String password) {
-        ensureRights(authorization);
-        final Password existing = em.find(Password.class, authorization);
+    public void updatePassword(final Password password) {
+        ensureRights(password);
         // TODO fail when it's the same
-        existing.setPassword(password);
+        em.merge(password);
     }
 
-    private void ensureRights(final Authorization authorization) {
+    private void ensureRights(final Password password) {
+        Authorization authorization = password.getAuthorization();
+        String pName = authorization.getPrincipalName();
         if (!context.isCallerInRole("ADMINISTRATOR")
-            || !context.getCallerPrincipal().getName().equals(authorization.getPrincipalName())) {
+            || !context.getCallerPrincipal().getName().equals(pName)) {
             throw new EJBAccessException("only for administrators or the user itself");
         }
     }

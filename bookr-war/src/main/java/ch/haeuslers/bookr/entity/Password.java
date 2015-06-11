@@ -2,6 +2,7 @@ package ch.haeuslers.bookr.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class Password implements Serializable {
 
     @OneToOne(optional = false)
     @JoinColumn(name = "authorization_id")
+    @XmlJavaTypeAdapter(AuthorizationReferenceXmlAdapter.class)
     private Authorization authorization;
 
     @NotNull
