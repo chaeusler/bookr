@@ -9,10 +9,13 @@ The application is tested with PostgreSQL 9.4.
 
 
 ## Wildfly 8.2
+in standalone.xml add inside `<security-domains>`:
 
-Start your Application server.
-
-Make sure JBOSS_HOME points to the right AS and call `./setupWildfly.sh`
+    <security-domain name="testing" cache-type="default">
+        <authentication>
+            <login-module code="UsersRoles" flag="sufficient"/>
+        </authentication>
+    </security-domain>
 
 ## Gradle 2.4
 consider using [GVM] (http://gvmtool.net)
@@ -31,6 +34,7 @@ on OSX with `brew install npm`
   
 ## steps
 - in 'booker-client' call: `npm install && bower install && gulp build`
+- Start your Application server
 - in 'bookr' call: `gradle distributon -x test`
 
 ## outcome
