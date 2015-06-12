@@ -26,3 +26,6 @@ follow [Configuring https] (http://blog.eisele.net/2015/01/ssl-with-wildfly-8-an
 
 ## Deploy application
 cp *.war $JBOSS_HOME/standalone/deployments
+
+## Use it
+navigate to [http://localhost:8080/bookr](http://localhost:8080/bookr)
