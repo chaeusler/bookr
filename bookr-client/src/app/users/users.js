@@ -70,7 +70,9 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
 
     $scope.update = function() {
       $scope.newPassword.id = $scope.user.authorization.id;
+      $scope.newPassword.authorization = $scope.user.authorization.id;
       Password.update($scope.newPassword);
+      $scope.newPassword = new Password();
       Person.update($scope.user.person);
       Authorization.update($scope.user.authorization);
       $state.go('app.users.list');
@@ -83,24 +85,30 @@ angular.module('bookr.users', ['uuid', 'bookr.base'])
           $scope.newPassword.authorization = $scope.user.authorization.id;
           $scope.newPassword.$save(function(){
             $scope.persons.push($scope.user.person);
+            $scope.newPassword = new Password();
           }, function(){
             authorization.$delete();
             person.$delete();
+            $scope.newPassword = new Password();
           })
         }, function(){
           person.$delete();
+          $scope.newPassword = new Password();
         });
       });
+
 
       $state.go('app.users.list');
     };
 
     $scope.cancel = function() {
       $scope.persons = Person.query();
+      $scope.newPassword = new Password();
       $state.go('app.users.list');
     };
 
     $scope.delete = function() {
+      $scope.newPassword = new Password();
       $scope.user.authorization.$delete(function(){
         $scope.user.person.$delete(function(){
           $scope.persons = Person.query();

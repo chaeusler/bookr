@@ -4,7 +4,7 @@ angular.module('bookr.bookings', ['uuid', 'bookr.base'])
   .config(function ($stateProvider) {
     $stateProvider
       .state('app.bookings', {
-        url: '/bookings',
+        url: '/',
         abstract: true,
         template: '<div ui-view></div>',
         controller: 'BookingsController'

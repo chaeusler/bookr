@@ -1,9 +1,9 @@
-<form name="loginForm" role="login" ng-submit="loginMe()" ng-hide="ls.isLogged || !ls.doneLoading">
+
+<form name="loginForm" role="login">
   <div class="form-group">
-    <input type="text" class="form-control" ng-model="login.username" name="username" placeholder="Username">
+    <input type="text" class="form-control" ng-model="credentials.name" name="username" placeholder="Username">
   </div>
   <div class="form-group">
-    <input type="password" class="form-control" ng-model="login.password" name="password" placeholder="Password">
+    <input type="password" class="form-control" ng-model="credentials.password" name="password" placeholder="Password">
   </div>
-  <button type="submit" class="btn btn-default hidden-devices" ng-disabled="login.working">Login <i class="fa" ng-class="login.working ? 'fa-cog fa-spin' : 'fa-sign-in'"></i></button>
 </form>
