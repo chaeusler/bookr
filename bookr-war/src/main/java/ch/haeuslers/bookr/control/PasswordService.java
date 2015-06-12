@@ -38,7 +38,7 @@ public class PasswordService {
         Authorization authorization = password.getAuthorization();
         String pName = authorization.getPrincipalName();
         if (!context.isCallerInRole("ADMINISTRATOR")
-            || !context.getCallerPrincipal().getName().equals(pName)) {
+            && !context.getCallerPrincipal().getName().equals(pName)) {
             throw new EJBAccessException("only for administrators or the user itself");
         }
     }
