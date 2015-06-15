@@ -1,7 +1,7 @@
 apply plugin: 'idea'
 
 allprojects {
-    version = "0.1-beta2"
+    version = "0.1-beta3-SNAPSHOT"
 }
 
 wrapper {
