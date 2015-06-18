@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -25,9 +24,6 @@ public class PersonService {
 
     @Inject
     private transient EntityManager em;
-
-    @EJB
-    private transient PasswordService passwordService;
 
     @Resource
     private transient SessionContext context;
