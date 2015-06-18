@@ -20,7 +20,7 @@ import java.util.Optional;
 @DeclareRoles({"ADMINISTRATOR", "USER", "MANAGER"})
 @PerformanceLogged
 @Audited
-public class PersonService {
+public class PersonService implements CRUDService<Person> {
 
     @Inject
     private transient EntityManager em;

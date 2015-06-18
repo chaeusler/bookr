@@ -18,7 +18,7 @@ import java.util.Optional;
 @RolesAllowed("ADMINISTRATOR")
 @PerformanceLogged
 @Audited
-public class AuthorizationService {
+public class AuthorizationService implements CRUDService<Authorization> {
 
     @Inject
     private transient EntityManager em;
@@ -36,9 +36,9 @@ public class AuthorizationService {
         return Optional.ofNullable(em.find(Authorization.class, personId));
     }
 
-    public void update(final Authorization authorization) {
+    public Authorization update(final Authorization authorization) {
         authorization.getRoles().add(Role.USER);
-        em.merge(authorization);
+        return em.merge(authorization);
     }
 
     public void delete(final String authorizationId) {

@@ -17,7 +17,7 @@ import java.util.Optional;
 @RolesAllowed({"MANAGER", "ADMINISTRATOR"})
 @PerformanceLogged
 @Audited
-public class ProjectService {
+public class ProjectService implements CRUDService<Project> {
 
     @Inject
     private transient EntityManager em;
@@ -30,8 +30,8 @@ public class ProjectService {
         return Optional.ofNullable(em.find(Project.class, id));
     }
 
-    public void update(final Project project) {
-        em.merge(project);
+    public Project update(final Project project) {
+        return em.merge(project);
     }
 
     public void delete(final String id) {
